@@ -59,12 +59,9 @@ server.use(function (req, res, next) {
   if (req.query.shop !== "") {
     shopurl = " https://" + req.query.shop;
   }
-  console.log(
-    `frame-ancestors ${shopurl} https://cambridgetestshop.myshopify.com https://admin.shopify.com https://*.myshopify.com https://example.myshopify.com`
-  );
   res.setHeader(
-    "Content-Security-Policy-Report-Only",
-    `frame-ancestors ${shopurl} https://cambridgetestshop.myshopify.com https://admin.shopify.com https://*.myshopify.com https://example.myshopify.com`
+    "Content-Security-Policy",
+    "frame-ancestors https://cambridgetestshop.myshopify.com https://admin.shopify.com https://*.myshopify.com https://example.myshopify.com https://www.youtube.com"
   );
   res.setHeader("Access-Control-Allow-Origin", "https://www.youtube.com/*");
   next();
