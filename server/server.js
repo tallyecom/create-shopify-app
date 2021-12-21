@@ -55,10 +55,12 @@ server.get("/_next/*", (req, res) => {
 //Content Security Policy
 server.use(function (req, res, next) {
   var shopurl;
+  console.log(req.query.shop !== "");
   if (req.query.shop !== "") {
     shopurl = "https://" + req.query.shop;
+    console.log(shopurl);
     res.setHeader(
-      "Content-Security-Policy",
+      "Content-Security-Policy-Report-Only",
       `frame-ancestors ${shopurl} https://admin.shopify.com`
     );
     res.setHeader("Access-Control-Allow-Origin", "https://www.youtube.com/*");
