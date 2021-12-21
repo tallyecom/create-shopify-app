@@ -58,15 +58,15 @@ server.use(function (req, res, next) {
   var shopurl;
   if (req.query.shop !== "") {
     shopurl = " https://" + req.query.shop;
+    res.setHeader(
+      "Content-Security-Policy",
+      `frame-ancestors ${shopurl} https://admin.shopify.com`
+    );
+    res.setHeader("Access-Control-Allow-Origin", "https://www.youtube.com/*");
   }
   // console.log(
   //   `frame-ancestors ${shopurl} https://cambridgetestshop.myshopify.com https://admin.shopify.com https://*.myshopify.com https://example.myshopify.com`
   // );
-  res.setHeader(
-    "Content-Security-Policy",
-    `frame-ancestors ${shopurl} https://admin.shopify.com`
-  );
-  res.setHeader("Access-Control-Allow-Origin", "https://www.youtube.com/*");
   next();
 });
 //Authentication Url
