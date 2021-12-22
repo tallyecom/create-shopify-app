@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps, router }) {
           <title>Shopify App</title>
           <meta charSet="utf-8" />
           <meta http-equiv="refresh" content="180" />
-          <script
+          {/* <script
             http-equiv="Content-Security-Policy"
             content={fa}
           />
@@ -70,7 +70,7 @@ function MyApp({ Component, pageProps, router }) {
           <meta
             http-equiv="Content-Security-Policy"
             content={fa}
-          />
+          /> */}
         </Head>
         <Provider config={config}>
           <AppProvider i18n={translations}>
