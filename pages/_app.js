@@ -59,10 +59,10 @@ function MyApp({ Component, pageProps, router }) {
           <title>Shopify App</title>
           <meta charSet="utf-8" />
           <meta http-equiv="refresh" content="180" />
-          <script
+          {/* <script
             http-equiv="Content-Security-Policy-Report-Only"
             content="frame-ancestors https://[shop].myshopify.com https://admin.shopify.com"
-          />
+          /> */}
 
           {/* <meta
             http-equiv="Content-Security-Policy"
