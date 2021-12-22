@@ -287,7 +287,7 @@ const Index = () => {
             <Layout.Section>
               <Heading element="h1">Implementation Steps :</Heading>
               <ReactPlayer
-                url="https://www.youtube.com/embed/xKC_wnO1fFc?host=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
+                url="https://www.youtube.com/embed/xKC_wnO1fFc?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
               />
               <br />
@@ -295,7 +295,7 @@ const Index = () => {
                 Map Existing Products on Shopify with Tally Prime :
               </Heading>
               <ReactPlayer
-                url="https://www.youtube.com/embed/3LZ-i-JOmZE?host=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
+                url="https://www.youtube.com/embed/3LZ-i-JOmZE?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
               />
               <br />
@@ -304,7 +304,7 @@ const Index = () => {
                 Shopify with Image :
               </Heading>
               <ReactPlayer
-                url="https://www.youtube.com/embed/P7q_7k8t3-I?host=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
+                url="https://www.youtube.com/embed/P7q_7k8t3-I?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
               />
               <br />
@@ -312,7 +312,7 @@ const Index = () => {
                 Processing Orders on Shopify in Tally Prime :
               </Heading>
               <ReactPlayer
-                url="https://www.youtube.com/embed/uZ-DQhNqlzc?host=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
+                url="https://www.youtube.com/embed/uZ-DQhNqlzc?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
               />
               <br />
