@@ -63,7 +63,7 @@ function MyApp({ Component, pageProps, router }) {
           <meta charSet="utf-8" />
           <meta http-equiv="refresh" content="180" />
           <script
-            http-equiv="Content-Security-Policy-Report-Only"
+            http-equiv="Content-Security-Policy"
             content={fa}
           />
 

@@ -63,7 +63,7 @@ server.use(function (req, res, next) {
     console.log(shopurl);
     console.log(fa);
     res.setHeader(
-      "Content-Security-Policy-Report-Only",
+      "Content-Security-Policy",
       fa
       // `frame-ancestors ${shopurl} https://admin.shopify.com`
     );
