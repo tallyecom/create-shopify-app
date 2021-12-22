@@ -60,8 +60,9 @@ server.use(function (req, res, next) {
     shopurl = "https://" + req.query.shop;
     console.log(shopurl);
     res.setHeader(
-      "content-security-policy",
-      `frame-ancestors ${shopurl} https://admin.shopify.com`
+      "Content-Security-Policy-Report-Only",
+      "frame-ancestors https://[shop].myshopify.com https://admin.shopify.com"
+      // `frame-ancestors ${shopurl} https://admin.shopify.com`
     );
     res.setHeader("Access-Control-Allow-Origin", "https://www.youtube.com/*");
   }
