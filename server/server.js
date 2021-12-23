@@ -59,7 +59,7 @@ server.use(function (req, res, next) {
   console.log(req.query.shop !== "");
   if (req.query.shop !== "") {
     shopurl = "https://" + req.query.shop;
-    fa = `frame-ancestors default-src 'self' ${shopurl} https://admin.shopify.com;`;
+    fa = `frame-ancestors default-src 'self'; ${shopurl}; https://admin.shopify.com;`;
     console.log(shopurl);
     console.log(fa);
     res.setHeader(
