@@ -58,8 +58,8 @@ server.use(function (req, res, next) {
   var fa;
   console.log(req.query.shop !== "");
   if (req.query.shop !== "") {
-    shopurl = "https://" + req.query.shop;
-    fa = `frame-ancestors ${shopurl}; https://admin.shopify.com;`;
+    shopurl = req.query.shop;
+    fa = `frame-ancestors ${shopurl}; admin.shopify.com;`;
     console.log(shopurl);
     console.log(fa);
     res.setHeader(
