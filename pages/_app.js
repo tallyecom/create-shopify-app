@@ -12,6 +12,7 @@ import Head from "next/head";
 import { AppProvider } from "@shopify/polaris";
 import { Provider } from "@shopify/app-bridge-react";
 import "@shopify/polaris/dist/styles.css";
+import "./localSettings.css";
 import translations from "@shopify/polaris/locales/en.json";
 import axios from "axios";
 import { getSessionToken } from "@shopify/app-bridge-utils";

@@ -498,38 +498,51 @@ const Index = () => {
           </Layout>
         </Card.Section>
       </Card>
-      <Card title="Steps to Implement">
+      <div className="player-wrapper" title="Steps to Implement">
         <ReactPlayer
+          className="react-player"
           controls={true}
           url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
           width="100%"
           height="100%"
         />
-      </Card>
-      <Card title="Map Existing Products on Shopify with Tally Prime">
+      </div>
+      <div
+        className="player-wrapper"
+        title="Map Existing Products on Shopify with Tally Prime"
+      >
         <ReactPlayer
+          className="react-player"
           controls={true}
           url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
           width="100%"
           height="100%"
         />
-      </Card>
-      <Card title="Post Stock Group in Tally Prime as Multi Variant Product on Shopify with Image">
+      </div>
+      <div
+        className="player-wrapper"
+        title="Post Stock Group in Tally Prime as Multi Variant Product on Shopify with Image"
+      >
         <ReactPlayer
+          className="react-player"
           controls={true}
           url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
           width="100%"
           height="100%"
         />
-      </Card>
-      <Card title="Processing Orders on Shopify in Tally Prime">
+      </div>
+      <div
+        className="player-wrapper"
+        title="Processing Orders on Shopify in Tally Prime"
+      >
         <ReactPlayer
+          className="react-player"
           controls={true}
           url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
           width="100%"
           height="100%"
         />
-      </Card>
+      </div>
       <Card>
         <Card.Section title="Developer">
           <Layout>
