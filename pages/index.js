@@ -46,7 +46,7 @@ const Index = () => {
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
-  const [isPrime, setIsPrime] = useState(False);
+  const [isPrime, setIsPrime] = useState(false);
 
   const getData = async () => {
     try {
