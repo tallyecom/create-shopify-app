@@ -125,13 +125,13 @@ const Index = () => {
     console.log("Educational Mode :: ", edMode);
   }, [edMode]);
 
-  const handleFirstIsPrimeButton = useCallback(() => {
+  const handleFirstIsPrime = useCallback(() => {
     if (isPrime) return;
     setIsPrime(true);
     console.log("is Tally Prime :: ", isPrime);
   }, [isPrime]);
 
-  const handleSecondEdButton = useCallback(() => {
+  const handleSecondIsPrime = useCallback(() => {
     if (!isPrime) return;
     setIsPrime(false);
     console.log("is Tally Prime :: ", isPrime);
