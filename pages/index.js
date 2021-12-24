@@ -281,7 +281,10 @@ const Index = () => {
                         <Button pressed={isPrime} onClick={handleFirstIsPrime}>
                           Tally.ERP9
                         </Button>
-                        <Button pressed={!isPrime} onClick={handleSecondIsPrime}>
+                        <Button
+                          pressed={!isPrime}
+                          onClick={handleSecondIsPrime}
+                        >
                           Tally Prime
                         </Button>
                       </ButtonGroup>
@@ -367,6 +370,20 @@ const Index = () => {
             </Layout.Section>
             {serial ? (
               <>
+                <Layout.Section>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">
+                        Tally.ERP9 / Tally Prime :{" "}
+                      </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Badge status="info">
+                        {isPrime ? "Tally Prime" : "Tally.ERP9"}
+                      </Badge>
+                    </Stack.Item>
+                  </Stack>
+                </Layout.Section>
                 <Layout.Section>
                   <Stack>
                     <Stack.Item fill>
