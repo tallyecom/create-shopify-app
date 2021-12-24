@@ -256,7 +256,7 @@ const Index = () => {
                         <RadioButton
                           label="Test in Education Mode"
                           helpText="for Full Functionality of app, this option needs to be set to False, if set to True, you can post 50 Stock Items with 50 Images, Receive 50 Orders for Free, once you set this option to False, you'll need to provide valid Registration /  Serial Number of your Tally.ERP9 / Tally Prime Application"
-                          checked={value === "disabled"}
+                          checked={edMode === "disabled"}
                           id="Educational"
                           name="Educational"
                           onChange={handleEdModeChange}
