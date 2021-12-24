@@ -259,17 +259,26 @@ const Index = () => {
                 <FormLayout>
                   <Card>
                     <Card.Section>
-                      <ButtonGroup segmented>
-                        <Button pressed={edMode} onClick={handleSecondEdButton}>
-                          True
-                        </Button>
-                        <Button
-                          pressed={!edMode}
-                          onClick={handleFirstEdButton}
-                        >
-                          False
-                        </Button>
-                      </ButtonGroup>
+                      <Stack distribution="fill">
+                        <Heading element="h1">
+                          Test App in Educational Mode
+                        </Heading>
+
+                        <ButtonGroup segmented>
+                          <Button
+                            pressed={edMode}
+                            onClick={handleFirstEdButton}
+                          >
+                            True
+                          </Button>
+                          <Button
+                            pressed={!edMode}
+                            onClick={handleSecondEdButton}
+                          >
+                            False
+                          </Button>
+                        </ButtonGroup>
+                      </Stack>
                       <Collapsible
                         open={!edMode}
                         id="basic-collapsible"
