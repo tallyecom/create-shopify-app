@@ -249,6 +249,8 @@ const Index = () => {
             </Collapsible>
           </Card.Section>
         </Layout.Section>
+      </Card>
+      <Card>
         {serial ? null : (
           <Layout.Section id="registration form" title="Registration Form">
             <Card.Section>
