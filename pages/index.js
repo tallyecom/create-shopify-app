@@ -18,6 +18,7 @@ import {
   VideoThumbnail,
   Collapsible,
   MediaCard,
+  ButtonGroup,
 } from "@shopify/polaris";
 import Link from "next/link";
 import axios from "axios";
@@ -41,18 +42,10 @@ const Index = () => {
   const [image, setImage] = useState(0);
   const [open, setOpen] = useState(false);
   const [userAccessToken, setUserAccessToken] = useState("");
+  const [edMode, setEdMode] = useState(false);
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
-
-  const opts = {
-    height: "390",
-    width: "640",
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
-    },
-  };
 
   const getData = async () => {
     try {
@@ -119,6 +112,15 @@ const Index = () => {
   const handleFeatToggle = useCallback(() =>
     setFeatureOpen((featureOpen) => !featureOpen, [])
   );
+  const handleFirstEdButton = useCallback(() => {
+    if (edMode) return;
+    setEdMode(true);
+  }, [edMode]);
+
+  const handleSecondEdButton = useCallback(() => {
+    if (!edMode) return;
+    setEdMode(false);
+  }, [edMode]);
 
   const validate = () => {
     let err = {};
@@ -136,26 +138,29 @@ const Index = () => {
     let errs = validate();
     setErrors(errs);
     setIsSubmitting(true);
-    if (serialNum % 9 === 0) {
-      // console.log({
-      //   shop: shop,
-      //   serialNumber: serialNum,
-      // });
+    if (!edMode) {
+      if (serialNum % 9 === 0) {
+        // console.log({
+        //   shop: shop,
+        //   serialNumber: serialNum,
+        // });
 
-      try {
-        axios
-          .post("/api/regForm", {
-            shop: shop,
-            serialNumber: serialNum,
-          })
-          .catch((err) => {
-            console.log("err: ", err);
-          });
-      } catch (e) {
-        console.log("e ::", e);
+        try {
+          axios
+            .post("/api/regForm", {
+              shop: shop,
+              serialNumber: serialNum,
+            })
+            .catch((err) => {
+              console.log("err: ", err);
+            });
+        } catch (e) {
+          console.log("e ::", e);
+        }
+        setSerial(serialNum);
       }
-      setSerial(serialNum);
     }
+    setEdMode(edMode);
   };
 
   return (
@@ -252,16 +257,33 @@ const Index = () => {
                 <FormLayout>
                   <Card>
                     <Card.Section>
-                      <TextField
-                        value={serialNum}
-                        onChange={handleSerialChange}
-                        label="Tally Serial Number"
-                        type="number"
-                        maxlength={9}
-                        minlength={9}
-                        min="700000000"
-                        max="800000000"
-                      />
+                      <Stack vertical>
+                        <ButtonGroup segmented>
+                          <Button
+                            pressed={edMode}
+                            onClick={handleFirstEdButton}
+                          >
+                            True
+                          </Button>
+                          <Button
+                            pressed={!edMode}
+                            onClick={handleSecondEdButton}
+                          >
+                            False
+                          </Button>
+                        </ButtonGroup>
+
+                        <TextField
+                          value={serialNum}
+                          onChange={handleSerialChange}
+                          label="Tally Serial Number"
+                          type="number"
+                          maxlength={9}
+                          minlength={9}
+                          min="700000000"
+                          max="800000000"
+                        />
+                      </Stack>
                     </Card.Section>
                   </Card>
                   <Card>
