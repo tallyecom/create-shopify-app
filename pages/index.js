@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Form,
-  RadioButton,
   FormLayout,
   TextField,
   Button,
@@ -42,7 +41,6 @@ const Index = () => {
   const [image, setImage] = useState(0);
   const [open, setOpen] = useState(false);
   const [userAccessToken, setUserAccessToken] = useState("");
-  const [edMode, setEdMode] = useState(false);
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
@@ -117,10 +115,6 @@ const Index = () => {
   }, []);
 
   const handleSerialChange = useCallback((value) => setSerialNum(value), []);
-  const handleEdModeChange = useCallback(
-    (value) => setEdMode((edMode) => !edMode),
-    []
-  );
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
   const handleFeatToggle = useCallback(() =>
     setFeatureOpen((featureOpen) => !featureOpen, [])
@@ -142,7 +136,7 @@ const Index = () => {
     let errs = validate();
     setErrors(errs);
     setIsSubmitting(true);
-    if (!edMode && serialNum % 9 === 0) {
+    if (serialNum % 9 === 0) {
       // console.log({
       //   shop: shop,
       //   serialNumber: serialNum,
@@ -161,9 +155,6 @@ const Index = () => {
         console.log("e ::", e);
       }
       setSerial(serialNum);
-      setEdMode(false);
-    } else {
-      setEdMode(true);
     }
   };
 
@@ -238,37 +229,7 @@ const Index = () => {
             </Collapsible>
           </Card.Section>
         </Layout.Section>
-
-        {!edMode && serial ? (
-          <Layout.Selection
-            id="educational mode"
-            title="Test in Educational Mode"
-          >
-            <Card.Section>
-              <TextContainer>
-                <Heading element="p">
-                  Test this app in Educational Mode.
-                </Heading>
-                <Form onSubmit={handleEdModeChange} title="Educational Mode">
-                  <FormLayout>
-                    <Card>
-                      <Card.Section>
-                        <RadioButton
-                          label="Test in Education Mode"
-                          helpText="for Full Functionality of app, this option needs to be set to False, if set to True, you can post 50 Stock Items with 50 Images, Receive 50 Orders for Free, once you set this option to False, you'll need to provide valid Registration /  Serial Number of your Tally.ERP9 / Tally Prime Application"
-                          checked={edMode === "disabled"}
-                          id="Educational"
-                          name="Educational"
-                          onChange={handleEdModeChange}
-                        />
-                      </Card.Section>
-                    </Card>
-                  </FormLayout>
-                </Form>
-              </TextContainer>
-            </Card.Section>
-          </Layout.Selection>
-        ) : (
+        {serial ? null : (
           <Layout.Section id="registration form" title="Registration Form">
             <Card.Section>
               <TextContainer>
