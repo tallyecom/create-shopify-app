@@ -446,6 +446,12 @@ const Index = () => {
                 </Layout.Section>
               </>
             ) : null}
+          </Layout>
+        </Card.Section>
+      </Card>
+      <Card>
+        <Card.Section title="Steps to Implement">
+          <Layout>
             <Layout.Section>
               <Heading element="h1">Implementation Steps :</Heading>
               <ReactPlayer
