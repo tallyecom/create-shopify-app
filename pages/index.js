@@ -116,25 +116,25 @@ const Index = () => {
   const handleFirstEdButton = useCallback(() => {
     if (edMode) return;
     setEdMode(true);
-    console.log("Educational Mode :: ", edMode);
+    // console.log("Educational Mode :: ", edMode);
   }, [edMode]);
 
   const handleSecondEdButton = useCallback(() => {
     if (!edMode) return;
     setEdMode(false);
-    console.log("Educational Mode :: ", edMode);
+    // console.log("Educational Mode :: ", edMode);
   }, [edMode]);
 
   const handleFirstIsPrime = useCallback(() => {
     if (isPrime) return;
     setIsPrime(true);
-    console.log("is Tally Prime :: ", isPrime);
+    // console.log("is Tally Prime :: ", isPrime);
   }, [isPrime]);
 
   const handleSecondIsPrime = useCallback(() => {
     if (!isPrime) return;
     setIsPrime(false);
-    console.log("is Tally Prime :: ", isPrime);
+    // console.log("is Tally Prime :: ", isPrime);
   }, [isPrime]);
 
   const validate = () => {
@@ -500,55 +500,54 @@ const Index = () => {
       </Card>
       <Card title="Steps to Implement">
         <Heading element="h1">Implementation Steps :</Heading>
-        <ReactPlayer
-          controls={true}
-          url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-          width="100%"
-          height="100%"
-        />
+        <MediaCard>
+          <ReactPlayer
+            controls={true}
+            url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            width="100%"
+            height="100%"
+          />
+        </MediaCard>
       </Card>
       <Card title="Map Existing Products on Shopify with Tally Prime">
         <Heading element="h1">
           Map Existing Products on Shopify with Tally Prime :
         </Heading>
-        <ReactPlayer
-          controls={true}
-          url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-          width="100%"
-          height="100%"
-        />
+        <MediaCard>
+          <ReactPlayer
+            controls={true}
+            url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            width="100%"
+            height="100%"
+          />
+        </MediaCard>
       </Card>
       <Card title="Post Stock Group in Tally Prime as Multi Variant Product on Shopify with Image">
         <Heading element="h1">
           Post Stock Group in Tally Prime as Multi Variant Product on Shopify
           with Image :
         </Heading>
-        <ReactPlayer
-          controls={true}
-          url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-          width="100%"
-          height="100%"
-        />
+        <MediaCard>
+          <ReactPlayer
+            controls={true}
+            url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            width="100%"
+            height="100%"
+          />
+        </MediaCard>
       </Card>
       <Card title="Processing Orders on Shopify in Tally Prime">
         <Heading element="h1">
           Processing Orders on Shopify in Tally Prime :
         </Heading>
-        <ReactPlayer
-          controls={true}
-          url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-          width="100%"
-          height="100%"
-        />
-        {/* <iframe
-                id="ytplayer"
-                type="text/html"
-                width="720"
-                height="405"
-                src="https://www.youtube.com/embed/9eZT2I_AOu4"
-                frameborder="0"
-                allowfullscreen
-              /> */}
+        <MediaCard>
+          <ReactPlayer
+            controls={true}
+            url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            width="100%"
+            height="100%"
+          />
+        </MediaCard>
       </Card>
       <Card>
         <Card.Section title="Developer">
