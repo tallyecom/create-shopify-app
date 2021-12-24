@@ -180,78 +180,8 @@ const Index = () => {
 
   return (
     <Page>
-      <Card>
-        <Layout.Section id="features">
-          <Card.Section>
-            <Button
-              outline
-              fullWidth={true}
-              onClick={handleFeatToggle}
-              ariaExpanded={featureOpen}
-              ariaControls="basic-collapsible"
-            >
-              Features
-            </Button>
-            <Collapsible
-              open={featureOpen || !serial}
-              id="basic-collapsible"
-              transition={{
-                duration: "500ms",
-                timingFunction: "ease-in-out",
-              }}
-              expandOnPrint
-            >
-              <List type="bullet">
-                <List.Item>Scope of Duplication : 0</List.Item>
-                <List.Item>need to Import / Export Data : 0</List.Item>
-                <List.Item>
-                  Fully Automated Synchronisation of Orders & Tracking Status
-                </List.Item>
-                <List.Item>
-                  Create Stock Item / Group in Tally.ERP9 / Tally Prime with
-                  Images and post them as Single / Multi Variant Products on
-                  Shopify
-                </List.Item>
-                <List.Item>
-                  Order Process :
-                  <List type="number">
-                    <List.Item>
-                      Receive Orders in Tally.ERP9 / Tally Prime as soon as they
-                      are booked on Shopify
-                    </List.Item>
-                    <List.Item>
-                      Material dispatch entry is booked in Tally.ERP9 / Tally
-                      Prime along with courier details once the Material is
-                      Dispatched
-                    </List.Item>
-                    <List.Item>
-                      keep track of material with the link provided in the
-                      Tally.ERP9 / Tally Prime interface
-                    </List.Item>
-                    <List.Item>
-                      Sales Entry is booked with necessary adjustment entry for
-                      COD Partner / Payment Gateway.
-                    </List.Item>
-                    <List.Item>
-                      Easy reconciliation with COD Partner / Payment Gateway
-                    </List.Item>
-                    <List.Item>
-                      In case Material is returned undelivered / post delivery,
-                      Automated rejection note is duly processed
-                    </List.Item>
-                    <List.Item>
-                      Automated Reversal is done for COD partner / Payment
-                      Gateway
-                    </List.Item>
-                  </List>
-                </List.Item>
-              </List>
-            </Collapsible>
-          </Card.Section>
-        </Layout.Section>
-      </Card>
-      <Card>
-        {serial ? null : (
+      {serial ? null : (
+        <Card>
           <Layout.Section id="registration form" title="Registration Form">
             <Card.Section>
               <TextContainer>
@@ -355,7 +285,77 @@ const Index = () => {
               </Card.Section>
             </Card.Section>
           </Layout.Section>
-        )}
+        </Card>
+      )}
+      <Card>
+        <Layout.Section id="features">
+          <Card.Section>
+            <Button
+              outline
+              fullWidth={true}
+              onClick={handleFeatToggle}
+              ariaExpanded={featureOpen}
+              ariaControls="basic-collapsible"
+            >
+              Features
+            </Button>
+            <Collapsible
+              open={featureOpen || !serial}
+              id="basic-collapsible"
+              transition={{
+                duration: "500ms",
+                timingFunction: "ease-in-out",
+              }}
+              expandOnPrint
+            >
+              <List type="bullet">
+                <List.Item>Scope of Duplication : 0</List.Item>
+                <List.Item>need to Import / Export Data : 0</List.Item>
+                <List.Item>
+                  Fully Automated Synchronisation of Orders & Tracking Status
+                </List.Item>
+                <List.Item>
+                  Create Stock Item / Group in Tally.ERP9 / Tally Prime with
+                  Images and post them as Single / Multi Variant Products on
+                  Shopify
+                </List.Item>
+                <List.Item>
+                  Order Process :
+                  <List type="number">
+                    <List.Item>
+                      Receive Orders in Tally.ERP9 / Tally Prime as soon as they
+                      are booked on Shopify
+                    </List.Item>
+                    <List.Item>
+                      Material dispatch entry is booked in Tally.ERP9 / Tally
+                      Prime along with courier details once the Material is
+                      Dispatched
+                    </List.Item>
+                    <List.Item>
+                      keep track of material with the link provided in the
+                      Tally.ERP9 / Tally Prime interface
+                    </List.Item>
+                    <List.Item>
+                      Sales Entry is booked with necessary adjustment entry for
+                      COD Partner / Payment Gateway.
+                    </List.Item>
+                    <List.Item>
+                      Easy reconciliation with COD Partner / Payment Gateway
+                    </List.Item>
+                    <List.Item>
+                      In case Material is returned undelivered / post delivery,
+                      Automated rejection note is duly processed
+                    </List.Item>
+                    <List.Item>
+                      Automated Reversal is done for COD partner / Payment
+                      Gateway
+                    </List.Item>
+                  </List>
+                </List.Item>
+              </List>
+            </Collapsible>
+          </Card.Section>
+        </Layout.Section>
       </Card>
       <Card>
         <Card.Section title="Simplified E-Commerce Accounting - Synchronise Data with Tally">
