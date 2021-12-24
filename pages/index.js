@@ -499,7 +499,6 @@ const Index = () => {
         </Card.Section>
       </Card>
       <Card title="Steps to Implement">
-        <Heading element="h1">Implementation Steps :</Heading>
         <MediaCard>
           <ReactPlayer
             controls={true}
@@ -510,9 +509,6 @@ const Index = () => {
         </MediaCard>
       </Card>
       <Card title="Map Existing Products on Shopify with Tally Prime">
-        <Heading element="h1">
-          Map Existing Products on Shopify with Tally Prime :
-        </Heading>
         <MediaCard height="100%" width="100%">
           <ReactPlayer
             controls={true}
@@ -523,10 +519,6 @@ const Index = () => {
         </MediaCard>
       </Card>
       <Card title="Post Stock Group in Tally Prime as Multi Variant Product on Shopify with Image">
-        <Heading element="h1">
-          Post Stock Group in Tally Prime as Multi Variant Product on Shopify
-          with Image :
-        </Heading>
         <MediaCard>
           <ReactPlayer
             controls={true}
@@ -537,9 +529,6 @@ const Index = () => {
         </MediaCard>
       </Card>
       <Card title="Processing Orders on Shopify in Tally Prime">
-        <Heading element="h1">
-          Processing Orders on Shopify in Tally Prime :
-        </Heading>
         <MediaCard>
           <ReactPlayer
             controls={true}
