@@ -458,7 +458,7 @@ const Index = () => {
               <Heading element="h1">Implementation Steps :</Heading>
               <ReactPlayer
                 controls={true}
-                url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1"
+                url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
                 width="100%"
                 height="100%"
               />
@@ -468,7 +468,7 @@ const Index = () => {
               </Heading>
               <ReactPlayer
                 controls={true}
-                url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1"
+                url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
                 width="100%"
                 height="100%"
               />
@@ -479,7 +479,7 @@ const Index = () => {
               </Heading>
               <ReactPlayer
                 controls={true}
-                url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1"
+                url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
                 width="100%"
                 height="100%"
               />
@@ -489,7 +489,7 @@ const Index = () => {
               </Heading>
               <ReactPlayer
                 controls={true}
-                url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1"
+                url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
                 width="100%"
                 height="100%"
               />
