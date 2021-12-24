@@ -513,7 +513,7 @@ const Index = () => {
         <Heading element="h1">
           Map Existing Products on Shopify with Tally Prime :
         </Heading>
-        <MediaCard>
+        <MediaCard height="100%" width="100%">
           <ReactPlayer
             controls={true}
             url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
