@@ -113,15 +113,15 @@ const Index = () => {
     setFeatureOpen((featureOpen) => !featureOpen, [])
   );
   const handleFirstEdButton = useCallback(() => {
-    console.log("Educational Mode :: ", edMode);
     if (edMode) return;
     setEdMode(true);
+    console.log("Educational Mode :: ", edMode);
   }, [edMode]);
 
   const handleSecondEdButton = useCallback(() => {
-    console.log("Educational Mode :: ", edMode);
     if (!edMode) return;
     setEdMode(false);
+    console.log("Educational Mode :: ", edMode);
   }, [edMode]);
 
   const validate = () => {
@@ -259,22 +259,26 @@ const Index = () => {
                 <FormLayout>
                   <Card>
                     <Card.Section>
-                      <Stack vertical>
-                        <ButtonGroup segmented>
-                          <Button
-                            pressed={edMode}
-                            onClick={handleFirstEdButton}
-                          >
-                            True
-                          </Button>
-                          <Button
-                            pressed={!edMode}
-                            onClick={handleSecondEdButton}
-                          >
-                            False
-                          </Button>
-                        </ButtonGroup>
-
+                      <ButtonGroup segmented>
+                        <Button pressed={edMode} onClick={handleFirstEdButton}>
+                          True
+                        </Button>
+                        <Button
+                          pressed={!edMode}
+                          onClick={handleSecondEdButton}
+                        >
+                          False
+                        </Button>
+                      </ButtonGroup>
+                      <Collapsible
+                        open={!edMode}
+                        id="basic-collapsible"
+                        transition={{
+                          duration: "500ms",
+                          timingFunction: "ease-in-out",
+                        }}
+                        expandOnPrint
+                      >
                         <TextField
                           value={serialNum}
                           onChange={handleSerialChange}
@@ -285,7 +289,7 @@ const Index = () => {
                           min="700000000"
                           max="800000000"
                         />
-                      </Stack>
+                      </Collapsible>
                     </Card.Section>
                   </Card>
                   <Card>
