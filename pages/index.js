@@ -257,50 +257,38 @@ const Index = () => {
                 // method="POST"
               >
                 <FormLayout>
-                  <Card>
-                    <Card.Section>
-                      <Stack distribution="fill">
-                        <Heading element="h1">
-                          Test App in Educational Mode
-                        </Heading>
+                  <Stack distribution="fill">
+                    <Heading element="h1">Test App in Educational Mode</Heading>
 
-                        <ButtonGroup segmented>
-                          <Button
-                            pressed={edMode}
-                            onClick={handleFirstEdButton}
-                          >
-                            True
-                          </Button>
-                          <Button
-                            pressed={!edMode}
-                            onClick={handleSecondEdButton}
-                          >
-                            False
-                          </Button>
-                        </ButtonGroup>
-                      </Stack>
-                      <Collapsible
-                        open={!edMode}
-                        id="basic-collapsible"
-                        transition={{
-                          duration: "500ms",
-                          timingFunction: "ease-in-out",
-                        }}
-                        expandOnPrint
-                      >
-                        <TextField
-                          value={serialNum}
-                          onChange={handleSerialChange}
-                          label="Tally Serial Number"
-                          type="number"
-                          maxlength={9}
-                          minlength={9}
-                          min="700000000"
-                          max="800000000"
-                        />
-                      </Collapsible>
-                    </Card.Section>
-                  </Card>
+                    <ButtonGroup segmented>
+                      <Button pressed={edMode} onClick={handleFirstEdButton}>
+                        True
+                      </Button>
+                      <Button pressed={!edMode} onClick={handleSecondEdButton}>
+                        False
+                      </Button>
+                    </ButtonGroup>
+                  </Stack>
+                  <Collapsible
+                    open={!edMode}
+                    id="basic-collapsible"
+                    transition={{
+                      duration: "500ms",
+                      timingFunction: "ease-in-out",
+                    }}
+                    expandOnPrint
+                  >
+                    <TextField
+                      value={serialNum}
+                      onChange={handleSerialChange}
+                      label="Tally Serial Number"
+                      type="number"
+                      maxlength={9}
+                      minlength={9}
+                      min="700000000"
+                      max="800000000"
+                    />
+                  </Collapsible>
                   <Card>
                     <Card.Section>
                       <Button primary={true} fullWidth={true} submit>
