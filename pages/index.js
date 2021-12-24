@@ -260,12 +260,12 @@ const Index = () => {
                   <Card>
                     <Card.Section>
                       <ButtonGroup segmented>
-                        <Button pressed={edMode} onClick={handleFirstEdButton}>
+                        <Button pressed={edMode} onClick={handleSecondEdButton}>
                           True
                         </Button>
                         <Button
                           pressed={!edMode}
-                          onClick={handleSecondEdButton}
+                          onClick={handleFirstEdButton}
                         >
                           False
                         </Button>
