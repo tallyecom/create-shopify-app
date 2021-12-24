@@ -113,11 +113,13 @@ const Index = () => {
     setFeatureOpen((featureOpen) => !featureOpen, [])
   );
   const handleFirstEdButton = useCallback(() => {
+    console.log("Educational Mode :: ", edMode);
     if (edMode) return;
     setEdMode(true);
   }, [edMode]);
 
   const handleSecondEdButton = useCallback(() => {
+    console.log("Educational Mode :: ", edMode);
     if (!edMode) return;
     setEdMode(false);
   }, [edMode]);
