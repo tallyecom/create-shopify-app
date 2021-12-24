@@ -460,7 +460,8 @@ const Index = () => {
                 width="100%"
                 height="100%"
               />
-              <br />
+            </Layout.Section>
+            <Layout.Section>
               <Heading element="h1">
                 Map Existing Products on Shopify with Tally Prime :
               </Heading>
@@ -470,7 +471,8 @@ const Index = () => {
                 width="100%"
                 height="100%"
               />
-              <br />
+            </Layout.Section>
+            <Layout.Section>
               <Heading element="h1">
                 Post Stock Group in Tally Prime as Multi Variant Product on
                 Shopify with Image :
@@ -481,7 +483,8 @@ const Index = () => {
                 width="100%"
                 height="100%"
               />
-              <br />
+            </Layout.Section>
+            <Layout.Section>
               <Heading element="h1">
                 Processing Orders on Shopify in Tally Prime :
               </Heading>
@@ -491,7 +494,6 @@ const Index = () => {
                 width="100%"
                 height="100%"
               />
-              <br />
               {/* <iframe
                 id="ytplayer"
                 type="text/html"
