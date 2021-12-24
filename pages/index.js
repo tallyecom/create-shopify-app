@@ -258,7 +258,7 @@ const Index = () => {
               >
                 <FormLayout>
                   <Stack>
-                    <Stack.Item distribution="fill">
+                    <Stack.Item fill>
                       <Heading element="h1">
                         Test App in Educational Mode
                       </Heading>
