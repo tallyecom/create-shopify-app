@@ -281,7 +281,7 @@ const Index = () => {
                         <Button pressed={isPrime} onClick={handleFirstIsPrime}>
                           Tally.ERP9
                         </Button>
-                        <Button pressed={isPrime} onClick={handleSecondIsPrime}>
+                        <Button pressed={!isPrime} onClick={handleSecondIsPrime}>
                           Tally Prime
                         </Button>
                       </ButtonGroup>
