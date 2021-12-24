@@ -46,6 +46,7 @@ const Index = () => {
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
+  const [isPrime, setIsPrime] = useState(False);
 
   const getData = async () => {
     try {
@@ -123,6 +124,18 @@ const Index = () => {
     setEdMode(false);
     console.log("Educational Mode :: ", edMode);
   }, [edMode]);
+
+  const handleFirstIsPrimeButton = useCallback(() => {
+    if (isPrime) return;
+    setIsPrime(true);
+    console.log("is Tally Prime :: ", isPrime);
+  }, [isPrime]);
+
+  const handleSecondEdButton = useCallback(() => {
+    if (!isPrime) return;
+    setIsPrime(false);
+    console.log("is Tally Prime :: ", isPrime);
+  }, [isPrime]);
 
   const validate = () => {
     let err = {};
@@ -257,6 +270,23 @@ const Index = () => {
                 // method="POST"
               >
                 <FormLayout>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">
+                        Please select version of Tally you are using :
+                      </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <ButtonGroup segmented>
+                        <Button pressed={isPrime} onClick={handleFirstIsPrime}>
+                          Tally.ERP9
+                        </Button>
+                        <Button pressed={isPrime} onClick={handleSecondIsPrime}>
+                          Tally Prime
+                        </Button>
+                      </ButtonGroup>
+                    </Stack.Item>
+                  </Stack>
                   <Stack>
                     <Stack.Item fill>
                       <Heading element="h1">
