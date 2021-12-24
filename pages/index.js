@@ -289,13 +289,9 @@ const Index = () => {
                       max="800000000"
                     />
                   </Collapsible>
-                  <Card>
-                    <Card.Section>
-                      <Button primary={true} fullWidth={true} submit>
-                        Submit
-                      </Button>
-                    </Card.Section>
-                  </Card>
+                  <Button primary={true} fullWidth={true} submit>
+                    Submit
+                  </Button>
                 </FormLayout>
               </Form>
               <Card.Section>
