@@ -449,50 +449,49 @@ const Index = () => {
           </Layout>
         </Card.Section>
       </Card>
-      <Card>
-        <Card.Section title="Steps to Implement">
-          <Heading element="h1">Implementation Steps :</Heading>
-          <ReactPlayer
-            controls={true}
-            url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-            width="100%"
-            height="100%"
-          />
-        </Card.Section>
-        <Card.Section>
-          <Heading element="h1">
-            Map Existing Products on Shopify with Tally Prime :
-          </Heading>
-          <ReactPlayer
-            controls={true}
-            url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-            width="100%"
-            height="100%"
-          />
-        </Card.Section>
-        <Card.Section>
-          <Heading element="h1">
-            Post Stock Group in Tally Prime as Multi Variant Product on Shopify
-            with Image :
-          </Heading>
-          <ReactPlayer
-            controls={true}
-            url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-            width="100%"
-            height="100%"
-          />
-        </Card.Section>
-        <Card.Section>
-          <Heading element="h1">
-            Processing Orders on Shopify in Tally Prime :
-          </Heading>
-          <ReactPlayer
-            controls={true}
-            url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
-            width="100%"
-            height="100%"
-          />
-          {/* <iframe
+      <Card title="Steps to Implement">
+        <Heading element="h1">Implementation Steps :</Heading>
+        <ReactPlayer
+          controls={true}
+          url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+          width="100%"
+          height="100%"
+        />
+      </Card>
+      <Card title="Map Existing Products on Shopify with Tally Prime">
+        <Heading element="h1">
+          Map Existing Products on Shopify with Tally Prime :
+        </Heading>
+        <ReactPlayer
+          controls={true}
+          url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+          width="100%"
+          height="100%"
+        />
+      </Card>
+      <Card title="Post Stock Group in Tally Prime as Multi Variant Product on Shopify with Image">
+        <Heading element="h1">
+          Post Stock Group in Tally Prime as Multi Variant Product on Shopify
+          with Image :
+        </Heading>
+        <ReactPlayer
+          controls={true}
+          url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+          width="100%"
+          height="100%"
+        />
+      </Card>
+      <Card title="Processing Orders on Shopify in Tally Prime">
+        <Heading element="h1">
+          Processing Orders on Shopify in Tally Prime :
+        </Heading>
+        <ReactPlayer
+          controls={true}
+          url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+          width="100%"
+          height="100%"
+        />
+        {/* <iframe
                 id="ytplayer"
                 type="text/html"
                 width="720"
@@ -501,7 +500,6 @@ const Index = () => {
                 frameborder="0"
                 allowfullscreen
               /> */}
-        </Card.Section>
       </Card>
       <Card>
         <Card.Section title="Developer">
