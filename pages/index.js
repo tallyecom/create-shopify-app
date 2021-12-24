@@ -21,7 +21,7 @@ import {
 } from "@shopify/polaris";
 import Link from "next/link";
 import axios from "axios";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/lazy";
 // import YouTube from "react-youtube";
 
 // const img = "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg";
@@ -41,6 +41,7 @@ const Index = () => {
   const [image, setImage] = useState(0);
   const [open, setOpen] = useState(false);
   const [userAccessToken, setUserAccessToken] = useState("");
+  const [edMode, setEdMode] = useState(false);
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
@@ -115,6 +116,10 @@ const Index = () => {
   }, []);
 
   const handleSerialChange = useCallback((value) => setSerialNum(value), []);
+  const handleEdModeChange = useCallback(
+    (value) => setEdMode((edMode) => !edMode),
+    []
+  );
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
   const handleFeatToggle = useCallback(() =>
     setFeatureOpen((featureOpen) => !featureOpen, [])
@@ -136,7 +141,7 @@ const Index = () => {
     let errs = validate();
     setErrors(errs);
     setIsSubmitting(true);
-    if (serialNum % 9 === 0) {
+    if (!edMode && serialNum % 9 === 0) {
       // console.log({
       //   shop: shop,
       //   serialNumber: serialNum,
@@ -155,11 +160,177 @@ const Index = () => {
         console.log("e ::", e);
       }
       setSerial(serialNum);
+      setEdMode(false);
+    } else {
+      setEdMode(true);
     }
   };
 
   return (
     <Page>
+      <Card>
+        <Layout.Section id="features">
+          <Card.Section>
+            <Button
+              outline
+              fullWidth={true}
+              onClick={handleFeatToggle}
+              ariaExpanded={featureOpen}
+              ariaControls="basic-collapsible"
+            >
+              Features
+            </Button>
+            <Collapsible
+              open={featureOpen || !serial}
+              id="basic-collapsible"
+              transition={{
+                duration: "500ms",
+                timingFunction: "ease-in-out",
+              }}
+              expandOnPrint
+            >
+              <List type="bullet">
+                <List.Item>Scope of Duplication : 0</List.Item>
+                <List.Item>need to Import / Export Data : 0</List.Item>
+                <List.Item>
+                  Fully Automated Synchronisation of Orders & Tracking Status
+                </List.Item>
+                <List.Item>
+                  Create Stock Item / Group in Tally.ERP9 / Tally Prime with
+                  Images and post them as Single / Multi Variant Products on
+                  Shopify
+                </List.Item>
+                <List.Item>
+                  Order Process :
+                  <List type="number">
+                    <List.Item>
+                      Receive Orders in Tally.ERP9 / Tally Prime as soon as they
+                      are booked on Shopify
+                    </List.Item>
+                    <List.Item>
+                      Material dispatch entry is booked in Tally.ERP9 / Tally
+                      Prime along with courier details once the Material is
+                      Dispatched
+                    </List.Item>
+                    <List.Item>
+                      keep track of material with the link provided in the
+                      Tally.ERP9 / Tally Prime interface
+                    </List.Item>
+                    <List.Item>
+                      Sales Entry is booked with necessary adjustment entry for
+                      COD Partner / Payment Gateway.
+                    </List.Item>
+                    <List.Item>
+                      Easy reconciliation with COD Partner / Payment Gateway
+                    </List.Item>
+                    <List.Item>
+                      In case Material is returned undelivered / post delivery,
+                      Automated rejection note is duly processed
+                    </List.Item>
+                    <List.Item>
+                      Automated Reversal is done for COD partner / Payment
+                      Gateway
+                    </List.Item>
+                  </List>
+                </List.Item>
+              </List>
+            </Collapsible>
+          </Card.Section>
+        </Layout.Section>
+
+        {!edMode && serial ? (
+          <Layout.Selection
+            id="educational mode"
+            title="Test in Educational Mode"
+          >
+            <Card.Section>
+              <TextContainer>
+                <Heading element="p">
+                  Test this app in Educational Mode.
+                </Heading>
+                <Form onSubmit={handleEdModeChange} title="Educational Mode">
+                  <FormLayout>
+                    <Card>
+                      <Card.Section>
+                        <RadioButton
+                          label="Test in Education Mode"
+                          helpText="for Full Functionality of app, this option needs to be set to False, if set to True, you can post 50 Stock Items with 50 Images, Receive 50 Orders for Free, once you set this option to False, you'll need to provide valid Registration /  Serial Number of your Tally.ERP9 / Tally Prime Application"
+                          checked={value === "disabled"}
+                          id="Educational"
+                          name="Educational"
+                          onChange={handleEdModeChange}
+                        />
+                      </Card.Section>
+                    </Card>
+                  </FormLayout>
+                </Form>
+              </TextContainer>
+            </Card.Section>
+          </Layout.Selection>
+        ) : (
+          <Layout.Section id="registration form" title="Registration Form">
+            <Card.Section>
+              <TextContainer>
+                <Heading element="p">
+                  This app requires additional setup and a TCP file compiled on
+                  your Tally Serial Number, Please fill up the form Below.
+                </Heading>
+                <a>
+                  (a valid serial number starts with 7, is 9 digits long, &
+                  total of digits is 9 for example 700000002, 700000011 ...
+                  799999992)
+                </a>
+              </TextContainer>
+              <Form
+                onSubmit={handleSubmitSerial}
+                // preventDefault={true}
+                title="Registration"
+                // method="POST"
+              >
+                <FormLayout>
+                  <Card>
+                    <Card.Section>
+                      <TextField
+                        value={serialNum}
+                        onChange={handleSerialChange}
+                        label="Tally Serial Number"
+                        type="number"
+                        maxlength={9}
+                        minlength={9}
+                        min="700000000"
+                        max="800000000"
+                      />
+                    </Card.Section>
+                  </Card>
+                  <Card>
+                    <Card.Section>
+                      <Button primary={true} fullWidth={true} submit>
+                        Submit
+                      </Button>
+                    </Card.Section>
+                  </Card>
+                </FormLayout>
+              </Form>
+              <Card.Section>
+                {/* <TextContainer>
+                  <a>
+                    Click on the button below and open the console to view the
+                    data returned from server using authenticated api call.{" "}
+                  </a>
+                  <Link href={`/api2?shop=${window.shop}`}>
+                    <a>Another API Demo Page</a>
+                  </Link>
+                  <br />
+                  <Link href={`/introduction?shop=${window.shop}`}>
+                    <a>Introduction</a>
+                  </Link>
+                  <br />
+                </TextContainer> */}
+              </Card.Section>
+            </Card.Section>
+          </Layout.Section>
+        )}
+      </Card>
       <Card>
         <Card.Section title="Simplified E-Commerce Accounting - Synchronise Data with Tally">
           <Layout>
@@ -287,16 +458,20 @@ const Index = () => {
             <Layout.Section>
               <Heading element="h1">Implementation Steps :</Heading>
               <ReactPlayer
+                controls={true}
                 url="https://www.youtube.com/embed/xKC_wnO1fFc?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
+                height="100%"
               />
               <br />
               <Heading element="h1">
                 Map Existing Products on Shopify with Tally Prime :
               </Heading>
               <ReactPlayer
+                controls={true}
                 url="https://www.youtube.com/embed/3LZ-i-JOmZE?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
+                height="100%"
               />
               <br />
               <Heading element="h1">
@@ -304,16 +479,20 @@ const Index = () => {
                 Shopify with Image :
               </Heading>
               <ReactPlayer
+                controls={true}
                 url="https://www.youtube.com/embed/P7q_7k8t3-I?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
+                height="100%"
               />
               <br />
               <Heading element="h1">
                 Processing Orders on Shopify in Tally Prime :
               </Heading>
               <ReactPlayer
+                controls={true}
                 url="https://www.youtube.com/embed/uZ-DQhNqlzc?origin=https://tallyecomwithjwt.herokuapp.com&enablejsapi=1"
                 width="100%"
+                height="100%"
               />
               <br />
               {/* <iframe
@@ -328,139 +507,6 @@ const Index = () => {
             </Layout.Section>
           </Layout>
         </Card.Section>
-      </Card>
-      <Card>
-        <Layout.Section id="features">
-          <Card.Section>
-            <Button
-              outline
-              fullWidth={true}
-              onClick={handleFeatToggle}
-              ariaExpanded={featureOpen}
-              ariaControls="basic-collapsible"
-            >
-              Features
-            </Button>
-            <Collapsible
-              open={featureOpen || !serial}
-              id="basic-collapsible"
-              transition={{
-                duration: "500ms",
-                timingFunction: "ease-in-out",
-              }}
-              expandOnPrint
-            >
-              <List type="bullet">
-                <List.Item>Scope of Duplication : 0</List.Item>
-                <List.Item>need to Import / Export Data : 0</List.Item>
-                <List.Item>
-                  Fully Automated Synchronisation of Orders & Tracking Status
-                </List.Item>
-                <List.Item>
-                  Create Stock Item / Group in Tally.ERP9 / Tally Prime with
-                  Images and post them as Single / Multi Variant Products on
-                  Shopify
-                </List.Item>
-                <List.Item>
-                  Order Process :
-                  <List type="number">
-                    <List.Item>
-                      Receive Orders in Tally.ERP9 / Tally Prime as soon as they
-                      are booked on Shopify
-                    </List.Item>
-                    <List.Item>
-                      Material dispatch entry is booked in Tally.ERP9 / Tally
-                      Prime along with courier details once the Material is
-                      Dispatched
-                    </List.Item>
-                    <List.Item>
-                      keep track of material with the link provided in the
-                      Tally.ERP9 / Tally Prime interface
-                    </List.Item>
-                    <List.Item>
-                      Sales Entry is booked with necessary adjustment entry for
-                      COD Partner / Payment Gateway.
-                    </List.Item>
-                    <List.Item>
-                      Easy reconciliation with COD Partner / Payment Gateway
-                    </List.Item>
-                    <List.Item>
-                      In case Material is returned undelivered / post delivery,
-                      Automated rejection note is duly processed
-                    </List.Item>
-                    <List.Item>
-                      Automated Reversal is done for COD partner / Payment
-                      Gateway
-                    </List.Item>
-                  </List>
-                </List.Item>
-              </List>
-            </Collapsible>
-          </Card.Section>
-        </Layout.Section>
-        {serial ? null : (
-          <Layout.Section id="registration form" title="Registration Form">
-            <Card.Section>
-              <TextContainer>
-                <Heading element="p">
-                  This app requires additional setup and a TCP file compiled on
-                  your Tally Serial Number, Please fill up the form Below.
-                </Heading>
-                <a>
-                  (a valid serial number starts with 7, is 9 digits long, &
-                  total of digits is 9 for example 700000002, 700000011 ...
-                  799999992)
-                </a>
-              </TextContainer>
-              <Form
-                onSubmit={handleSubmitSerial}
-                // preventDefault={true}
-                title="Registration"
-                // method="POST"
-              >
-                <FormLayout>
-                  <Card>
-                    <Card.Section>
-                      <TextField
-                        value={serialNum}
-                        onChange={handleSerialChange}
-                        label="Tally Serial Number"
-                        type="number"
-                        maxlength={9}
-                        minlength={9}
-                        min="700000000"
-                        max="800000000"
-                      />
-                    </Card.Section>
-                  </Card>
-                  <Card>
-                    <Card.Section>
-                      <Button primary={true} fullWidth={true} submit>
-                        Submit
-                      </Button>
-                    </Card.Section>
-                  </Card>
-                </FormLayout>
-              </Form>
-              <Card.Section>
-                {/* <TextContainer>
-                  <a>
-                    Click on the button below and open the console to view the
-                    data returned from server using authenticated api call.{" "}
-                  </a>
-                  <Link href={`/api2?shop=${window.shop}`}>
-                    <a>Another API Demo Page</a>
-                  </Link>
-                  <br />
-                  <Link href={`/introduction?shop=${window.shop}`}>
-                    <a>Introduction</a>
-                  </Link>
-                  <br />
-                </TextContainer> */}
-              </Card.Section>
-            </Card.Section>
-          </Layout.Section>
-        )}
       </Card>
       <Card>
         <Card.Section title="Developer">
