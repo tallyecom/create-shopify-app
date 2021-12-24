@@ -257,17 +257,25 @@ const Index = () => {
                 // method="POST"
               >
                 <FormLayout>
-                  <Stack distribution="fill">
-                    <Heading element="h1">Test App in Educational Mode</Heading>
-
-                    <ButtonGroup segmented>
-                      <Button pressed={edMode} onClick={handleFirstEdButton}>
-                        True
-                      </Button>
-                      <Button pressed={!edMode} onClick={handleSecondEdButton}>
-                        False
-                      </Button>
-                    </ButtonGroup>
+                  <Stack>
+                    <Stack.Item distribution="fill">
+                      <Heading element="h1">
+                        Test App in Educational Mode
+                      </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <ButtonGroup segmented>
+                        <Button pressed={edMode} onClick={handleFirstEdButton}>
+                          True
+                        </Button>
+                        <Button
+                          pressed={!edMode}
+                          onClick={handleSecondEdButton}
+                        >
+                          False
+                        </Button>
+                      </ButtonGroup>
+                    </Stack.Item>
                   </Stack>
                   <Collapsible
                     open={!edMode}
