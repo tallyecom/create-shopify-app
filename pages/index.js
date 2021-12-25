@@ -153,9 +153,9 @@ const Index = () => {
     let errs = validate();
     let fileName;
     if (isPrime) {
-      fileName = "TallyPrime Shopify Integration API.tcp";
+      fileName = "TPSAPI.tcp";
     } else {
-      fileName = "TallyERP9 Shopify Integration API.tcp";
+      fileName = "TESAPI.tcp";
     }
 
     setErrors(errs);
