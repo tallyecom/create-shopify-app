@@ -32,6 +32,7 @@ const shopSchema = new Schema({
   webhooks: { type: Object, default: {} },
   info: { type: Object, default: {} },
   process: [processSchema],
+  tallyPrime: { type: Logical, default: false },
 });
 
 const Shop = mongoose.models.shop || mongoose.model("shop", shopSchema);
