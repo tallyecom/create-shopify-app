@@ -219,7 +219,7 @@ const Index = () => {
                     </Stack.Item>
                     <Stack.Item>
                       <Badge status="info">
-                        {isPrime ? "Tally Prime" : "Tally.ERP9"}
+                        {!isPrime ? "Tally Prime" : "Tally.ERP9"}
                       </Badge>
                     </Stack.Item>
                   </Stack>
