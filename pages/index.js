@@ -195,6 +195,147 @@ const Index = () => {
 
   return (
     <Page>
+      <Card>
+        <Card.Section title="Simplified E-Commerce Accounting - Synchronise Data with Tally">
+          <Layout>
+            <Layout.Section>
+              <Banner>
+                <p>
+                  Create Products, Manage Customers, Track Orders, Keep Accutate
+                  Records, Easy Statutory Compliances - Use Tally.ERP9 / Tally
+                  Prime to Manage your Accounting & Statutory Compliances while
+                  also simplifying product uploads to Shopify.
+                </p>
+              </Banner>
+            </Layout.Section>
+            {serial ? (
+              <>
+                <Layout.Section>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">
+                        Tally.ERP9 / Tally Prime :{" "}
+                      </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Badge status="info">
+                        {isPrime ? "Tally Prime" : "Tally.ERP9"}
+                      </Badge>
+                    </Stack.Item>
+                  </Stack>
+                </Layout.Section>
+                <Layout.Section>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">Serial Number : </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Badge status="info">{serial}</Badge>
+                    </Stack.Item>
+                  </Stack>
+                </Layout.Section>
+                <Layout.Section>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">Access Token : </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Badge status="info">{userAccessToken}</Badge>
+                    </Stack.Item>
+                  </Stack>
+                </Layout.Section>
+              </>
+            ) : null}
+            {product || image || orderRec || orderDel || orderRet ? (
+              <>
+                <Layout.Section>
+                  <Heading element="h1">
+                    Data Synchronised with Tally till Date
+                  </Heading>
+                  {product ? (
+                    <>
+                      <Subheading element="h3">Products Uploaded : </Subheading>
+                      <p>{product}</p>
+                      <br />
+                    </>
+                  ) : null}
+                  {image ? (
+                    <>
+                      <Subheading element="h3">Images Uploaded : </Subheading>
+                      <p>{image}</p>
+                      <br />
+                    </>
+                  ) : null}
+                  {orderRec ? (
+                    <>
+                      <Subheading element="h3">Orders Received : </Subheading>
+                      <p>{orderRec}</p>
+                      <br />
+                    </>
+                  ) : null}
+                  {orderDel ? (
+                    <>
+                      <Subheading element="h3">Orders Delivered : </Subheading>
+                      <p>{orderDel}</p>
+                      <br />
+                    </>
+                  ) : null}
+                  {orderRec ? (
+                    <>
+                      <Subheading element="h3">Orders Returned : </Subheading>
+                      <p>{orderRet}</p>
+                      <br />
+                    </>
+                  ) : null}
+
+                  <Layout sectioned>
+                    <Button
+                      onClick={handleToggle}
+                      ariaExpanded={open || !serial}
+                      ariaControls="basic-collapsible"
+                    >
+                      Show Processed Data
+                    </Button>
+                    <Collapsible
+                      open={open}
+                      id="basic-collapsible"
+                      transition={{
+                        duration: "500ms",
+                        timingFunction: "ease-in-out",
+                      }}
+                      expandOnPrint
+                    >
+                      <DataTable
+                        columnContentTypes={[
+                          // "string",
+                          "date",
+                          "string",
+                          "string",
+                          "string",
+                          "string",
+                          "string",
+                          "string",
+                        ]}
+                        headings={[
+                          // "id",
+                          "Date",
+                          "Type",
+                          "ProcessID",
+                          "Status",
+                          "URL",
+                          "SystemName",
+                          "IP",
+                        ]}
+                        rows={result}
+                      />
+                    </Collapsible>
+                  </Layout>
+                </Layout.Section>
+              </>
+            ) : null}
+          </Layout>
+        </Card.Section>
+      </Card>
       {serial ? null : (
         <Card>
           <Layout.Section id="registration form" title="Registration Form">
@@ -371,147 +512,6 @@ const Index = () => {
             </Collapsible>
           </Card.Section>
         </Layout.Section>
-      </Card>
-      <Card>
-        <Card.Section title="Simplified E-Commerce Accounting - Synchronise Data with Tally">
-          <Layout>
-            <Layout.Section>
-              <Banner>
-                <p>
-                  Create Products, Manage Customers, Track Orders, Keep Accutate
-                  Records, Easy Statutory Compliances - Use Tally.ERP9 / Tally
-                  Prime to Manage your Accounting & Statutory Compliances while
-                  also simplifying product uploads to Shopify.
-                </p>
-              </Banner>
-            </Layout.Section>
-            {serial ? (
-              <>
-                <Layout.Section>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">
-                        Tally.ERP9 / Tally Prime :{" "}
-                      </Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      <Badge status="info">
-                        {isPrime ? "Tally Prime" : "Tally.ERP9"}
-                      </Badge>
-                    </Stack.Item>
-                  </Stack>
-                </Layout.Section>
-                <Layout.Section>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">Serial Number : </Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      <Badge status="info">{serial}</Badge>
-                    </Stack.Item>
-                  </Stack>
-                </Layout.Section>
-                <Layout.Section>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">Access Token : </Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      <Badge status="info">{userAccessToken}</Badge>
-                    </Stack.Item>
-                  </Stack>
-                </Layout.Section>
-              </>
-            ) : null}
-            {product || image || orderRec || orderDel || orderRet ? (
-              <>
-                <Layout.Section>
-                  <Heading element="h1">
-                    Data Synchronised with Tally till Date
-                  </Heading>
-                  {product ? (
-                    <>
-                      <Subheading element="h3">Products Uploaded : </Subheading>
-                      <p>{product}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {image ? (
-                    <>
-                      <Subheading element="h3">Images Uploaded : </Subheading>
-                      <p>{image}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {orderRec ? (
-                    <>
-                      <Subheading element="h3">Orders Received : </Subheading>
-                      <p>{orderRec}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {orderDel ? (
-                    <>
-                      <Subheading element="h3">Orders Delivered : </Subheading>
-                      <p>{orderDel}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {orderRec ? (
-                    <>
-                      <Subheading element="h3">Orders Returned : </Subheading>
-                      <p>{orderRet}</p>
-                      <br />
-                    </>
-                  ) : null}
-
-                  <Layout sectioned>
-                    <Button
-                      onClick={handleToggle}
-                      ariaExpanded={open || !serial}
-                      ariaControls="basic-collapsible"
-                    >
-                      Show Processed Data
-                    </Button>
-                    <Collapsible
-                      open={open}
-                      id="basic-collapsible"
-                      transition={{
-                        duration: "500ms",
-                        timingFunction: "ease-in-out",
-                      }}
-                      expandOnPrint
-                    >
-                      <DataTable
-                        columnContentTypes={[
-                          // "string",
-                          "date",
-                          "string",
-                          "string",
-                          "string",
-                          "string",
-                          "string",
-                          "string",
-                        ]}
-                        headings={[
-                          // "id",
-                          "Date",
-                          "Type",
-                          "ProcessID",
-                          "Status",
-                          "URL",
-                          "SystemName",
-                          "IP",
-                        ]}
-                        rows={result}
-                      />
-                    </Collapsible>
-                  </Layout>
-                </Layout.Section>
-              </>
-            ) : null}
-          </Layout>
-        </Card.Section>
       </Card>
       <Card>
         <div className="player-wrapper" title="Steps to Implement">
