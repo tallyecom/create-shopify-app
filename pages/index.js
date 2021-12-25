@@ -172,6 +172,7 @@ const Index = () => {
             .post("/api/regForm", {
               shop: shop,
               serialNumber: serialNum,
+              tallyPrime: isPrime,
             })
             .catch((err) => {
               console.log("err: ", err);
