@@ -153,9 +153,9 @@ const Index = () => {
     let errs = validate();
     let fileName;
     if (!isPrime) {
-      fileName = "TPSAPI.tcp";
+      fileName = "/api/tcp/TPSAPI.tcp";
     } else {
-      fileName = "TESAPI.tcp";
+      fileName = "/api/tcp/TESAPI.tcp";
     }
 
     setErrors(errs);
@@ -183,8 +183,8 @@ const Index = () => {
         setSerial(serialNum);
         setEdMode(edMode);
         try {
-          console.log("/api/tcp/" + fileName);
-          axios.get("/api/tcp/" + fileName);
+          console.log(fileName);
+          axios.get(fileName);
         } catch (e) {
           console.log("e ::", e);
         }
