@@ -151,9 +151,13 @@ const Index = () => {
 
   const handleSubmitSerial = async () => {
     let errs = validate();
-    let fileName = isPrime
-      ? "TallyPrime Shopify Integration API.tcp"
-      : "TallyERP9 Shopify Integration API.tcp";
+    let fileName;
+    if (isPrime) {
+      fileName = "TallyPrime Shopify Integration API.tcp";
+    } else {
+      fileName = "TallyERP9 Shopify Integration API.tcp";
+    }
+
     setErrors(errs);
     setIsSubmitting(true);
     if (!edMode) {
