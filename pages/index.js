@@ -366,11 +366,11 @@ const Index = () => {
                     </Stack.Item>
                     <Stack.Item>
                       <ButtonGroup segmented>
-                        <Button pressed={!isPrime} onClick={handleFirstIsPrime}>
+                        <Button pressed={isPrime} onClick={handleFirstIsPrime}>
                           Tally.ERP9
                         </Button>
                         <Button
-                          pressed={isPrime}
+                          pressed={!isPrime}
                           onClick={handleSecondIsPrime}
                         >
                           Tally Prime
