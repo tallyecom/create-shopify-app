@@ -62,7 +62,8 @@ api.post("/regform", async (req, res) => {
         .replace("https://", "")
         .replace("http://", "")
         .split(".")[0],
-      req.body.serialNumber
+      req.body.serialNumber,
+      req.body.isPrime
     );
     // console.log("registration :: ", registrationRes);
   } catch (e) {
