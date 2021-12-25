@@ -126,14 +126,14 @@ const Index = () => {
   }, [edMode]);
 
   const handleFirstIsPrime = useCallback(() => {
-    if (!isPrime) return;
-    setIsPrime(false);
+    if (isPrime) return;
+    setIsPrime(true);
     console.log("is Tally Prime :: ", isPrime);
   }, [isPrime]);
 
   const handleSecondIsPrime = useCallback(() => {
-    if (isPrime) return;
-    setIsPrime(true);
+    if (!isPrime) return;
+    setIsPrime(false);
     console.log("is Tally Prime :: ", isPrime);
   }, [isPrime]);
 
@@ -213,7 +213,9 @@ const Index = () => {
                 <Layout.Section>
                   <Stack>
                     <Stack.Item fill>
-                      <Heading element="h1">Tally.ERP9 / Tally Prime :</Heading>
+                      <Heading element="h1">
+                        Tally.ERP9 / Tally Prime :
+                      </Heading>
                     </Stack.Item>
                     <Stack.Item>
                       <Badge status="info">
@@ -364,11 +366,11 @@ const Index = () => {
                     </Stack.Item>
                     <Stack.Item>
                       <ButtonGroup segmented>
-                        <Button pressed={isPrime} onClick={handleFirstIsPrime}>
+                        <Button pressed={!isPrime} onClick={handleFirstIsPrime}>
                           Tally.ERP9
                         </Button>
                         <Button
-                          pressed={!isPrime}
+                          pressed={isPrime}
                           onClick={handleSecondIsPrime}
                         >
                           Tally Prime
