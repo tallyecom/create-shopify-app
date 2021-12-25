@@ -128,13 +128,13 @@ const Index = () => {
   const handleFirstIsPrime = useCallback(() => {
     if (isPrime) return;
     setIsPrime(true);
-    // console.log("is Tally Prime :: ", isPrime);
+    console.log("is Tally Prime :: ", isPrime);
   }, [isPrime]);
 
   const handleSecondIsPrime = useCallback(() => {
     if (!isPrime) return;
     setIsPrime(false);
-    // console.log("is Tally Prime :: ", isPrime);
+    console.log("is Tally Prime :: ", isPrime);
   }, [isPrime]);
 
   const validate = () => {
@@ -152,7 +152,7 @@ const Index = () => {
   const handleSubmitSerial = async () => {
     let errs = validate();
     let fileName;
-    if (isPrime) {
+    if (!isPrime) {
       fileName = "TPSAPI.tcp";
     } else {
       fileName = "TESAPI.tcp";
@@ -182,8 +182,8 @@ const Index = () => {
         setSerial(serialNum);
         setEdMode(edMode);
         try {
-          console.log("/api/tcp/:" + fileName);
-          axios.get("/api/tcp/:" + fileName);
+          console.log("/api/tcp/" + fileName);
+          axios.get("/api/tcp/" + fileName);
         } catch (e) {
           console.log("e ::", e);
         }
