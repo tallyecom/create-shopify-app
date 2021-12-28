@@ -47,10 +47,12 @@ const Index = () => {
     serialNum === null ? true : false
   );
   const [isPrime, setIsPrime] = useState(false);
-  let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://${window.location.host}`;
-  let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://${window.location.host}`;
-  let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${window.location.host}`;
-  let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://${window.location.host}`;
+  let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
+  let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
+  let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
+  let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
+
+  console.log(url1 + " " + url2 + " " + url3 + " " + url4);
 
   const getData = async () => {
     try {
