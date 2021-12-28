@@ -52,9 +52,7 @@ const Index = () => {
   let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
   let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
 
-  console.log(url1 + " " + url2 + " " + url3 + " " + url4);
-
-  const getData = async () => {
+  async function getData() {
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
       // console.log(res);
@@ -67,10 +65,10 @@ const Index = () => {
       setProcess(res.data.data.process);
       var array = res.data.data.process
         ? res.data.data.process.map(
-            ({ date, type, processid, status, url, systemName, ip }) => {
-              return [date, type, processid, status, url, systemName, ip];
-            }
-          )
+          ({ date, type, processid, status, url, systemName, ip }) => {
+            return [date, type, processid, status, url, systemName, ip];
+          }
+        )
         : [];
       // console.log("array :: ", array);
       setResult(array);
@@ -105,7 +103,7 @@ const Index = () => {
       setResult([]);
       console.log("ee : ", e);
     }
-  };
+  }
 
   useEffect(() => {
     const intialSetup = async () => {
