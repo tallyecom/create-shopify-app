@@ -153,9 +153,9 @@ const Index = () => {
     let errs = validate();
     let fileName;
     if (!isPrime) {
-      fileName = "/api/tcp/TPSAPI.tcp";
+      fileName = "/api/tcp/:TPSAPI.tcp";
     } else {
-      fileName = "/api/tcp/TESAPI.tcp";
+      fileName = "/api/tcp/:TESAPI.tcp";
     }
 
     setErrors(errs);
@@ -518,7 +518,7 @@ const Index = () => {
           <ReactPlayer
             className="react-player"
             controls={true}
-            url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            url="https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://www.youtube.com"
             width="100%"
             height="100%"
           />
@@ -532,7 +532,7 @@ const Index = () => {
           <ReactPlayer
             className="react-player"
             controls={true}
-            url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            url="https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://www.youtube.com"
             width="100%"
             height="100%"
           />
@@ -546,7 +546,7 @@ const Index = () => {
           <ReactPlayer
             className="react-player"
             controls={true}
-            url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            url="https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://www.youtube.com"
             width="100%"
             height="100%"
           />
@@ -560,7 +560,7 @@ const Index = () => {
           <ReactPlayer
             className="react-player"
             controls={true}
-            url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com"
+            url="https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://www.youtube.com"
             width="100%"
             height="100%"
           />
