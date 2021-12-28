@@ -47,10 +47,10 @@ const Index = () => {
     serialNum === null ? true : false
   );
   const [isPrime, setIsPrime] = useState(false);
-  let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://${shop}`;
-  let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://${shop}`;
-  let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${shop}`;
-  let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://${shop}`;
+  let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com`;
+  let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com`;
+  let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com`;
+  let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://tallyecomwithjwt.herokuapp.com`;
 
   console.log(url1);
   console.log(url2);
