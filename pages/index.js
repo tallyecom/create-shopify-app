@@ -52,6 +52,11 @@ const Index = () => {
   let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${shop}`;
   let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://${shop}`;
 
+  console.log(url1);
+  console.log(url2);
+  console.log(url3);
+  console.log(url4);
+
   const getData = async () => {
     try {
       console.log(shop);
