@@ -50,6 +50,7 @@ const Index = () => {
 
   const getData = async () => {
     try {
+      console.log(shop);
       const res = await axios.get("/api/shop?shop=" + shop);
       // console.log(res);
       // console.log(res.data);
@@ -213,9 +214,7 @@ const Index = () => {
                 <Layout.Section>
                   <Stack>
                     <Stack.Item fill>
-                      <Heading element="h1">
-                        Tally.ERP9 / Tally Prime :
-                      </Heading>
+                      <Heading element="h1">Tally.ERP9 / Tally Prime :</Heading>
                     </Stack.Item>
                     <Stack.Item>
                       <Badge status="info">
