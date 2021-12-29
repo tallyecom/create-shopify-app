@@ -55,7 +55,7 @@ api.post("/process", async (req, res) => {
 api.post("/regform", async (req, res) => {
   //res.json({serial: '123'})
   // console.log("in api call");
-  // console.log(req);
+  console.log(req);
   try {
     let registrationRes = await registration(
       req.body.shop
