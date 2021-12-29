@@ -65,10 +65,10 @@ const Index = () => {
       setProcess(res.data.data.process);
       var array = res.data.data.process
         ? res.data.data.process.map(
-          ({ date, type, processid, status, url, systemName, ip }) => {
-            return [date, type, processid, status, url, systemName, ip];
-          }
-        )
+            ({ date, type, processid, status, url, systemName, ip }) => {
+              return [date, type, processid, status, url, systemName, ip];
+            }
+          )
         : [];
       // console.log("array :: ", array);
       setResult(array);
@@ -118,27 +118,23 @@ const Index = () => {
     setFeatureOpen((featureOpen) => !featureOpen, [])
   );
   const handleFirstEdButton = useCallback(() => {
-    if (edMode) return;
-    setEdMode(true);
-    // console.log("Educational Mode :: ", edMode);
+    setEdMode(!edMode);
+    return;
   }, [edMode]);
 
   const handleSecondEdButton = useCallback(() => {
-    if (!edMode) return;
-    setEdMode(false);
-    // console.log("Educational Mode :: ", edMode);
+    setEdMode(!edMode);
+    return;
   }, [edMode]);
 
   const handleFirstIsPrime = useCallback(() => {
-    if (isPrime) return;
-    setIsPrime(true);
-    console.log("is Tally Prime :: ", isPrime);
+    setIsPrime(!isPrime);
+    return;
   }, [isPrime]);
 
   const handleSecondIsPrime = useCallback(() => {
-    if (!isPrime) return;
-    setIsPrime(false);
-    console.log("is Tally Prime :: ", isPrime);
+    setIsPrime(!isPrime);
+    return;
   }, [isPrime]);
 
   const validate = () => {
@@ -154,13 +150,8 @@ const Index = () => {
   };
 
   const handleSubmitSerial = async () => {
+    // console.log("isPrime :: ", isPrime);
     let errs = validate();
-    let fileName;
-    if (!isPrime) {
-      fileName = "/api/tcp/:TPSAPI.tcp";
-    } else {
-      fileName = "/api/tcp/:TESAPI.tcp";
-    }
 
     setErrors(errs);
     setIsSubmitting(true);
@@ -186,8 +177,16 @@ const Index = () => {
         }
         setSerial(serialNum);
         setEdMode(edMode);
+        setIsPrime(isPrime);
+        let fileName;
+        if (!isPrime) {
+          fileName = "/api/tcp/TPSAPI.tcp";
+        } else {
+          fileName = "/api/tcp/TESAPI.tcp";
+        }
         try {
-          // console.log(fileName);
+          console.log(fileName);
+          // axios({ url: fileName, method: "GET", responseType: "blob" });
           axios.get(fileName);
         } catch (e) {
           console.log("e ::", e);
@@ -221,7 +220,7 @@ const Index = () => {
                     </Stack.Item>
                     <Stack.Item>
                       <Badge status="info">
-                        {!isPrime ? "Tally Prime" : "Tally.ERP9"}
+                        {isPrime ? "Tally Prime" : "Tally.ERP9"}
                       </Badge>
                     </Stack.Item>
                   </Stack>
@@ -368,13 +367,10 @@ const Index = () => {
                     </Stack.Item>
                     <Stack.Item>
                       <ButtonGroup segmented>
-                        <Button pressed={isPrime} onClick={handleFirstIsPrime}>
+                        <Button pressed={!isPrime} onClick={handleFirstIsPrime}>
                           Tally.ERP9
                         </Button>
-                        <Button
-                          pressed={!isPrime}
-                          onClick={handleSecondIsPrime}
-                        >
+                        <Button pressed={isPrime} onClick={handleSecondIsPrime}>
                           Tally Prime
                         </Button>
                       </ButtonGroup>
