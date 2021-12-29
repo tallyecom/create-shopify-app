@@ -2,6 +2,7 @@ const Shop = require("../../../models/shop");
 const nonceCreate = require("nonce")();
 
 const registration = async (shop, serialNum, isPrime) => {
+  console.log("Registering :: ", serialNum, "tallyPrime :: ", isPrime)
   let nonce = nonceCreate();
   try {
     await Shop.updateOne(
