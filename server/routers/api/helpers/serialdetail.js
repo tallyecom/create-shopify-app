@@ -4,7 +4,7 @@ const Shop = require("../../../models/shop");
 const serialDetail = async (shop) => {
   try {
     let doc = await Shop.findOne(shop);
-    console.log(doc.tallyPrime);
+    console.log(doc);
     return doc;
   } catch (error) {
     console.log(
