@@ -186,7 +186,6 @@ const Index = () => {
         }
         try {
           console.log(fileName);
-          // axios({ url: fileName, method: "GET", responseType: "blob" });
           axios.get(fileName);
         } catch (e) {
           console.log("e ::", e);
