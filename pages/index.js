@@ -187,7 +187,7 @@ const Index = () => {
         setSerial(serialNum);
         setEdMode(edMode);
         try {
-          console.log(fileName);
+          // console.log(fileName);
           axios.get(fileName);
         } catch (e) {
           console.log("e ::", e);

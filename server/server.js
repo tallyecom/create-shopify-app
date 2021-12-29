@@ -60,8 +60,8 @@ server.use(function (req, res, next) {
   if (req.query.shop !== "") {
     shopurl = req.query.shop;
     fa = `frame-ancestors ${shopurl} admin.shopify.com`;
-    console.log(shopurl);
-    console.log(fa);
+    // console.log(shopurl);
+    // console.log(fa);
     res.setHeader(
       "Content-Security-Policy",
       fa
