@@ -65,10 +65,10 @@ const Index = () => {
       setProcess(res.data.data.process);
       var array = res.data.data.process
         ? res.data.data.process.map(
-          ({ date, type, processid, status, url, systemName, ip }) => {
-            return [date, type, processid, status, url, systemName, ip];
-          }
-        )
+            ({ date, type, processid, status, url, systemName, ip }) => {
+              return [date, type, processid, status, url, systemName, ip];
+            }
+          )
         : [];
       // console.log("array :: ", array);
       setResult(array);
@@ -166,10 +166,11 @@ const Index = () => {
     setIsSubmitting(true);
     if (!edMode) {
       if (serialNum % 9 === 0) {
-        // console.log({
-        //   shop: shop,
-        //   serialNumber: serialNum,
-        // });
+        console.log({
+          shop: shop,
+          serialNumber: serialNum,
+          tallyPrime: isPrime,
+        });
 
         try {
           axios
