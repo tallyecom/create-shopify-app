@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import download from "downloadjs";
 import {
   Form,
   FormLayout,
@@ -60,6 +61,7 @@ const Index = () => {
       // console.log(res.data.data);
       // console.log(res.data.data.serial);
       setSerial(res.data.data.serial);
+      setIsPrime(res.data.data.isPrime);
       setUserAccessToken(res.data.data.accessToken);
       // console.log(res.data.data.process);
       setProcess(res.data.data.process);
@@ -117,22 +119,12 @@ const Index = () => {
   const handleFeatToggle = useCallback(() =>
     setFeatureOpen((featureOpen) => !featureOpen, [])
   );
-  const handleFirstEdButton = useCallback(() => {
+  const handleEdButton = useCallback(() => {
     setEdMode(!edMode);
     return;
   }, [edMode]);
 
-  const handleSecondEdButton = useCallback(() => {
-    setEdMode(!edMode);
-    return;
-  }, [edMode]);
-
-  const handleFirstIsPrime = useCallback(() => {
-    setIsPrime(!isPrime);
-    return;
-  }, [isPrime]);
-
-  const handleSecondIsPrime = useCallback(() => {
+  const handleIsPrime = useCallback(() => {
     setIsPrime(!isPrime);
     return;
   }, [isPrime]);
@@ -179,14 +171,30 @@ const Index = () => {
         setEdMode(edMode);
         setIsPrime(isPrime);
         let fileName;
-        if (!isPrime) {
-          fileName = "/api/tcp/TPSAPI.tcp";
+        let fn;
+        if (isPrime) {
+          fileName = "/api/tcp?name=TPSAPI.tcp&shop=" + shop;
+          fn = "TPSAPI.tcp";
         } else {
-          fileName = "/api/tcp/TESAPI.tcp";
+          fileName = "/api/tcp?name=TESAPI.tcp&shop=" + shop;
+          fn = "TESAPI.tcp";
         }
+        async function downloadFile(file) {
+          axios
+            .get(`${file}/download`, {
+              responseType: "blob", // had to add this one here
+            })
+            .then((response) => {
+              const content = response.headers["content-type"];
+              download(response.data, fn, content);
+            })
+            .catch((error) => console.log(error));
+        }
+
         try {
           console.log(fileName);
-          axios.get(fileName);
+          // axios.get(fileName);
+          await downloadFile(fileName);
         } catch (e) {
           console.log("e ::", e);
         }
@@ -365,14 +373,28 @@ const Index = () => {
                       </Heading>
                     </Stack.Item>
                     <Stack.Item>
-                      <ButtonGroup segmented>
-                        <Button pressed={!isPrime} onClick={handleFirstIsPrime}>
-                          Tally.ERP9
-                        </Button>
-                        <Button pressed={isPrime} onClick={handleSecondIsPrime}>
+                      {isPrime ? (
+                        <Button pressed={isPrime} onClick={handleIsPrime}>
                           Tally Prime
                         </Button>
-                      </ButtonGroup>
+                      ) : (
+                        <Button pressed={isPrime} onClick={handleIsPrime}>
+                          Tally.ERP9
+                        </Button>
+                      )}
+                      {/* <ButtonGroup segmented> */}
+                      {/* <Button pressed={isPrime} onClick={handleSecondIsPrime}>
+                          Tally Prime
+                        </Button> */}
+                      {/* </ButtonGroup> */}
+                    </Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>
+                      <p>
+                        download latest version of Tally Prime from
+                        https://tallysolutions.com/download
+                      </p>
                     </Stack.Item>
                   </Stack>
                   <Stack>
@@ -382,17 +404,25 @@ const Index = () => {
                       </Heading>
                     </Stack.Item>
                     <Stack.Item>
-                      <ButtonGroup segmented>
-                        <Button pressed={edMode} onClick={handleFirstEdButton}>
+                      {/* <ButtonGroup segmented> */}
+
+                      {edMode ? (
+                        <Button pressed={edMode} onClick={handleEdButton}>
                           True
                         </Button>
-                        <Button
+                      ) : (
+                        <Button pressed={edMode} onClick={handleEdButton}>
+                          False
+                        </Button>
+                      )}
+
+                      {/* <Button
                           pressed={!edMode}
                           onClick={handleSecondEdButton}
                         >
                           False
-                        </Button>
-                      </ButtonGroup>
+                        </Button> */}
+                      {/* </ButtonGroup> */}
                     </Stack.Item>
                   </Stack>
                   <Collapsible

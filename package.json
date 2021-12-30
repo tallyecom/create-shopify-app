@@ -27,6 +27,7 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.1",
     "dotenv": "^8.2.0",
+    "downloadjs": "^1.4.7",
     "express": "^4.17.2",
     "mongoose": "^5.13.14",
     "next": "^9.5.5",

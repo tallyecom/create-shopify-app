@@ -3,6 +3,7 @@ const authApiRequest = require("./middleware/authApiRequest");
 const registration = require("./helpers/registration");
 const process = require("./helpers/process");
 const serialDetail = require("./helpers/serialdetail");
+const Path = require("path");
 
 //api authentication
 // api.use(authApiRequest);
@@ -14,6 +15,31 @@ api.get("/1", (req, res) => {
 api.get("/2", (req, res) => {
   res.json({ hi: "from second api" });
 });
+
+api.get("/tcp", function (req, res, next) {
+  console.log(__dirname);
+
+  console.log("in api call")
+  const options = {
+    root: Path.join(__dirname, "tcp"),
+    dotfiles: "deny",
+    headers: { "x-timestamp": Date.now(), "x-sent": true },
+  };
+  console.log(options);
+
+  const fileName = req.query.name;
+  console.log("fileName :: ",fileName);
+  res.download("server/routers/api/tcp/"+fileName)
+  // res.sendFile(fileName, options, function (err) {
+  //   if (err) {
+  //     next(err);
+  //   } else {
+  //     console.log("file sent successfully :: " + fileName);
+  //   }
+  // });
+});
+
+
 api.get("/shop", async (req, res) => {
   try {
     // console.log(req.query.shop);
@@ -26,6 +52,7 @@ api.get("/shop", async (req, res) => {
     // console.log(shopResult.process);
     let data = {
       serial: shopResult.serial,
+      isPrime: shopResult.tallyPrime,
       accessToken: shopResult.accessToken,
       process: shopResult.process,
     };
