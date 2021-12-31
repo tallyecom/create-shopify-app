@@ -29,6 +29,7 @@
     "dotenv": "^8.2.0",
     "downloadjs": "^1.4.7",
     "express": "^4.17.2",
+    "graphql-tag": "^2.12.6",
     "mongoose": "^5.13.14",
     "next": "^9.5.5",
     "nonce": "^1.0.4",

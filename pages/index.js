@@ -147,60 +147,83 @@ const Index = () => {
 
     setErrors(errs);
     setIsSubmitting(true);
-    if (!edMode) {
-      if (serialNum % 9 === 0) {
-        // console.log({
-        //   shop: shop,
-        //   serialNumber: serialNum, tallyPrime: isPrime
-        // });
 
-        try {
-          axios
-            .post("/api/regForm", {
-              shop: shop,
-              serialNumber: serialNum,
-              tallyPrime: isPrime,
-            })
-            .catch((err) => {
-              console.log("err: ", err);
-            });
-        } catch (e) {
-          console.log("e ::", e);
-        }
-        setSerial(serialNum);
-        setEdMode(edMode);
-        setIsPrime(isPrime);
-        let fileName;
-        let fn;
-        if (isPrime) {
-          fileName = "/api/TCP?name=TPSAPI.tcp&shop=" + shop;
-          fn = "TPSAPI.tcp";
-        } else {
-          fileName = "/api/TCP?name=TESAPI.tcp&shop=" + shop;
-          fn = "TESAPI.tcp";
-        }
-        async function downloadFile(file) {
-          axios
-            .get(`${file}/download`, {
-              responseType: "blob", // had to add this one here
-            })
-            .then((response) => {
-              const content = response.headers["content-type"];
-              download(response.data, fn, content);
-            })
-            .catch((error) => console.log(error));
-        }
+    if (serialNum % 9 === 0) {
+      // console.log({
+      //   shop: shop,
+      //   serialNumber: serialNum, tallyPrime: isPrime
+      // });
 
-        try {
-          console.log(fileName);
-          // axios.get(fileName);
-          await downloadFile(fileName);
-        } catch (e) {
-          console.log("e ::", e);
-        }
+      try {
+        axios
+          .post("/api/regForm", {
+            shop: shop,
+            serialNumber: serialNum,
+            tallyPrime: isPrime,
+          })
+          .catch((err) => {
+            console.log("err: ", err);
+          });
+      } catch (e) {
+        console.log("e ::", e);
+      }
+      let fileName;
+      let fn;
+      if (isPrime) {
+        fileName = "/api/TCP?name=TPSAPI.tcp&shop=" + shop;
+        fn = "TPSAPI.tcp";
+      } else {
+        fileName = "/api/TCP?name=TESAPI.tcp&shop=" + shop;
+        fn = "TESAPI.tcp";
+      }
+      async function downloadFile(file) {
+        axios
+          .get(`${file}/download`, {
+            responseType: "blob", // had to add this one here
+          })
+          .then((response) => {
+            const content = response.headers["content-type"];
+            download(response.data, fn, content);
+          })
+          .catch((error) => console.log(error));
+      }
+
+      try {
+        console.log(fileName);
+        // axios.get(fileName);
+        await downloadFile(fileName);
+      } catch (e) {
+        console.log("e ::", e);
       }
     }
-    setEdMode(edMode);
+    let fileName;
+    let fn;
+    if (isPrime) {
+      fileName = "/api/TCP?name=TPSAPI.tcp&shop=" + shop;
+      fn = "TPSAPI.tcp";
+    } else {
+      fileName = "/api/TCP?name=TESAPI.tcp&shop=" + shop;
+      fn = "TESAPI.tcp";
+    }
+    async function downloadFile(file) {
+      axios
+        .get(`${file}/download`, {
+          responseType: "blob", // had to add this one here
+        })
+        .then((response) => {
+          const content = response.headers["content-type"];
+          download(response.data, fn, content);
+        })
+        .catch((error) => console.log(error));
+    }
+
+    try {
+      console.log(fileName);
+      // axios.get(fileName);
+      await downloadFile(fileName);
+    } catch (e) {
+      console.log("e ::", e);
+    }
   };
 
   return (
