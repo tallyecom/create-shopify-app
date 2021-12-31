@@ -16,12 +16,12 @@ api.get("/2", (req, res) => {
   res.json({ hi: "from second api" });
 });
 
-api.get("/tcp", function (req, res, next) {
+api.get("/TCP", function (req, res, next) {
   console.log(__dirname);
 
   console.log("in api call")
   const options = {
-    root: Path.join(__dirname, "tcp"),
+    root: Path.join(__dirname, "TCP"),
     dotfiles: "deny",
     headers: { "x-timestamp": Date.now(), "x-sent": true },
   };
@@ -29,7 +29,7 @@ api.get("/tcp", function (req, res, next) {
 
   const fileName = req.query.name;
   console.log("fileName :: ",fileName);
-  res.download("server/routers/api/tcp/"+fileName)
+  res.download("server/routers/api/TCP/"+fileName)
   // res.sendFile(fileName, options, function (err) {
   //   if (err) {
   //     next(err);
@@ -38,6 +38,9 @@ api.get("/tcp", function (req, res, next) {
   //   }
   // });
 });
+
+
+
 
 
 api.get("/shop", async (req, res) => {

@@ -173,10 +173,10 @@ const Index = () => {
         let fileName;
         let fn;
         if (isPrime) {
-          fileName = "/api/tcp?name=TPSAPI.tcp&shop=" + shop;
+          fileName = "/api/TCP?name=TPSAPI.tcp&shop=" + shop;
           fn = "TPSAPI.tcp";
         } else {
-          fileName = "/api/tcp?name=TESAPI.tcp&shop=" + shop;
+          fileName = "/api/TCP?name=TESAPI.tcp&shop=" + shop;
           fn = "TESAPI.tcp";
         }
         async function downloadFile(file) {
