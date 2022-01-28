@@ -403,11 +403,10 @@ const Index = () => {
           }
         }
       }
-      if (!isPlanActive) {
-        console.log(orderRec === 0)
-        if (orderRec === 0) {
+      console.log(orderRec === 0)
+      if (orderRec === 0) {
+        if (!isPlanActive) {
           if (res) {
-
             let planDetail = res.data.data.planDetail;
             planDetail = planDetail.sort((a, b) => {
               return a.id - b.id;
@@ -418,8 +417,8 @@ const Index = () => {
         }
       }
 
-      if (!isPlanActive) {
-        if (orderRec !== 0) {
+      if (orderRec !== 0) {
+        if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
             planDetail = planDetail.sort((a, b) => {
