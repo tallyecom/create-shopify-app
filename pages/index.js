@@ -504,8 +504,19 @@ const Index = () => {
   }, []);
 
   function handlePlanChange(planChange) {
-    console.log("trying to change the plan, fingers crossed :: ", planChange)
-    console.log({ "plan": planChange[0].name, "id": planChange[0]._id })
+    // console.log("trying to change the plan, fingers crossed :: ", planChange)
+    console.log({
+      "_id": planChange[0]._id,
+      "plan": planChange[0].name,
+      "monthlyPrice": planChange[0].monthlyPrice,
+      "annualPrice": planChange[0].annualPrice,
+      "orderPrice": planChange[0].orderPrice,
+      "productPrice": planChange[0].productPrice,
+      "imagePrice": planChange[0].imagePrice,
+      "numOrders": planChange[0].numOrders,
+      "numProducts": planChange[0].numProducts,
+      "numImages": planChange[0].numImages
+    })
   }
 
   function handleFreePlan(plan, id) {
