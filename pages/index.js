@@ -173,117 +173,118 @@ const Index = () => {
             </>
             : null
           }
-
-          <Card title={title}>
-            <div style={{ height: 170 }} >
-              {
-                monthlyPrice === 0 ?
-                  <>
-                    {productPrice !== 0 ? <DisplayText size="large">${productPrice}/{numProducts} Products</DisplayText> : null}
-                    {orderPrice !== 0 ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
-                    {imagePrice !== 0 ? <DisplayText size="large">${imagePrice}/{numImages} Images</DisplayText> : null}
-                    {title == 'Free' ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
-                    <Stack>
-                      <Stack.Item fill>Maximum Number of Orders</Stack.Item>
-                      <Stack.Item>{numOrders}</Stack.Item>
-                    </Stack>
-                    <Stack>
-                      <Stack.Item fill>Maximum Number of Products</Stack.Item>
-                      <Stack.Item>{numProducts}</Stack.Item>
-                    </Stack>
-                    <Stack>
-                      <Stack.Item fill>Maximum Number of Images</Stack.Item>
-                      <Stack.Item>{numImages}</Stack.Item>
-                    </Stack>
-                    {title == 'Free' ? <p>Period: 1 month</p> : <p >Period : use at your convenience with Balance Carry Forward for all 3 Orders, Products & Images</p>}
-                    {title == 'Free' ? <p>Available only One Time</p> : null}
-                  </>
-                  :
-                  <>
-                    <DisplayText size="large">${monthlyPrice}/Month</DisplayText>
-                    <p >
-                      or ${annualPriceA}/month billed at ${annualPriceB} once per year
-                    </p>
-                    <Stack>
-                      <Stack.Item fill>Number of Orders</Stack.Item>
-                      <Stack.Item>Unlimited</Stack.Item>
-                    </Stack>
-                    <Stack>
-                      <Stack.Item fill>Number of Products</Stack.Item>
-                      <Stack.Item>Unlimited</Stack.Item>
-                    </Stack>
-                    <Stack>
-                      <Stack.Item fill>Number of Images</Stack.Item>
-                      <Stack.Item>Unlimited</Stack.Item>
-                    </Stack>
-                  </>
-              }
-            </div>
-            {planId == 1
-              ? <>
-                {console.log(listOfPlans)}
-                <input hidden id="1" value={objID} />
-                <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={() => handleFreePlan(listOfPlans)}>Select Free Plan</Button>
-                <Button fullWidth disabled>
-                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                </Button>
-              </> : null}
-            {planId == 2
-              ? <>
-                <input hidden id="2" value={objID} />
-                <Button fullWidth primary size="large" onClick={handleOrderPlan}>Select Order Based Plan</Button>
-                <Button fullWidth disabled>
-                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                </Button>
-              </> : null}
-            {planId == 3
-              ? <>
-                <input hidden id="3" value={objID} />
-                <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
-                <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
-              </>
-              : null}
-            {planId == 4
-              ? <>
-                <input hidden id="4" value={objID} />
-                <Button fullWidth primary size="large" onClick={handleOrdersAddOn}>Select Orders Add On</Button>
-                <Button fullWidth disabled>
-                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                </Button>
-              </> : null}
-            {planId == 5
-              ? <>
-                <input hidden id="5" value={objID} />
-                <Button fullWidth primary size="large" onClick={handleProductsAddOn} >Select Products Add On</Button>
-                <Button fullWidth disabled>
-                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                </Button>
-              </>
-              : null}
-            {planId == 6
-              ? <>
-                <input hidden id="6" value={objID} />
-                <Button fullWidth primary size="large" onClick={handleImagesAddOn} >Select Images Add On</Button>
-                <Button fullWidth disabled>
-                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                </Button>
-              </>
-              : null}
+          <Card>
+            <Card.Section title={title}>
+              <div style={{ height: 170 }} >
+                {
+                  monthlyPrice === 0 ?
+                    <>
+                      {productPrice !== 0 ? <DisplayText size="large">${productPrice}/{numProducts} Products</DisplayText> : null}
+                      {orderPrice !== 0 ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
+                      {imagePrice !== 0 ? <DisplayText size="large">${imagePrice}/{numImages} Images</DisplayText> : null}
+                      {title == 'Free' ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
+                      <Stack>
+                        <Stack.Item fill>Maximum Number of Orders</Stack.Item>
+                        <Stack.Item>{numOrders}</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>Maximum Number of Products</Stack.Item>
+                        <Stack.Item>{numProducts}</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>Maximum Number of Images</Stack.Item>
+                        <Stack.Item>{numImages}</Stack.Item>
+                      </Stack>
+                      {title == 'Free' ? <p>Period: 1 month</p> : <p >Period : use at your convenience with Balance Carry Forward for all 3 Orders, Products & Images</p>}
+                      {title == 'Free' ? <p>Available only One Time</p> : null}
+                    </>
+                    :
+                    <>
+                      <DisplayText size="large">${monthlyPrice}/Month</DisplayText>
+                      <p >
+                        or ${annualPriceA}/month billed at ${annualPriceB} once per year
+                      </p>
+                      <Stack>
+                        <Stack.Item fill>Number of Orders</Stack.Item>
+                        <Stack.Item>Unlimited</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>Number of Products</Stack.Item>
+                        <Stack.Item>Unlimited</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>Number of Images</Stack.Item>
+                        <Stack.Item>Unlimited</Stack.Item>
+                      </Stack>
+                    </>
+                }
+              </div>
+              {planId == 1
+                ? <>
+                  {console.log(listOfPlans)}
+                  <input hidden id="1" value={objID} />
+                  <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={() => handleFreePlan(listOfPlans)}>Select Free Plan</Button>
+                  <Button fullWidth disabled>
+                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  </Button>
+                </> : null}
+              {planId == 2
+                ? <>
+                  <input hidden id="2" value={objID} />
+                  <Button fullWidth primary size="large" onClick={handleOrderPlan}>Select Order Based Plan</Button>
+                  <Button fullWidth disabled>
+                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  </Button>
+                </> : null}
+              {planId == 3
+                ? <>
+                  <input hidden id="3" value={objID} />
+                  <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
+                  <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
+                </>
+                : null}
+              {planId == 4
+                ? <>
+                  <input hidden id="4" value={objID} />
+                  <Button fullWidth primary size="large" onClick={handleOrdersAddOn}>Select Orders Add On</Button>
+                  <Button fullWidth disabled>
+                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  </Button>
+                </> : null}
+              {planId == 5
+                ? <>
+                  <input hidden id="5" value={objID} />
+                  <Button fullWidth primary size="large" onClick={handleProductsAddOn} >Select Products Add On</Button>
+                  <Button fullWidth disabled>
+                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  </Button>
+                </>
+                : null}
+              {planId == 6
+                ? <>
+                  <input hidden id="6" value={objID} />
+                  <Button fullWidth primary size="large" onClick={handleImagesAddOn} >Select Images Add On</Button>
+                  <Button fullWidth disabled>
+                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  </Button>
+                </>
+                : null}
+            </Card.Section>
           </Card>
         </Layout.Section>
       </>
