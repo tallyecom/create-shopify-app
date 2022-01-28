@@ -552,7 +552,7 @@ const Index = () => {
       }
     }
     // console.log("planToChange :: ", planToChange);
-    console.log({ planDetails: { newPlan: planToChange, nonce: nonce } })
+    console.log({ planToChange })
     try {
       axios
         .post("/api/planchange", {
