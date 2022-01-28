@@ -495,8 +495,16 @@ const Index = () => {
   }, []);
 
   const handleFreePlan = useCallback((value) => {
+    console.log(value);
+  }, []);
+  const handleOrderPlan = useCallback((value) => { console.log(value); }, []);
+  const handleYearlyPlan = useCallback((value) => { console.log(value); }, []);
+  const handleMonthlyPlan = useCallback((value) => { console.log(value); }, []);
+  const handleOrdersAddOn = useCallback((value) => { console.log(value); }, []);
+  const handleProductsAddOn = useCallback((value) => { console.log(value); }, []);
+  const handleImagesAddOn = useCallback((value) => { console.log(value); }, []);
 
-  })
+
   const handleSerialChange = useCallback((value) => {
     setSerialNum(value);
   }, []);
