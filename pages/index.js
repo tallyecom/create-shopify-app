@@ -397,7 +397,7 @@ const Index = () => {
     // setIsPlanActive(true);
     // setIsPlanActive(!setIsPlanActive);
     // setPlanNearExp(true);
-    setOrderRec(30);
+    // setOrderRec(30);
     // setOrderDel(20)
     // setOrderRet(1);
     // setProduct(50);
