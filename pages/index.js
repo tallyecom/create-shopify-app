@@ -221,7 +221,7 @@ const Index = () => {
             </div>
             {planId == 1
               ? <>
-                <input id="1" value={objID} />
+                <input hidden id="1" value={objID} />
                 <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -232,7 +232,7 @@ const Index = () => {
               </> : null}
             {planId == 2
               ? <>
-                <input id="2" value={objID} />
+                <input hidden id="2" value={objID} />
                 <Button fullWidth primary size="large" onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -243,14 +243,14 @@ const Index = () => {
               </> : null}
             {planId == 3
               ? <>
-                <input id="3" value={objID} />
+                <input hidden id="3" value={objID} />
                 <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
                 <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
               </>
               : null}
             {planId == 4
               ? <>
-                <input id="4" value={objID} />
+                <input hidden id="4" value={objID} />
                 <Button fullWidth primary size="large" onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -261,7 +261,7 @@ const Index = () => {
               </> : null}
             {planId == 5
               ? <>
-                <input id="5" value={objID} />
+                <input hidden id="5" value={objID} />
                 <Button fullWidth primary size="large" onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -273,7 +273,7 @@ const Index = () => {
               : null}
             {planId == 6
               ? <>
-                <input id="6" value={objID} />
+                <input hidden id="6" value={objID} />
                 <Button fullWidth primary size="large" onClick={handleImagesAddOn} >Select Images Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -502,8 +502,9 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  const handleFreePlan = async () => {
-    let data = await getPlans();
+  const handleFreePlan = useCallback(async (listOfPlans) => {
+    let data = listOfPlans;
+    console.log(listOfPlans);
     if (data) {
       console.log("Plan Details before filtering :: ", data);
       let id = document.getElementById('1').value
@@ -512,7 +513,7 @@ const Index = () => {
       let filtplan = data.filter(plan => plan._id == id)
       if (filtplan) console.log(data);
     }
-  };
+  }, []);
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
   const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
   const handleMonthlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
