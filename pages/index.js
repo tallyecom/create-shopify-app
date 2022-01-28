@@ -445,7 +445,7 @@ const Index = () => {
             planDetail = planDetail.sort((a, b) => {
               return a.id - b.id;
             }).filter(function (e) {
-              return e.name == "Free";
+              return e.name != "Free";
             })
             for (var i = 0; i < planDetail.length; i++) {
               console.log("After Filter is Applied :: ", planDetail[i].name)
