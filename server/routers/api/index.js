@@ -46,20 +46,20 @@ api.get("/plans", async (req, res) => {
 });
 
 api.get("/plans/:_id", async (req, res) => {
-
-  try {
-    var shop = req.query.shop
-      .replace("https://", "")
-      .replace("http://", "")
-      .split(".")[0];
-    var planDetail = await plan({});
-    console.log({ planDetail });
-    let data = { planDetail }
-    res.json({ success: true, data }).status(200);
-  } catch (e) {
-    console.log(e);
-    res.json({ success: false }).status(500);
-  }
+  console.log(req.params._id);
+  // try {
+  //   var shop = req.query.shop
+  //     .replace("https://", "")
+  //     .replace("http://", "")
+  //     .split(".")[0];
+  //   var planDetail = await plan({});
+  //   console.log({ planDetail });
+  //   let data = { planDetail }
+  //   res.json({ success: true, data }).status(200);
+  // } catch (e) {
+  //   console.log(e);
+  //   res.json({ success: false }).status(500);
+  // }
 })
 
 api.get("/shop", async (req, res) => {

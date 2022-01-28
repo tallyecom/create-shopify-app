@@ -504,6 +504,13 @@ const Index = () => {
 
   const handleFreePlan = useCallback(() => {
     console.log(document.getElementById('1').value);
+    let id = document.getElementById('1').value
+    try {
+      const res = axios.get(`/api/plans/${id}?shop=` + shop);
+      console.log(res);
+    } catch (e) {
+      console.log(E)
+    }
   }, []);
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
   const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
