@@ -99,7 +99,7 @@ const Index = () => {
 
   function PlanCard(props) {
     const {
-      _id,
+      objID,
       keyID,
       planId,
       isSelected,
@@ -222,7 +222,7 @@ const Index = () => {
             </div>
             {planId == 1 ?
               <>
-                <Button fullWidth primary size="large" value={_id} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
+                <Button fullWidth primary size="large" value={objID} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -232,7 +232,7 @@ const Index = () => {
               </> : null}
             {planId == 2 ?
               <>
-                <Button fullWidth primary size="large" value={_id} onClick={handleOrderPlan}>Select Order Based Plan</Button>
+                <Button fullWidth primary size="large" value={objID} onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -248,7 +248,7 @@ const Index = () => {
               : null}
             {planId == 4 ?
               <>
-                <Button fullWidth primary size="large" value={_id} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
+                <Button fullWidth primary size="large" value={objID} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -258,7 +258,7 @@ const Index = () => {
               </> : null}
             {planId == 5 ?
               <>
-                <Button fullWidth primary size="large" value={_id} onClick={handleProductsAddOn} >Select Products Add On</Button>
+                <Button fullWidth primary size="large" value={objID} onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -268,7 +268,7 @@ const Index = () => {
               </> : null}
             {planId == 6 ?
               <>
-                <Button fullWidth primary size="large" value={_id} onClick={handleImagesAddOn} >Select Images Add On</Button>
+                <Button fullWidth primary size="large" value={objID} onClick={handleImagesAddOn} >Select Images Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -440,7 +440,7 @@ const Index = () => {
         <Layout>
           {listOfPlans.map(plan => (
             <PlanCard
-              _id={plan._id}
+              objID={plan._id}
               isSelected={plan.id == 2}
               planId={plan.id}
               key={`key_${plan.id}`}
@@ -468,7 +468,7 @@ const Index = () => {
         <Layout>
           {listOfPlans.map(plan => (
             <PlanCard
-              _id={plan._id}
+              objID={plan._id}
               isSelected={plan.id == 1}
               planId={plan.id}
               key={`key_${plan.id}`}
