@@ -497,15 +497,15 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  const handleFreePlan = useCallback((value) => {
-    console.log(value);
+  const handleFreePlan = useCallback(({ objID }) => {
+    console.log({ objID });
   }, []);
-  const handleOrderPlan = useCallback((value) => { console.log(value); }, []);
-  const handleYearlyPlan = useCallback((value) => { console.log(value); }, []);
-  const handleMonthlyPlan = useCallback((value) => { console.log(value); }, []);
-  const handleOrdersAddOn = useCallback((value) => { console.log(value); }, []);
-  const handleProductsAddOn = useCallback((value) => { console.log(value); }, []);
-  const handleImagesAddOn = useCallback((value) => { console.log(value); }, []);
+  const handleOrderPlan = useCallback(({ objID }) => { console.log({ objID }); }, []);
+  const handleYearlyPlan = useCallback(({ objID }) => { console.log({ objID }); }, []);
+  const handleMonthlyPlan = useCallback(({ objID }) => { console.log({ objID }); }, []);
+  const handleOrdersAddOn = useCallback(({ objID }) => { console.log({ objID }); }, []);
+  const handleProductsAddOn = useCallback(({ objID }) => { console.log({ objID }); }, []);
+  const handleImagesAddOn = useCallback(({ objID }) => { console.log({ objID }); }, []);
 
 
   const handleSerialChange = useCallback((value) => {
