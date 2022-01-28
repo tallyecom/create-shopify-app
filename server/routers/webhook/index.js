@@ -15,10 +15,6 @@ webhooks.get("/", (req, res) => {
 
   const verified = verifyWebhook(req.body, hmac);
 
-  console.log("Webhook Verification :: ", verified);
-  console.log("Webhook Topic :: ", topic);
-  console.log("Webhook ID :: ", apiver);
-  console.log("Webhook APIVersion :: ", whid);
 
   if (!verified) {
     res.status(401).send("Could not verify request.");
@@ -29,7 +25,7 @@ webhooks.get("/", (req, res) => {
   const payload = JSON.parse(data);
   res.status(200).send("OK");
 
-  console.log("Already Existing Webhooks :: ", payload);
+
 });
 webhooks.post("/", (req, res) => {
   // Verify
@@ -41,10 +37,6 @@ webhooks.post("/", (req, res) => {
 
   const verified = verifyWebhook(req.body, hmac);
 
-  console.log("Webhook Verification :: ", verified);
-  console.log("Webhook Topic :: ", topic);
-  console.log("Webhook ID :: ", apiver);
-  console.log("Webhook APIVersion :: ", whid);
 
   if (!verified) {
     res.status(401).send("Could not verify request.");
@@ -71,7 +63,7 @@ webhooks.post("/", (req, res) => {
       handleShopDelete(payload, shop);
       break;
   }
-  console.log("Webhook :: ", topic, " Processed Successfully");
+
 });
 
 module.exports = webhooks;

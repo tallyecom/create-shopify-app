@@ -10,10 +10,13 @@ const appUninstall = async (payload, shop) => {
     let shopFromDatabase = await Shop.findOne({
       shop: shop.replace("https://", "").replace("http://", "").split(".")[0],
     });
+    let header
+    if (shopFromDatabase) {
+      header = {
+        "X-Shopify-Access-Token": shopFromDatabase.accessToken,
+      };
+    }
     //Store lookup
-    const header = {
-      "X-Shopify-Access-Token": shopFromDatabase.accessToken,
-    };
     const info = await axios({
       url:
         "https://" +

@@ -3,6 +3,7 @@ const authApiRequest = require("./middleware/authApiRequest");
 const registration = require("./helpers/registration");
 const process = require("./helpers/process");
 const serialDetail = require("./helpers/serialdetail");
+const plan = require("./helpers/plan");
 const Path = require("path");
 
 //api authentication
@@ -17,50 +18,50 @@ api.get("/2", (req, res) => {
 });
 
 api.get("/TCP", function (req, res, next) {
-  console.log(__dirname);
-
-  console.log("in api call")
   const options = {
     root: Path.join(__dirname, "TCP"),
     dotfiles: "deny",
     headers: { "x-timestamp": Date.now(), "x-sent": true },
   };
-  console.log(options);
 
   const fileName = req.query.name;
-  console.log("fileName :: ",fileName);
-  res.download("server/routers/api/TCP/"+fileName)
-  // res.sendFile(fileName, options, function (err) {
-  //   if (err) {
-  //     next(err);
-  //   } else {
-  //     console.log("file sent successfully :: " + fileName);
-  //   }
-  // });
+  res.download("server/routers/api/TCP/" + fileName)
 });
 
-
-
-
-
-api.get("/shop", async (req, res) => {
+api.get("/plans", async (req, res) => {
   try {
-    // console.log(req.query.shop);
     var shop = req.query.shop
       .replace("https://", "")
       .replace("http://", "")
       .split(".")[0];
-    // console.log(shop);
+    var planDetail = await plan({});
+    // console.log({ planDetail });
+    let data = { planDetail }
+    res.json({ success: true, data }).status(200);
+  } catch (e) {
+    console.log(e);
+    res.json({ success: false }).status(500);
+  }
+});
+
+api.get("/shop", async (req, res) => {
+  try {
+    var shop = req.query.shop
+      .replace("https://", "")
+      .replace("http://", "")
+      .split(".")[0];
     var shopResult = await serialDetail({ shop });
-    // console.log(shopResult.process);
     let data = {
       serial: shopResult.serial,
       isPrime: shopResult.tallyPrime,
       accessToken: shopResult.accessToken,
       process: shopResult.process,
+      isFreePlan: shopResult.isFreePlan,
+      isMonthlyPlan: shopResult.isMonthlyPlan,
+      isOrderPlan: shopResult.isOrderPlan,
+      installedOn: shopResult.installedOn
     };
     res.json({ success: true, data }).status(200);
-    // console.log(data);
   } catch (e) {
     console.log(e);
     res.json({ success: false }).status(500);
@@ -68,7 +69,7 @@ api.get("/shop", async (req, res) => {
   // res.json(shopResult);
 });
 api.post("/process", async (req, res) => {
-  // console.log("in api call");
+
   try {
     let processRes = await process(
       req.body.shop
@@ -83,9 +84,6 @@ api.post("/process", async (req, res) => {
   res.status(200).send("Process Addedd successfully");
 });
 api.post("/regform", async (req, res) => {
-  //res.json({serial: '123'})
-  // console.log("in api call");
-  // console.log("request :: ", req);
   try {
     let registrationRes = await registration(
       req.body.shop
@@ -95,7 +93,7 @@ api.post("/regform", async (req, res) => {
       req.body.serialNumber,
       req.body.tallyPrime
     );
-    // console.log("registration :: ", registrationRes);
+
   } catch (e) {
     console.log(e);
   }

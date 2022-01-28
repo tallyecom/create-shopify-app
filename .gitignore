@@ -2,3 +2,9 @@ node_modules
 .env
 .next
 .envbackup
+pages/firstprocess.js
+pages/billingwofree.js
+pages/billingwithfree.js
+pages/plandetails.csv
+pages/plandetails.json
+pages/processdetails.js

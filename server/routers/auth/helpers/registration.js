@@ -1,12 +1,12 @@
 const Shop = require("../../../models/shop");
 const nonceCreate = require("nonce")();
 
-const registration = async (shop, serialNum) => {
+const registration = async (shop, serialNum, isFreePlan) => {
   let nonce = nonceCreate();
   try {
     await Shop.updateOne(
       { shop: shop },
-      { shop: shop, serial: serialNum },
+      { shop: shop, serial: serialNum, isFreePlan: isFreePlan },
       { upsert: true }
     );
   } catch (error) {

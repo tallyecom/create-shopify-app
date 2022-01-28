@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+
 const processSchema = new Schema({
   id: { type: String, index: true, unique: true },
   date: Date,
@@ -10,6 +11,40 @@ const processSchema = new Schema({
   url: String,
   systemName: String,
 });
+
+const planLimitSchema = new Schema({
+  id: { type: String, index: true, unique: true },
+  name: String,
+  returnUrl: String,
+  lineItems: [{
+    plan: {
+      appRecurringPricingDetails: {
+        price: {
+          amount: Number, currencyCode: String
+        },
+        date: Date,
+        orderLimit: Number,
+        productLimit: Number,
+        imageLimit: Number,
+      }
+    }
+  }]
+})
+
+const appSubscriptionSchema = new Schema({
+  id: { type: String, index: true, unique: true },
+  name: String,
+  returnUrl: String,
+  lineItems: [{
+    plan: {
+      appRecurringPricingDetails: {
+        price: {
+          amount: Number, currencyCode: String
+        }, interval: String
+      }
+    }
+  }]
+})
 
 const shopSchema = new Schema({
   shop: { type: String, required: true },
@@ -32,6 +67,11 @@ const shopSchema = new Schema({
   webhooks: { type: Object, default: {} },
   info: { type: Object, default: {} },
   process: [processSchema],
+  isMonthlyPlan: { type: Boolean, default: false },
+  isOrderPlan: { type: Boolean, default: false },
+  isFreePlan: { type: Boolean, default: false },
+  appSubscription: [appSubscriptionSchema],
+  planLimits: [planLimitSchema],
   tallyPrime: { type: Boolean, default: false },
 });
 

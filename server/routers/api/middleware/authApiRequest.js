@@ -2,7 +2,7 @@ const crypto = require("crypto");
 
 //Middleware for verifying Api Requests
 const authApiRequest = (req, res, next) => {
-  // console.log('req ::',req);
+
   if (req.header("Authorization")) {
     const auth = req.header("Authorization");
     //Extracting the data
@@ -28,7 +28,7 @@ const authApiRequest = (req, res, next) => {
         payload.exp < cTime ||
         payload.nbf > cTime ||
         payload.iss.replace("https://", "").split(".")[0] !=
-          payload.dest.replace("https://", "").split(".")[0] ||
+        payload.dest.replace("https://", "").split(".")[0] ||
         payload.aud != SHOPIFY_API_KEY
       ) {
         return res.json({ error: "Token Verification Failed" });

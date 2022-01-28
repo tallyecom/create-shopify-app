@@ -52,9 +52,7 @@ function MyApp({ Component, pageProps, router }) {
 
   //Setting the shop param to window object, so that we can use this when we redirect to other pages of the app
   window.shop = router.query.shop;
-  // console.log(router.query.shop);
-  var fa = `frame-ancestors default-src 'self' https://${window.shop} https://admin.shopify.com;`;
-  // console.log(fa);
+  var fa = `frame-ancestors https://${window.shop} https://admin.shopify.com;`;
 
   return (
     <>
@@ -62,7 +60,7 @@ function MyApp({ Component, pageProps, router }) {
         <Head>
           <title>Shopify App</title>
           <meta charSet="utf-8" />
-          <meta http-equiv="refresh" content="180" />
+          <meta http-equiv="refresh" content="60" />
         </Head>
         <Provider config={config}>
           <AppProvider i18n={translations}>

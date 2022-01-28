@@ -5,6 +5,7 @@ import {
   FormLayout,
   TextField,
   Button,
+  DisplayText,
   Layout,
   Banner,
   Page,
@@ -12,6 +13,7 @@ import {
   Heading,
   Subheading,
   List,
+  Link,
   TextContainer,
   DataTable,
   Stack,
@@ -21,21 +23,40 @@ import {
   MediaCard,
   ButtonGroup,
 } from "@shopify/polaris";
-import Link from "next/link";
 import axios from "axios";
 import ReactPlayer from "react-player/lazy";
-// import YouTube from "react-youtube";
-
-// const img = "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg";
+// import BillingWOFree from "./billingwofree";
+// import BillingWithFree from "./billingwithfree"
+import { render } from "react-dom";
 
 const Index = () => {
+
+  const [installedDays, setInstalledDays] = useState("");
+  const [isPlanActive, setIsPlanActive] = useState(false);
+  const [planNearExp, setPlanNearExp] = useState(false);
+  const [isFreePlan, setIsFreePlan] = useState(false);
+  const [isOrderAddOnPlan, setIsOrderAddOnPlan] = useState(false);
+  const [planUsageDetails, setPlanUsageDetails] = useState([]);
+  const [changePlantoFree, setChangePlantoFree] = useState(false);
+  const [changePlantoOrder, setChangePlantoOrder] = useState(false);
+  const [changePlantoMonth, setChangePlantoMonth] = useState(false);
+  const [isMonthlyPlan, setIsMonthlyPlan] = useState(false);
+  const [isOrderPlan, setIsOrderPlan] = useState(false);
+  const [isProductAddOnPlan, setIsProductAddOnPlan] = useState(false);
+  const [isImageAddOnPlan, setIsImageAddOnPlan] = useState(false);
+  const [isProductPlan, setIsProductPlan] = useState(false);
+  const [productLimit, setProductLimit] = useState(0);
+  const [imageLimit, setImageLimit] = useState(0);
+  const [orderRecLimit, setOrderRecLimit] = useState(0);
+  const [orderDelLimit, setOrderDelLimit] = useState(0);
+  const [orderRetLimit, setOrderRetLimit] = useState(0);
   const [serialNum, setSerialNum] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  // const [data, setData] = useState(null);
   const [serial, setSerial] = useState("");
   const [process, setProcess] = useState([]);
   const [result, setResult] = useState([]);
+  const [listOfPlans, setListOfPlans] = useState([]);
   const [orderRec, setOrderRec] = useState(0);
   const [orderDel, setOrderDel] = useState(0);
   const [orderRet, setOrderRet] = useState(0);
@@ -47,64 +68,424 @@ const Index = () => {
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
+
   const [isPrime, setIsPrime] = useState(false);
   let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
   let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
   let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
   let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
 
+  function datediff(date1, date2, interval) {
+    var second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24, week = day * 7;
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+    var timediff = date2 - date1;
+    if (isNaN(timediff)) return NaN;
+    switch (interval) {
+      case "years": return date2.getFullYear() - date1.getFullYear();
+      case "months": return (
+        (date2.getFullYear() * 12 + date2.getMonth())
+        -
+        (date1.getFullYear() * 12 + date1.getMonth())
+      );
+      case "weeks": return Math.floor(timediff / week);
+      case "days": return Math.floor(timediff / day);
+      case "hours": return Math.floor(timediff / hour);
+      case "minutes": return Math.floor(timediff / minute);
+      case "seconds": return Math.floor(timediff / second);
+      default: return undefined;
+    }
+  }
+
+  function transpose(a) {
+    return Object.keys(a[0]).map(function (c) {
+      return a.map(function (r) { return r[c]; });
+    });
+  }
+  function PlanCard(props) {
+    const {
+      keyID,
+      planId,
+      isSelected,
+      title,
+      monthlyPrice,
+      annualPriceA,
+      annualPriceB,
+      orderPrice,
+      productPrice,
+      imagePrice,
+      numOrders,
+      numProducts,
+      numImages,
+    } = props;
+    const [isActive, setStatus] = React.useState(false);
+    const activator = (
+      <Button
+        onClick={() => setStatus(!isActive)}
+        primary
+        fullWidth={true}
+        disabled={isSelected}
+        size="large"
+      >
+        {isSelected ? "Current Plan" : "Select"}
+      </Button>
+    );
+    return (
+      <>
+        <Layout.Section key={keyID} secondary  >
+          {console.log(`${isPlanActive} ${planNearExp} ${orderRec}`)}
+          {/* if no plan is active & order received count = 0 */}
+          {!isPlanActive
+            ? <>
+              {orderRec === 0
+                ? <>
+                  {planId == 1
+                    ? <Heading element='h1'>Kindly Select a Plan</Heading>
+                    : <Heading element='h1'> .</Heading>}
+                </>
+                : null
+              }
+            </>
+            : null
+          }
+          {/* if no plan is active & order received count > 0 meaning there was an active plan earlier */}
+          {!isPlanActive
+            ? <>
+              {orderRec > 0
+                ? <>
+                  {planId == 2
+                    ? <Heading element='h1'>Kindly Select a Plan</Heading>
+                    : <Heading element='h1'> .</Heading>
+                  }
+                </>
+                : null
+              }
+            </>
+            : null
+          }
+          {isPlanActive
+            ? <>
+              {planNearExp
+                ? <>
+                  {planId == 2 ?
+                    <Heading element='h1'>Kindly Select a Plan</Heading>
+                    : <Heading element='h1'> .</Heading>}
+                </>
+                : null
+              }
+            </>
+            : null
+          }
+
+          <Card title={title} sectioned>
+            <div style={{ height: 170 }} >
+              {
+                monthlyPrice === 0 ?
+                  <>
+                    {productPrice != 0 ? <DisplayText size="large">${productPrice}/{numProducts} Products</DisplayText> : null}
+                    {orderPrice != 0 ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
+                    {imagePrice != 0 ? <DisplayText size="large">${imagePrice}/{numImages} Images</DisplayText> : null}
+                    {title == 'Free' ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
+                    <Stack>
+                      <Stack.Item fill>Maximum Number of Orders</Stack.Item>
+                      <Stack.Item>{numOrders}</Stack.Item>
+                    </Stack>
+                    <Stack>
+                      <Stack.Item fill>Maximum Number of Products</Stack.Item>
+                      <Stack.Item>{numProducts}</Stack.Item>
+                    </Stack>
+                    <Stack>
+                      <Stack.Item fill>Maximum Number of Images</Stack.Item>
+                      <Stack.Item>{numImages}</Stack.Item>
+                    </Stack>
+                    {title == 'Free' ? <p>Period: 1 month</p> : <p >Period : use at your convenience with Balance Carry Forward for all 3 Orders, Products & Images</p>}
+                    {title == 'Free' ? <p>Available only One Time</p> : null}
+                  </>
+                  :
+                  <>
+                    <DisplayText size="large">${monthlyPrice}/Month</DisplayText>
+                    <p >
+                      or ${annualPriceA}/month billed at ${annualPriceB} once per year
+                    </p>
+                    <Stack>
+                      <Stack.Item fill>Number of Orders</Stack.Item>
+                      <Stack.Item>Unlimited</Stack.Item>
+                    </Stack>
+                    <Stack>
+                      <Stack.Item fill>Number of Products</Stack.Item>
+                      <Stack.Item>Unlimited</Stack.Item>
+                    </Stack>
+                    <Stack>
+                      <Stack.Item fill>Number of Images</Stack.Item>
+                      <Stack.Item>Unlimited</Stack.Item>
+                    </Stack>
+                  </>
+              }
+              <div />
+            </div>
+            {planId == 1 ?
+              <>
+                <Button fullWidth primary size="large" disabled={orderRec > 0}>Select Free Plan</Button>
+                <Button fullWidth disabled>
+                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                </Button>
+              </> : null}
+            {planId == 2 ?
+              <>
+                <Button fullWidth primary size="large" >Select Order Based Plan</Button>
+                <Button fullWidth disabled>
+                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                </Button>
+              </> : null}
+            {planId == 3 ?
+              <>
+                {/* <Stack vertical={true}> */}
+                <Button fullWidth secondary>$550 / Year</Button>
+                <Button fullWidth primary>$50 / Month</Button>
+                {/* </Stack> */}
+                {/* <div>
+
+                                <Popover
+                                    active={isActive}
+                                    activator={activator}
+                                    onClose={() => setStatus(!isActive)}
+                                    preferredAlignment="center"
+                                >
+
+                                    <ActionList
+                                        items={[
+                                            {
+                                                content: "Purchase Monthly",
+                                                onAction: () => { }
+                                            },
+                                            {
+                                                content: "Purchase Annual",
+                                                onAction: () => { }
+                                            }
+                                        ]}
+                                    />
+                                </Popover>
+                            </div> */}
+              </>
+              : null}
+            {planId == 4 ?
+              <>
+                <Button fullWidth primary size="large" >Select Orders Add On</Button>
+                <Button fullWidth disabled>
+                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                </Button>
+              </> : null}
+            {planId == 5 ?
+              <>
+                <Button fullWidth primary size="large" >Select Products Add On</Button>
+                <Button fullWidth disabled>
+                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                </Button>
+              </> : null}
+            {planId == 6 ?
+              <>
+                <Button fullWidth primary size="large" >Select Images Add On</Button>
+                <Button fullWidth disabled>
+                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
+                </Button>
+              </> : null}
+          </Card>
+        </Layout.Section>
+      </>
+    );
+  }
+
   async function getData() {
+
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
-      // console.log(res);
-      // console.log(res.data);
-      // console.log(res.data.data);
-      // console.log(res.data.data.serial);
+      if (res) console.log(res.data.data);
+      if (res.data.data.isFreePlan) setIsFreePlan(res.data.data.isFreePlan)
+      if (res.data.data.isOrderPlan) setIsOrderPlan(res.data.data.isOrderPlan);
+      if (res.data.data.isMonthlyPlan) setIsMonthlyPlan(res.data.data.isMonthlyPlan);
+      console.log("Is free plan active :: ", res.data.data.isFreePlan)
+      var instOn = new Date(res.data.data.installedOn);
+      var dateDif = datediff(instOn, new Date(), 'days')
+      if (dateDif < 31) {
+        dateDif = datediff(instOn, new Date(), 'days');
+        setInstalledDays(dateDif, " Days");
+      }
+      if (dateDif >= 31 && dateDif < 365) {
+        dateDif = datediff(instOn, new Date(), 'months');
+        setInstalledDays(dateDif, " Months");
+      }
+      if (dateDif > 365) {
+        dateDif = datediff(instOn, new Date(), 'years');
+        setInstalledDays(dateDif, " Years");
+      }
+
       setSerial(res.data.data.serial);
       setIsPrime(res.data.data.isPrime);
       setUserAccessToken(res.data.data.accessToken);
-      // console.log(res.data.data.process);
       setProcess(res.data.data.process);
       var array = res.data.data.process
         ? res.data.data.process.map(
-            ({ date, type, processid, status, url, systemName, ip }) => {
-              return [date, type, processid, status, url, systemName, ip];
-            }
-          )
+          ({ date, type, processid, status, url, systemName, ip }) => {
+            return [date, type, processid, status, url, systemName, ip];
+          }
+        )
         : [];
-      // console.log("array :: ", array);
+
       setResult(array);
       setOrderRec(
         res.data.data.process.filter(function (e) {
           return e.type == "order" && e.status == "received";
         }).length
       );
+      setOrderRec(30);
+      // if (orderRec > 0) setPlanNearExp(false);
+      // setIsPlanActive(true);
+      // setPlanNearExp(true);
+      // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
       setOrderDel(
         res.data.data.process.filter(function (e) {
           return e.type == "order" && e.status == "delivered";
         }).length
       );
+      // setOrderDel(20)
       setOrderRet(
         res.data.data.process.filter(function (e) {
           return e.type == "order" && e.status == "returned";
         }).length
       );
+      // setOrderRet(1);
       setProduct(
         res.data.data.process.filter(function (e) {
           return e.type == "product";
         }).length
       );
+      // setProduct(50);
       setImage(
         res.data.data.process.filter(function (e) {
           return e.type == "image";
         }).length
       );
+      // setImage(150);
+      // setIsPlanActive(!setIsPlanActive);
     } catch (e) {
       setSerial(null);
       setProcess([]);
       setResult([]);
       console.log("ee : ", e);
     }
+    try {
+      const res = await axios.get("/api/plans?shop=" + shop);
+      if (res) console.log(res.data.data.planDetail);
+      if (isPlanActive) {
+        if (planNearExp) {
+          if (res) {
+            let planDetail = res.data.data.planDetail;
+            planDetail = planDetail.sort((a, b) => {
+              return a.id - b.id;
+            }).filter(plans => plans.name != 'Free');
+            setListOfPlans(planDetail);
+            console.log("List of Plans Filtered", planDetail);
+          }
+        }
+      }
+      if (!isPlanActive) {
+        console.log(orderRec === 0)
+        if (orderRec === 0) {
+          if (res) {
+
+            let planDetail = res.data.data.planDetail;
+            planDetail = planDetail.sort((a, b) => {
+              return a.id - b.id;
+            });
+            setListOfPlans(planDetail);
+            console.log("setting list of plans :: ", planDetail);
+          }
+        }
+      }
+
+      if (!isPlanActive) {
+        if (orderRec > 0) {
+          if (res) {
+            let planDetail = res.data.data.planDetail;
+            planDetail = planDetail.sort((a, b) => {
+              return a.id - b.id;
+            }).filter(plans => plans.name != 'Free');
+            setListOfPlans(planDetail);
+            console.log("List of Plans Filtered", planDetail);
+          }
+        }
+      }
+      // console.log(planArray);
+    } catch (e) {
+      console.log("errors while fatching plans ::", e)
+    }
+  }
+
+  function BillingPlansWoFree() {
+    if (listOfPlans) return (
+      <>
+        <Layout>
+          {listOfPlans.map(plan => (
+            <PlanCard
+              isSelected={plan.id == 2}
+              planId={plan.id}
+              key={`key_${plan.id}`}
+              title={plan.name}
+              orderPrice={plan.orderPrice}
+              productPrice={plan.productPrice}
+              imagePrice={plan.imagePrice}
+              numOrders={plan.numOrders}
+              numProducts={plan.numProducts}
+              numImages={plan.numImages}
+              monthlyPrice={plan.monthlyPrice}
+              annualPriceA={(plan.annualPrice / 12).toFixed(2)}
+              annualPriceB={plan.annualPrice.toString()}
+            />
+          ))}
+        </Layout>
+      </>
+    )
+  }
+  function BillingPlansWithFree() {
+
+    // const plans = listOfPlans
+    if (listOfPlans) return (
+      <>
+        <Layout>
+          {listOfPlans.map(plan => (
+            <PlanCard
+              isSelected={plan.id == 1}
+              planId={plan.id}
+              key={`key_${plan.id}`}
+              title={plan.name}
+              orderPrice={plan.orderPrice}
+              productPrice={plan.productPrice}
+              imagePrice={plan.imagePrice}
+              numOrders={plan.numOrders}
+              numProducts={plan.numProducts}
+              numImages={plan.numImages}
+              monthlyPrice={plan.monthlyPrice}
+              annualPriceA={(plan.annualPrice / 12).toFixed(2)}
+              annualPriceB={plan.annualPrice.toString()}
+            />
+          ))}
+        </Layout>
+      </>)
   }
 
   useEffect(() => {
@@ -114,7 +495,9 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  const handleSerialChange = useCallback((value) => setSerialNum(value), []);
+  const handleSerialChange = useCallback((value) => {
+    setSerialNum(value);
+  }, []);
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
   const handleFeatToggle = useCallback(() =>
     setFeatureOpen((featureOpen) => !featureOpen, [])
@@ -142,56 +525,107 @@ const Index = () => {
   };
 
   const handleSubmitSerial = async () => {
-    // console.log("isPrime :: ", isPrime);
+
     let errs = validate();
 
     setErrors(errs);
     setIsSubmitting(true);
 
-    if (serialNum % 9 === 0) {
-      // console.log({
-      //   shop: shop,
-      //   serialNumber: serialNum, tallyPrime: isPrime
-      // });
+    setChangePlantoMonth(false);
+    if (changePlantoMonth) {
+      console.log("Changing plan to Monthly Plan")
+      if (!isPlanActive) setIsPlanActive(true);
+      console.log(isPlanActive);
+      setIsMonthlyPlan(true);
+      setOrderRecLimit(0);
+      setProductLimit(0);
+      setImageLimit(0);
+      setChangePlantoMonth(false);
+    }
+    setChangePlantoFree(true);
+    console.log("Plan Changed to Free ::", changePlantoFree);
+    if (changePlantoFree) {
+      console.log("Changing plan to Free Plan")
+      if (!isPlanActive) setIsPlanActive(true);
+      console.log(isPlanActive);
+      setIsFreePlan(true);
+      setOrderRecLimit(90);
+      setProductLimit(90);
+      setImageLimit(90);
+      setChangePlantoFree(false);
+      console.log("Plan Changed to Non-Free for next round ::", changePlantoFree);
+    }
+    setChangePlantoOrder(false);
+    if (changePlantoOrder) {
+      console.log("Changing Plan to Order based Plan")
+      if (!isPlanActive) setIsPlanActive(true);
+      console.log(isPlanActive);
+      setIsOrderPlan(true);
+      setOrderRecLimit(orderRecLimit + 1000);
+      setProductLimit(productLimit + 1000);
+      setImageLimit(imageLimit + 3000);
+      setChangePlantoOrder(false);
+    }
+    setIsProductAddOnPlan(false)
+    if (isProductAddOnPlan) {
+      console.log("Changing plan to product add on")
+      if (!isPlanActive) setIsPlanActive(true);
+      console.log(isPlanActive);
+      setOrderRecLimit(0);
+      setProductLimit(productLimit + 1000);
+      setImageLimit(0);
+    }
+    setIsImageAddOnPlan(false)
+    if (isImageAddOnPlan) {
+      console.log("Changing plan to image add on")
+      if (!isPlanActive) setIsPlanActive(true);
+      console.log(isPlanActive);
+      setOrderRecLimit(0);
+      setProductLimit(0);
+      setImageLimit(imageLimit + 3000);
+    }
+    setIsOrderAddOnPlan(false);
+    if (isOrderAddOnPlan) {
+      console.log("Changing plan to Order add on")
+      if (!isPlanActive) setIsPlanActive(true);
+      console.log(isPlanActive);
+      setOrderRecLimit(orderRecLimit + 1000);
+      setProductLimit(0);
+      setImageLimit(0);
+    }
+    setPlanUsageDetails([
+      isPlanActive,
+      planNearExp,
+      isFreePlan,
+      isOrderPlan,
+      isMonthlyPlan,
+      orderRecLimit,
+      orderRec,
+      orderDelLimit,
+      orderDel,
+      orderRetLimit,
+      orderRet,
+      productLimit,
+      product,
+      imageLimit,
+      image])
+    console.log("Plan Usage Details :: ", planUsageDetails);
 
+    console.log("with active Plan :: ", isPlanActive);
+    console.log("Plan Near Expiry :: ", planNearExp);
+
+    if (serialNum % 9 === 0) {
       try {
         axios
           .post("/api/regForm", {
             shop: shop,
             serialNumber: serialNum,
             tallyPrime: isPrime,
+            isFreePlan: isFreePlan,
           })
           .catch((err) => {
             console.log("err: ", err);
           });
-      } catch (e) {
-        console.log("e ::", e);
-      }
-      let fileName;
-      let fn;
-      if (isPrime) {
-        fileName = "/api/TCP?name=TPSAPI.tcp&shop=" + shop;
-        fn = "TPSAPI.tcp";
-      } else {
-        fileName = "/api/TCP?name=TESAPI.tcp&shop=" + shop;
-        fn = "TESAPI.tcp";
-      }
-      async function downloadFile(file) {
-        axios
-          .get(`${file}/download`, {
-            responseType: "blob", // had to add this one here
-          })
-          .then((response) => {
-            const content = response.headers["content-type"];
-            download(response.data, fn, content);
-          })
-          .catch((error) => console.log(error));
-      }
-
-      try {
-        console.log(fileName);
-        // axios.get(fileName);
-        await downloadFile(fileName);
       } catch (e) {
         console.log("e ::", e);
       }
@@ -218,13 +652,13 @@ const Index = () => {
     }
 
     try {
-      console.log(fileName);
-      // axios.get(fileName);
       await downloadFile(fileName);
     } catch (e) {
       console.log("e ::", e);
     }
   };
+
+  const plans = listOfPlans;
 
   return (
     <Page>
@@ -240,6 +674,31 @@ const Index = () => {
                   also simplifying product uploads to Shopify.
                 </p>
               </Banner>
+              <Stack>
+                <Stack.Item fill>
+                  <Heading element="h1">Has Active Plan : </Heading>
+                </Stack.Item>
+                <Stack.Item>
+                  <Heading element="h3">{isPlanActive ? 'Yes' : 'No'}</Heading>
+                </Stack.Item>
+                <Stack.Item fill>
+                  <Heading element="h1">Plan Near Expiry : </Heading>
+                </Stack.Item>
+                <Stack.Item>
+                  <Heading element='h3'>{planNearExp ? 'Yes' : 'No'}</Heading>
+                </Stack.Item>
+              </Stack>
+              <Stack>
+                <Stack.Item fill>
+                  <Heading element='h1'>Active Plan :</Heading>
+                </Stack.Item>
+                <Stack.Item>
+                  {isFreePlan ? 'Free' : null}
+                  {isMonthlyPlan ? 'Periodic' : null}
+                  {isOrderPlan ? 'Order Based' : null}
+                  None
+                </Stack.Item>
+              </Stack>
             </Layout.Section>
             {serial ? (
               <>
@@ -249,86 +708,75 @@ const Index = () => {
                       <Heading element="h1">Tally.ERP9 / Tally Prime :</Heading>
                     </Stack.Item>
                     <Stack.Item>
-                      <Badge status="info">
+                      <Heading element='h3'>
                         {isPrime ? "Tally Prime" : "Tally.ERP9"}
-                      </Badge>
+                      </Heading>
                     </Stack.Item>
                   </Stack>
-                </Layout.Section>
-                <Layout.Section>
                   <Stack>
                     <Stack.Item fill>
                       <Heading element="h1">Serial Number : </Heading>
                     </Stack.Item>
                     <Stack.Item>
-                      <Badge status="info">{serial}</Badge>
+                      <Heading element='h3'>{serial}</Heading>
                     </Stack.Item>
                   </Stack>
-                </Layout.Section>
-                <Layout.Section>
                   <Stack>
                     <Stack.Item fill>
                       <Heading element="h1">Access Token : </Heading>
                     </Stack.Item>
                     <Stack.Item>
-                      <Badge status="info">{userAccessToken}</Badge>
+                      <Heading element='h3'>{userAccessToken}</Heading>
                     </Stack.Item>
                   </Stack>
                 </Layout.Section>
               </>
-            ) : null}
-            {product || image || orderRec || orderDel || orderRet ? (
+            ) : (
               <>
-                <Layout.Section>
-                  <Heading element="h1">
-                    Data Synchronised with Tally till Date
-                  </Heading>
-                  {product ? (
-                    <>
-                      <Subheading element="h3">Products Uploaded : </Subheading>
-                      <p>{product}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {image ? (
-                    <>
-                      <Subheading element="h3">Images Uploaded : </Subheading>
-                      <p>{image}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {orderRec ? (
-                    <>
-                      <Subheading element="h3">Orders Received : </Subheading>
-                      <p>{orderRec}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {orderDel ? (
-                    <>
-                      <Subheading element="h3">Orders Delivered : </Subheading>
-                      <p>{orderDel}</p>
-                      <br />
-                    </>
-                  ) : null}
-                  {orderRec ? (
-                    <>
-                      <Subheading element="h3">Orders Returned : </Subheading>
-                      <p>{orderRet}</p>
-                      <br />
-                    </>
-                  ) : null}
-
-                  <Layout sectioned>
-                    <Button
-                      onClick={handleToggle}
-                      ariaExpanded={open || !serial}
-                      ariaControls="basic-collapsible"
-                    >
-                      Show Processed Data
-                    </Button>
+                <Form
+                  onSubmit={handleSubmitSerial}
+                  title="Registration"
+                  preferredAlignment={screenLeft}
+                >
+                  <FormLayout>
+                    <Stack>
+                      <Stack.Item fill>
+                        <Heading element="h1">
+                          Select version of Tally you are using :
+                        </Heading>
+                      </Stack.Item>
+                      <Stack.Item>
+                        {isPrime ? (
+                          <Button pressed={isPrime} onClick={handleIsPrime}>Tally Prime</Button>
+                        ) : (
+                          <Button pressed={isPrime} onClick={handleIsPrime}>Tally.ERP9</Button>
+                        )}
+                      </Stack.Item>
+                    </Stack>
+                    <p>
+                      download latest version of Tally Prime from
+                      <Link url='https://tallysolutions.com/download' external={true}> https://tallysolutions.com/download</Link>
+                    </p>
+                    <Stack>
+                      <Stack.Item fill>
+                        <Heading element="h1">
+                          Test App in Educational Mode
+                        </Heading>
+                      </Stack.Item>
+                      <Stack.Item>
+                        {edMode ? (
+                          <Button pressed={edMode} onClick={handleEdButton}>
+                            True
+                          </Button>
+                        ) : (
+                          <Button pressed={edMode} onClick={handleEdButton}>
+                            False
+                          </Button>
+                        )}
+                      </Stack.Item>
+                    </Stack>
                     <Collapsible
-                      open={open}
+                      open={!edMode}
                       id="basic-collapsible"
                       transition={{
                         duration: "500ms",
@@ -336,163 +784,216 @@ const Index = () => {
                       }}
                       expandOnPrint
                     >
-                      <DataTable
-                        columnContentTypes={[
-                          // "string",
-                          "date",
-                          "string",
-                          "string",
-                          "string",
-                          "string",
-                          "string",
-                          "string",
-                        ]}
-                        headings={[
-                          // "id",
-                          "Date",
-                          "Type",
-                          "ProcessID",
-                          "Status",
-                          "URL",
-                          "SystemName",
-                          "IP",
-                        ]}
-                        rows={result}
+                      <TextField
+                        value={serialNum}
+                        onChange={handleSerialChange}
+                        label="Tally Serial Number"
+                        type="number"
+                        maxlength={9}
+                        minlength={9}
+                        min="700000000"
+                        max="800000000"
                       />
                     </Collapsible>
-                  </Layout>
-                </Layout.Section>
+                    <Button primary={true} fullWidth={true} submit>
+                      Submit
+                    </Button>
+                  </FormLayout>
+                </Form>
+
               </>
-            ) : null}
+            )}
+            <Layout.Section>
+              {isPlanActive && (product || image || orderRec || orderDel || orderRet) ? (
+                <>
+                  <Layout.Section>
+                    <Heading element="h1">
+                      Data Synchronised with Tally till Date
+                    </Heading>
+                    <Stack.Item fill>
+                      <Heading element='h5'>Limits</Heading>
+                    </Stack.Item>
+                    {/* <Stack.Item>.</Stack.Item> */}
+                    <Stack>
+                      <Stack.Item fill>Products Limit :</Stack.Item>
+                      <Stack.Item>{isMonthlyPlan ? "Unlimited" : productLimit}</Stack.Item>
+                    </Stack>
+                    <Stack>
+                      <Stack.Item fill>Images Limit :</Stack.Item>
+                      <Stack.Item>{isMonthlyPlan ? "Unlimited" : imageLimit}</Stack.Item>
+                    </Stack>
+                    <Stack>
+                      <Stack.Item fill>Orders Limit :</Stack.Item>
+                      <Stack.Item>{isMonthlyPlan ? "Unlimited" : orderRecLimit}</Stack.Item>
+                    </Stack>
+                    <Stack>
+                      <Stack.Item fill>
+                        <Heading element='h5'>Consumption</Heading>
+                      </Stack.Item>
+                      {/* <Stack.Item>.</Stack.Item> */}
+                    </Stack>
+                    {product ? (
+                      <>
+                        <Stack>
+                          <Stack.Item fill>Products Uploaded :</Stack.Item>
+                          <Stack.Item>{product}</Stack.Item>
+                        </Stack>
+                      </>
+                    ) : null}
+                    {image ? (
+                      <>
+                        <Stack>
+                          <Stack.Item fill>Images Uploaded :</Stack.Item>
+                          <Stack.Item>{image}</Stack.Item>
+                        </Stack>
+                      </>
+                    ) : null}
+                    {orderRec ? (
+                      <>
+                        <Stack>
+                          <Stack.Item fill>Orders Processed : </Stack.Item>
+                          <Stack.Item>{orderRec}</Stack.Item>
+                        </Stack>
+                      </>
+                    ) : null}
+                    {orderDel ? (
+                      <>
+                        <Stack>
+                          <Stack.Item fill>Orders Delivered : </Stack.Item>
+                          <Stack.Item>{orderDel}</Stack.Item>
+                        </Stack>
+                      </>
+                    ) : null}
+                    {orderRec ? (
+                      <>
+                        <Stack>
+                          <Stack.Item fill>Orders Returned : </Stack.Item>
+                          <Stack.Item>{orderRet}</Stack.Item>
+                        </Stack>
+                      </>
+                    ) : null}
+                    <Layout sectioned>
+                      <Button
+                        onClick={handleToggle}
+                        ariaExpanded={open || !serial}
+                        ariaControls="basic-collapsible"
+                      >
+                        Show Processed Data
+                      </Button>
+                      <Collapsible
+                        open={open}
+                        id="basic-collapsible"
+                        transition={{
+                          duration: "500ms",
+                          timingFunction: "ease-in-out",
+                        }}
+                        expandOnPrint
+                      >
+                        <DataTable
+                          columnContentTypes={[
+                            // "string",
+                            "date",
+                            "string",
+                            "string",
+                            "string",
+                            "string",
+                            "string",
+                            "string",
+                          ]}
+                          headings={[
+                            // "id",
+                            "Date",
+                            "Type",
+                            "ProcessID",
+                            "Status",
+                            "URL",
+                            "SystemName",
+                            "IP",
+                          ]}
+                          rows={result}
+                        />
+                      </Collapsible>
+                    </Layout>
+                  </Layout.Section>
+                </>
+              ) : null}
+              {/* <Layout>
+                <Layout.Section>
+                  <DataTable
+                    columnContentTypes={[
+                      "Number",
+                      "Logical",
+                      "String",
+                      "String",
+                      "Number",
+                      "Number",
+                      "Number",
+                      "Number",
+                      "Number",
+                      "Number",
+                      "Number",
+                      "Number",
+                    ]}
+                    headings={[
+                      "id",
+                      "isSelected",
+                      "keyId",
+                      "Plan Name",
+                      "per Month",
+                      "per Year",
+                      "per Order",
+                      "per Product",
+                      "per Image",
+                      "Number of Orders",
+                      "Number of Products",
+                      "Number of Images"
+                    ]}
+                    rows={listOfPlans}
+                  />
+                </Layout.Section>
+              </Layout> */}
+
+              {/* <Layout>
+                {console.log("Plans List :: ", listOfPlans)}
+                {console.log("Plans List Mapping :: ", listOfPlans.map(Object.values))}
+                {listOfPlans.map((
+                  <PlanCard
+                    isSelected={Object.id == "1"}
+                    planId={Object.id}
+                    key={`key_${Object.id}`}
+                    title={Object.name}
+                    orderPrice={Object.orderPrice}
+                    productPrice={Object.productPrice}
+                    imagePrice={Object.imagePrice}
+                    numOrders={Object.numOrders}
+                    numProducts={Object.numProducts}
+                    numImages={Object.numImages}
+                    monthlyPrice={Object.monthlyPrice}
+                    annualPriceA={(Object.annualPrice / 12).toFixed(2)}
+                    annualPriceB={Object.annualPrice}
+                  />
+                ))}
+              </Layout> */}
+
+              {!isPlanActive ? <>{orderRec === 0 ? BillingPlansWithFree() : null}</> : null}
+
+              {!isPlanActive ? <>{orderRec > 0 ? BillingPlansWoFree() : null}</> : null}
+
+              {isPlanActive ?
+                <>{planNearExp
+                  ? <>
+                    <Heading element='h1'>Your Usage is about to reach the limits</Heading>
+                    {BillingPlansWoFree()}
+                  </>
+                  : null
+                }
+                </>
+                : null
+              }
+            </Layout.Section>
           </Layout>
         </Card.Section>
       </Card>
-      {serial ? null : (
-        <Card>
-          <Layout.Section id="registration form" title="Registration Form">
-            <Card.Section>
-              <TextContainer>
-                <Heading element="p">
-                  This app requires additional setup and a TCP file compiled on
-                  your Tally Serial Number, Please fill up the form Below.
-                </Heading>
-                <a>
-                  (a valid serial number starts with 7, is 9 digits long, &
-                  total of digits is 9 for example 700000002, 700000011 ...
-                  799999992)
-                </a>
-              </TextContainer>
-              <Form
-                onSubmit={handleSubmitSerial}
-                // preventDefault={true}
-                title="Registration"
-                // method="POST"
-              >
-                <FormLayout>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">
-                        Please select version of Tally you are using :
-                      </Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      {isPrime ? (
-                        <Button pressed={isPrime} onClick={handleIsPrime}>
-                          Tally Prime
-                        </Button>
-                      ) : (
-                        <Button pressed={isPrime} onClick={handleIsPrime}>
-                          Tally.ERP9
-                        </Button>
-                      )}
-                      {/* <ButtonGroup segmented> */}
-                      {/* <Button pressed={isPrime} onClick={handleSecondIsPrime}>
-                          Tally Prime
-                        </Button> */}
-                      {/* </ButtonGroup> */}
-                    </Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>
-                      <p>
-                        download latest version of Tally Prime from
-                        https://tallysolutions.com/download
-                      </p>
-                    </Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">
-                        Test App in Educational Mode
-                      </Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      {/* <ButtonGroup segmented> */}
-
-                      {edMode ? (
-                        <Button pressed={edMode} onClick={handleEdButton}>
-                          True
-                        </Button>
-                      ) : (
-                        <Button pressed={edMode} onClick={handleEdButton}>
-                          False
-                        </Button>
-                      )}
-
-                      {/* <Button
-                          pressed={!edMode}
-                          onClick={handleSecondEdButton}
-                        >
-                          False
-                        </Button> */}
-                      {/* </ButtonGroup> */}
-                    </Stack.Item>
-                  </Stack>
-                  <Collapsible
-                    open={!edMode}
-                    id="basic-collapsible"
-                    transition={{
-                      duration: "500ms",
-                      timingFunction: "ease-in-out",
-                    }}
-                    expandOnPrint
-                  >
-                    <TextField
-                      value={serialNum}
-                      onChange={handleSerialChange}
-                      label="Tally Serial Number"
-                      type="number"
-                      maxlength={9}
-                      minlength={9}
-                      min="700000000"
-                      max="800000000"
-                    />
-                  </Collapsible>
-                  <Button primary={true} fullWidth={true} submit>
-                    Submit
-                  </Button>
-                </FormLayout>
-              </Form>
-              <Card.Section>
-                {/* <TextContainer>
-                  <a>
-                    Click on the button below and open the console to view the
-                    data returned from server using authenticated api call.{" "}
-                  </a>
-                  <Link href={`/api2?shop=${window.shop}`}>
-                    <a>Another API Demo Page</a>
-                  </Link>
-                  <br />
-                  <Link href={`/introduction?shop=${window.shop}`}>
-                    <a>Introduction</a>
-                  </Link>
-                  <br />
-                </TextContainer> */}
-              </Card.Section>
-            </Card.Section>
-          </Layout.Section>
-        </Card>
-      )}
       <Card>
         <Layout.Section id="features">
           <Card.Section>
@@ -633,7 +1134,7 @@ const Index = () => {
           </Layout>
         </Card.Section>
       </Card>
-    </Page>
+    </Page >
   );
 };
 

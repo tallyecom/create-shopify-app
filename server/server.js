@@ -21,9 +21,13 @@ https://{{hostname}}/webhooks
 
 const express = require("express");
 const Fs = require("fs");
+const { graphqlHTTP } = require("express-graphql");
+const schema = require('./schema/schema')
+const cors = require('cors');
 const Path = require("path");
 const nextapp = require("next");
 const server = express();
+
 // const bodyParser = require("body-parser");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
@@ -58,18 +62,14 @@ server.get("/_next/*", (req, res) => {
 server.use(function (req, res, next) {
   var shopurl;
   var fa;
-  // console.log(req.query.shop !== "");
+
   if (req.query.shop !== "") {
     shopurl = req.query.shop;
     fa = `frame-ancestors ${shopurl} admin.shopify.com`;
-    // console.log(shopurl);
-    // console.log(fa);
-    res.setHeader(
-      "Content-Security-Policy",
-      fa
-      // `frame-ancestors ${shopurl} https://admin.shopify.com`
-    );
-    res.setHeader("Access-Control-Allow-Origin", "https://www.youtube.com/*");
+    res.setHeader("Content-Security-Policy", fa);
+    // res.setHeader("Accept-CH", "Sec-CH-UA-Full-Version-List");
+    res.setHeader("Access-Control-Allow-Origin", "www.youtube.com");
+    // res.setHeader("Access-Control-Allow-Origin", "https://8316-103-216-215-179.ngrok.io/*");
   }
   next();
 });
@@ -94,6 +94,11 @@ server.get("*", checkShop, (req, res) => {
   return handle(req, res);
 });
 
+// graphql setup
+server.use('/graphql', graphqlHTTP({
+  schema, graphiql: true
+}))
+
 app
   .prepare()
   .then(() => {
@@ -105,3 +110,4 @@ app
     console.error(ex.stack);
     process.exit(1);
   });
+
