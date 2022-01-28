@@ -221,6 +221,7 @@ const Index = () => {
             </div>
             {planId == 1
               ? <>
+                {console.log(listOfPlans)}
                 <input hidden id="1" value={objID} />
                 <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={handleFreePlan(listOfPlans)}>Select Free Plan</Button>
                 <Button fullWidth disabled>
@@ -502,18 +503,22 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  const handleFreePlan = useCallback((listOfPlans) => {
-    let data = listOfPlans.map(plans => plans);
-    console.log(data);
-    // if (data) {
-    //   console.log("Plan Details before filtering :: ", data);
-    //   let id = document.getElementById('1').value
-    //   console.log(id);
-    //   console.log("filtered Plan Detail :: ", data.length);
-    //   let filtplan = data.filter(plan => plan._id == id)
-    //   if (filtplan) console.log(data);
-    // }
-  }, []);
+  function handleFreePlan(plan) {
+    console.log(plan);
+  }
+
+  // const handleFreePlan = useCallback((listOfPlans) => {
+  //   let data = listOfPlans.map(plans => plans);
+  //   console.log(data);
+  //   // if (data) {
+  //   //   console.log("Plan Details before filtering :: ", data);
+  //   //   let id = document.getElementById('1').value
+  //   //   console.log(id);
+  //   //   console.log("filtered Plan Detail :: ", data.length);
+  //   //   let filtplan = data.filter(plan => plan._id == id)
+  //   //   if (filtplan) console.log(data);
+  //   // }
+  // }, []);
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
   const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
   const handleMonthlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
