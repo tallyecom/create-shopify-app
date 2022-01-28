@@ -504,7 +504,7 @@ const Index = () => {
   }, []);
 
   function handleFreePlan(plan) {
-    console.log(plan);
+    console.log("called from plan change :: ", plan);
   }
 
   // const handleFreePlan = useCallback((listOfPlans) => {
