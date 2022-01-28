@@ -233,7 +233,7 @@ const Index = () => {
               {planId == 2
                 ? <>
                   <input hidden id="2" value={objID} />
-                  <Button fullWidth primary size="large" onClick={() => handleOrderPlan}>Select Order Based Plan</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleOrderPlan(listOfPlans, objID)}>Select Order Based Plan</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -244,14 +244,14 @@ const Index = () => {
               {planId == 3
                 ? <>
                   <input hidden id="3" value={objID} />
-                  <Button fullWidth secondary onClick={() => handleYearlyPlan}>$550 / Year</Button>
-                  <Button fullWidth primary onClick={() => handleMonthlyPlan}>$50 / Month</Button>
+                  <Button fullWidth secondary onClick={() => handleYearlyPlan(listOfPlans, objID)}>$550 / Year</Button>
+                  <Button fullWidth primary onClick={() => handleMonthlyPlan(listOfPlans, objID)}>$50 / Month</Button>
                 </>
                 : null}
               {planId == 4
                 ? <>
                   <input hidden id="4" value={objID} />
-                  <Button fullWidth primary size="large" onClick={() => handleOrdersAddOn}>Select Orders Add On</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleOrdersAddOn(listOfPlans, objID)}>Select Orders Add On</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -262,7 +262,7 @@ const Index = () => {
               {planId == 5
                 ? <>
                   <input hidden id="5" value={objID} />
-                  <Button fullWidth primary size="large" onClick={() => handleProductsAddOn} >Select Products Add On</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleProductsAddOn(listOfPlans, objID)} >Select Products Add On</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -274,7 +274,7 @@ const Index = () => {
               {planId == 6
                 ? <>
                   <input hidden id="6" value={objID} />
-                  <Button fullWidth primary size="large" onClick={() => handleImagesAddOn} >Select Images Add On</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleImagesAddOn(listOfPlans, objID)} >Select Images Add On</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -504,30 +504,39 @@ const Index = () => {
   }, []);
 
   function handleFreePlan(plan, id) {
-    // console.log("called from plan change :: ", plan);
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
     console.log(filtPlan);
   }
 
-  // const handleFreePlan = useCallback((listOfPlans) => {
-  //   let data = listOfPlans.map(plans => plans);
-  //   console.log(data);
-  //   // if (data) {
-  //   //   console.log("Plan Details before filtering :: ", data);
-  //   //   let id = document.getElementById('1').value
-  //   //   console.log(id);
-  //   //   console.log("filtered Plan Detail :: ", data.length);
-  //   //   let filtplan = data.filter(plan => plan._id == id)
-  //   //   if (filtplan) console.log(data);
-  //   // }
-  // }, []);
-  const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
-  const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
-  const handleMonthlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
-  const handleOrdersAddOn = useCallback(() => { console.log(document.getElementById('4').value); }, []);
-  const handleProductsAddOn = useCallback(() => { console.log(document.getElementById('5').value); }, []);
-  const handleImagesAddOn = useCallback(() => { console.log(document.getElementById('6').value); }, []);
+  function handleOrderPlan(plan, id) {
+    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
+    console.log(filtPlan);
+  }
 
+  function handleYearlyPlan(plan, id) {
+    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
+    console.log(filtPlan);
+  }
+
+  function handleMonthlyPlan(plan, id) {
+    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
+    console.log(filtPlan);
+  }
+
+  function handleOrdersAddOn(plan, id) {
+    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
+    console.log(filtPlan);
+  }
+
+  function handleProductsAddOn(plan, id) {
+    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
+    console.log(filtPlan);
+  }
+
+  function handleImagesAddOn(plan, id) {
+    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
+    console.log(filtPlan);
+  }
 
   const handleSerialChange = useCallback((value) => {
     setSerialNum(value);
