@@ -513,9 +513,9 @@ const Index = () => {
   }
 
   useEffect(() => {
-    const intialSetup = () => {
-      getData();
-      getPlans();
+    const intialSetup = async () => {
+      await getData();
+      await getPlans();
     };
     intialSetup();
   }, []);
