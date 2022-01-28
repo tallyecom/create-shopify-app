@@ -222,7 +222,7 @@ const Index = () => {
             {planId == 1
               ? <>
                 <input id="1" value={objID} />
-                <Button fullWidth primary size="large" value={objID} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
+                <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -233,7 +233,7 @@ const Index = () => {
             {planId == 2
               ? <>
                 <input id="2" value={objID} />
-                <Button fullWidth primary size="large" value={objID} onClick={handleOrderPlan}>Select Order Based Plan</Button>
+                <Button fullWidth primary size="large" onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -251,7 +251,7 @@ const Index = () => {
             {planId == 4
               ? <>
                 <input id="4" value={objID} />
-                <Button fullWidth primary size="large" value={objID} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
+                <Button fullWidth primary size="large" onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -262,7 +262,7 @@ const Index = () => {
             {planId == 5
               ? <>
                 <input id="5" value={objID} />
-                <Button fullWidth primary size="large" value={objID} onClick={handleProductsAddOn} >Select Products Add On</Button>
+                <Button fullWidth primary size="large" onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -274,7 +274,7 @@ const Index = () => {
             {planId == 6
               ? <>
                 <input id="6" value={objID} />
-                <Button fullWidth primary size="large" value={objID} onClick={handleImagesAddOn} >Select Images Add On</Button>
+                <Button fullWidth primary size="large" onClick={handleImagesAddOn} >Select Images Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -384,7 +384,6 @@ const Index = () => {
     // if (orderRec !== 0) setPlanNearExp(false);
     // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
     try {
-
       const res = await axios.get("/api/plans?shop=" + shop);
       // if (res) console.log(res.data.data.planDetail);
       // console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry", planNearExp)
