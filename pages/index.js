@@ -502,7 +502,7 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  const handleFreePlan = useCallback(() => {
+  const handleFreePlan = useCallback((listOfPlans) => {
     let id = document.getElementById('1').value
     console.log(id);
     console.log("Plan Details :: ", listOfPlans.length);
