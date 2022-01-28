@@ -352,6 +352,18 @@ const Index = () => {
           return e.type == "order" && e.status == "received";
         }).length
       );
+
+      // setIsPlanActive(true);
+      // setIsPlanActive(!setIsPlanActive);
+      // setPlanNearExp(true);
+      setOrderRec(30);
+      // setOrderDel(20)
+      // setOrderRet(1);
+      // setProduct(50);
+
+      // if (orderRec !== 0) setPlanNearExp(false);
+      // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
+
       setOrderDel(
         res.data.data.process.filter(function (e) {
           return e.type == "order" && e.status == "delivered";
@@ -372,7 +384,6 @@ const Index = () => {
           return e.type == "image";
         }).length
       );
-      // setIsPlanActive(!setIsPlanActive);
     } catch (e) {
       setSerial(null);
       setProcess([]);
@@ -395,7 +406,7 @@ const Index = () => {
         }
       }
       console.log(orderRec)
-      if (orderRec == 0) {
+      if (orderRec === 0) {
         if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
@@ -408,7 +419,7 @@ const Index = () => {
         }
       }
 
-      if (orderRec != 0) {
+      if (orderRec !== 0) {
         if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
@@ -489,17 +500,6 @@ const Index = () => {
 
   useEffect(() => {
     const intialSetup = async () => {
-      // setIsPlanActive(true);
-      // setPlanNearExp(true);
-      setOrderRec(30);
-      // setOrderDel(20)
-      // setOrderRet(1);
-      // setProduct(50);
-      // setImage(150);
-
-      // if (orderRec !== 0) setPlanNearExp(false);
-      // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
-
       await getData();
     };
     intialSetup();
