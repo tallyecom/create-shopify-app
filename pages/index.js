@@ -221,7 +221,7 @@ const Index = () => {
             </div>
             {planId == 1 ?
               <>
-                {console.log(id)}
+
                 <Button fullWidth primary size="large" value={id} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
