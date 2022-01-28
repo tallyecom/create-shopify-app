@@ -221,9 +221,8 @@ const Index = () => {
               </div>
               {planId == 1
                 ? <>
-                  {console.log(listOfPlans)}
                   <input hidden id="1" value={objID} />
-                  <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={() => handleFreePlan(listOfPlans)}>Select Free Plan</Button>
+                  <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={() => handleFreePlan(listOfPlans, objID)}>Select Free Plan</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -234,7 +233,7 @@ const Index = () => {
               {planId == 2
                 ? <>
                   <input hidden id="2" value={objID} />
-                  <Button fullWidth primary size="large" onClick={handleOrderPlan}>Select Order Based Plan</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleOrderPlan}>Select Order Based Plan</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -245,14 +244,14 @@ const Index = () => {
               {planId == 3
                 ? <>
                   <input hidden id="3" value={objID} />
-                  <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
-                  <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
+                  <Button fullWidth secondary onClick={() => handleYearlyPlan}>$550 / Year</Button>
+                  <Button fullWidth primary onClick={() => handleMonthlyPlan}>$50 / Month</Button>
                 </>
                 : null}
               {planId == 4
                 ? <>
                   <input hidden id="4" value={objID} />
-                  <Button fullWidth primary size="large" onClick={handleOrdersAddOn}>Select Orders Add On</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleOrdersAddOn}>Select Orders Add On</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -263,7 +262,7 @@ const Index = () => {
               {planId == 5
                 ? <>
                   <input hidden id="5" value={objID} />
-                  <Button fullWidth primary size="large" onClick={handleProductsAddOn} >Select Products Add On</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleProductsAddOn} >Select Products Add On</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -275,7 +274,7 @@ const Index = () => {
               {planId == 6
                 ? <>
                   <input hidden id="6" value={objID} />
-                  <Button fullWidth primary size="large" onClick={handleImagesAddOn} >Select Images Add On</Button>
+                  <Button fullWidth primary size="large" onClick={() => handleImagesAddOn} >Select Images Add On</Button>
                   <Button fullWidth disabled>
                     {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                     {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -504,8 +503,10 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  function handleFreePlan(plan) {
+  function handleFreePlan(plan, id) {
     console.log("called from plan change :: ", plan);
+    let filtPlan = plan.filter(plan => plan._id == id)
+    console.log(filtPlan);
   }
 
   // const handleFreePlan = useCallback((listOfPlans) => {
