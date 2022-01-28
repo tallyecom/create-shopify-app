@@ -503,8 +503,8 @@ const Index = () => {
   }, []);
 
   const handleFreePlan = useCallback(() => {
-    console.log(document.getElementById('1').value);
     let id = document.getElementById('1').value
+    console.log(id);
     try {
       const res = axios.get(`/api/plans/${id}?shop=` + shop);
       console.log(res);
