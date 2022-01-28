@@ -4,6 +4,7 @@ const registration = require("./helpers/registration");
 const process = require("./helpers/process");
 const serialDetail = require("./helpers/serialdetail");
 const plan = require("./helpers/plan");
+const planByID = require("./helpers/planbyid");
 const Path = require("path");
 
 //api authentication
@@ -29,7 +30,7 @@ api.get("/TCP", function (req, res, next) {
 });
 
 api.get("/plans", async (req, res) => {
-  console.log(req.url);
+  // console.log(req.url);
   try {
     var shop = req.query.shop
       .replace("https://", "")
@@ -46,20 +47,22 @@ api.get("/plans", async (req, res) => {
 });
 
 api.get("/plans/:_id", async (req, res) => {
+  console.log(req.url);
   console.log(req.params._id);
-  // try {
-  //   var shop = req.query.shop
-  //     .replace("https://", "")
-  //     .replace("http://", "")
-  //     .split(".")[0];
-  //   var planDetail = await plan({});
-  //   console.log({ planDetail });
-  //   let data = { planDetail }
-  //   res.json({ success: true, data }).status(200);
-  // } catch (e) {
-  //   console.log(e);
-  //   res.json({ success: false }).status(500);
-  // }
+  try {
+    let id = req.params._id
+    var shop = req.query.shop
+      .replace("https://", "")
+      .replace("http://", "")
+      .split(".")[0];
+    var planDetail = await planByID({ id });
+    console.log({ planDetail });
+    let data = { planDetail }
+    res.json({ success: true, data }).status(200);
+  } catch (e) {
+    console.log(e);
+    res.json({ success: false }).status(500);
+  }
 })
 
 api.get("/shop", async (req, res) => {

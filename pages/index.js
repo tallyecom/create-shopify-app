@@ -508,6 +508,7 @@ const Index = () => {
     try {
       const res = axios.get(`/api/plans/${id}?shop=` + shop);
       console.log(res);
+      res.send(res);
     } catch (e) {
       console.log(E)
     }
