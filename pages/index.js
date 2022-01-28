@@ -176,7 +176,7 @@ const Index = () => {
 
           <Card title={title} sectioned>
             <div style={{ height: 170 }} >
-              <p>{objID}</p>
+              <p id="objID" value={objID}>{objID}</p>
               {
                 monthlyPrice === 0 ?
                   <>
@@ -497,15 +497,15 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  const handleFreePlan = useCallback(({ objID }) => {
-    console.log({ objID });
+  const handleFreePlan = useCallback(() => {
+    console.log(document.getElementById('objID'));
   }, []);
-  const handleOrderPlan = useCallback(({ objID }) => { console.log({ objID }); }, []);
-  const handleYearlyPlan = useCallback(({ objID }) => { console.log({ objID }); }, []);
-  const handleMonthlyPlan = useCallback(({ objID }) => { console.log({ objID }); }, []);
-  const handleOrdersAddOn = useCallback(({ objID }) => { console.log({ objID }); }, []);
-  const handleProductsAddOn = useCallback(({ objID }) => { console.log({ objID }); }, []);
-  const handleImagesAddOn = useCallback(({ objID }) => { console.log({ objID }); }, []);
+  const handleOrderPlan = useCallback(() => { console.log(document.getElementById('objID')); }, []);
+  const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('objID')); }, []);
+  const handleMonthlyPlan = useCallback(() => { console.log(document.getElementById('objID')); }, []);
+  const handleOrdersAddOn = useCallback(() => { console.log(document.getElementById('objID')); }, []);
+  const handleProductsAddOn = useCallback(() => { console.log(document.getElementById('objID')); }, []);
+  const handleImagesAddOn = useCallback(() => { console.log(document.getElementById('objID')); }, []);
 
 
   const handleSerialChange = useCallback((value) => {
