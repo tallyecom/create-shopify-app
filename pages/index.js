@@ -501,7 +501,8 @@ const Index = () => {
     };
     intialSetup();
   }, []);
-  const handleFreePlan = useCallback(() => {
+  const handleFreePlan = useCallback(async () => {
+    await getPlans();
     console.log("Plan Details before filtering :: ", listOfPlans);
     let id = document.getElementById('1').value
     console.log(id);
