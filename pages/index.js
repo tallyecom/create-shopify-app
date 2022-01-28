@@ -290,7 +290,7 @@ const Index = () => {
   }
 
   async function getData() {
-    console.log('setting process data')
+    // console.log('setting process data')
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
       if (res) console.log(res.data.data);
@@ -501,7 +501,8 @@ const Index = () => {
     };
     intialSetup();
   }, []);
-  const handleFreePlan = useCallback(async () => {
+
+  const handleFreePlan = async () => {
     let data = await getPlans();
     if (data) {
       console.log("Plan Details before filtering :: ", data);
@@ -511,7 +512,7 @@ const Index = () => {
       let filtplan = data.filter(plan => plan._id == id)
       if (filtplan) console.log(data);
     }
-  }, []);
+  };
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
   const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
   const handleMonthlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
