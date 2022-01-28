@@ -356,7 +356,7 @@ const Index = () => {
       // setIsPlanActive(true);
       // setIsPlanActive(!setIsPlanActive);
       // setPlanNearExp(true);
-      setOrderRec(30);
+      // setOrderRec(30);
       // setOrderDel(20)
       // setOrderRet(1);
       // setProduct(50);
@@ -393,6 +393,17 @@ const Index = () => {
   }
   async function getPlans() {
     try {
+      // setIsPlanActive(true);
+      // setIsPlanActive(!setIsPlanActive);
+      // setPlanNearExp(true);
+      setOrderRec(30);
+      // setOrderDel(20)
+      // setOrderRet(1);
+      // setProduct(50);
+
+      // if (orderRec !== 0) setPlanNearExp(false);
+      // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
+
       const res = await axios.get("/api/plans?shop=" + shop);
       if (res) console.log(res.data.data.planDetail);
       console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry", planNearExp)
