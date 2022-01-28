@@ -503,8 +503,8 @@ const Index = () => {
   }, []);
 
   const handleFreePlan = useCallback(async () => {
-    let data = this.state.listOfPlans;
-    console.log(this.state.listOfPlans);
+    let data = listOfPlans;
+    console.log(data);
     // if (data) {
     //   console.log("Plan Details before filtering :: ", data);
     //   let id = document.getElementById('1').value
