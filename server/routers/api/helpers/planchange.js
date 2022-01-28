@@ -6,7 +6,7 @@ const planChange = async (shop, planchange) => {
   try {
     await Shop.findOneAndUpdate(
       { shop: shop },
-      { $push: { planDetails: { newPlan: planchange, nonce: nonce } } },
+      { $push: { newPlan: planchange, nonce: nonce } },
       { returnNewDocument: true },
     );
   } catch (error) {
