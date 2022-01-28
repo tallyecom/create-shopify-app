@@ -29,6 +29,7 @@ api.get("/TCP", function (req, res, next) {
 });
 
 api.get("/plans", async (req, res) => {
+  console.log(req.url);
   try {
     var shop = req.query.shop
       .replace("https://", "")
@@ -43,6 +44,23 @@ api.get("/plans", async (req, res) => {
     res.json({ success: false }).status(500);
   }
 });
+
+api.get("/plans/:_id", async (req, res) => {
+
+  try {
+    var shop = req.query.shop
+      .replace("https://", "")
+      .replace("http://", "")
+      .split(".")[0];
+    var planDetail = await plan({});
+    console.log({ planDetail });
+    let data = { planDetail }
+    res.json({ success: true, data }).status(200);
+  } catch (e) {
+    console.log(e);
+    res.json({ success: false }).status(500);
+  }
+})
 
 api.get("/shop", async (req, res) => {
   try {
