@@ -507,7 +507,7 @@ const Index = () => {
     // console.log("trying to change the plan, fingers crossed :: ", planChange)
     if (!yearly) {
       if (!monthly) {
-        console.log({
+        var planToChange = {
           "_id": planChange[0]._id,
           "plan": planChange[0].name,
           "monthlyPrice": planChange[0].monthlyPrice,
@@ -519,9 +519,9 @@ const Index = () => {
           "numOrders": planChange[0].numOrders,
           "numProducts": planChange[0].numProducts,
           "numImages": planChange[0].numImages
-        })
+        }
       } else {
-        console.log({
+        var planToChange = {
           "_id": planChange[0]._id,
           "plan": planChange[0].name,
           "monthlyPrice": planChange[0].monthlyPrice,
@@ -533,10 +533,10 @@ const Index = () => {
           "numOrders": planChange[0].numOrders,
           "numProducts": planChange[0].numProducts,
           "numImages": planChange[0].numImages
-        })
+        }
       }
     } else {
-      console.log({
+      var planToChange = {
         "_id": planChange[0]._id,
         "plan": planChange[0].name,
         "monthlyPrice": planChange[0].monthlyPrice,
@@ -548,8 +548,9 @@ const Index = () => {
         "numOrders": planChange[0].numOrders,
         "numProducts": planChange[0].numProducts,
         "numImages": planChange[0].numImages
-      })
+      }
     }
+    console.log("planToChange :: ", planToChange);
   }
 
   function handleFreePlan(plan, id) {
