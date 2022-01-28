@@ -220,7 +220,7 @@ const Index = () => {
               }
               <div />
 
-              <input type="hidden" id="objID" value={objID} />
+              <input id="objID" value={objID} />
             </div>
             {planId == 1 ?
               <>
