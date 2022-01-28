@@ -551,6 +551,21 @@ const Index = () => {
       }
     }
     console.log("planToChange :: ", planToChange);
+
+    try {
+      axios
+        .post("/api/planchange", {
+          shop: shop,
+          newPlan: planToChange
+        })
+        .catch((err) => {
+          console.log("err: ", err);
+        });
+      if (!isPlanActive) setIsPlanActive(true);
+    } catch (e) {
+      console.log("e ::", e);
+    }
+
   }
 
   function handleFreePlan(plan, id) {
