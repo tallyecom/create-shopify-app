@@ -503,57 +503,94 @@ const Index = () => {
     intialSetup();
   }, []);
 
-  function handlePlanChange(planChange) {
+  function handlePlanChange(planChange, yearly, monthly) {
     // console.log("trying to change the plan, fingers crossed :: ", planChange)
-    console.log({
-      "planDetail": {
-        "_id": planChange[0]._id,
-        "plan": planChange[0].name,
-        "monthlyPrice": planChange[0].monthlyPrice,
-        "annualPrice": planChange[0].annualPrice,
-        "orderPrice": planChange[0].orderPrice,
-        "productPrice": planChange[0].productPrice,
-        "imagePrice": planChange[0].imagePrice,
-        "numOrders": planChange[0].numOrders,
-        "numProducts": planChange[0].numProducts,
-        "numImages": planChange[0].numImages
+    if (!yearly) {
+      if (!monthly) {
+        console.log({
+          "planDetail": {
+            "_id": planChange[0]._id,
+            "plan": planChange[0].name,
+            "monthlyPrice": planChange[0].monthlyPrice,
+            "period": "unlimited",
+            "annualPrice": planChange[0].annualPrice,
+            "orderPrice": planChange[0].orderPrice,
+            "productPrice": planChange[0].productPrice,
+            "imagePrice": planChange[0].imagePrice,
+            "numOrders": planChange[0].numOrders,
+            "numProducts": planChange[0].numProducts,
+            "numImages": planChange[0].numImages
+          }
+        })
+      } else {
+        console.log({
+          "planDetail": {
+            "_id": planChange[0]._id,
+            "plan": planChange[0].name,
+            "monthlyPrice": planChange[0].monthlyPrice,
+            "period": "1 month",
+            "annualPrice": planChange[0].annualPrice,
+            "orderPrice": planChange[0].orderPrice,
+            "productPrice": planChange[0].productPrice,
+            "imagePrice": planChange[0].imagePrice,
+            "numOrders": planChange[0].numOrders,
+            "numProducts": planChange[0].numProducts,
+            "numImages": planChange[0].numImages
+          }
+        })
       }
-    })
+    } else {
+      console.log({
+        "planDetail": {
+          "_id": planChange[0]._id,
+          "plan": planChange[0].name,
+          "monthlyPrice": planChange[0].monthlyPrice,
+          "period": "1 Year",
+          "annualPrice": planChange[0].annualPrice,
+          "orderPrice": planChange[0].orderPrice,
+          "productPrice": planChange[0].productPrice,
+          "imagePrice": planChange[0].imagePrice,
+          "numOrders": planChange[0].numOrders,
+          "numProducts": planChange[0].numProducts,
+          "numImages": planChange[0].numImages
+        }
+      })
+    }
   }
 
   function handleFreePlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan);
+    handlePlanChange(filtPlan, false, true);
   }
 
   function handleOrderPlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan);
+    handlePlanChange(filtPlan, false, false);
   }
 
   function handleYearlyPlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan);
+    handlePlanChange(filtPlan, true, false);
   }
 
   function handleMonthlyPlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan);
+    handlePlanChange(filtPlan, false, true);
   }
 
   function handleOrdersAddOn(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan);
+    handlePlanChange(filtPlan, false, false);
   }
 
   function handleProductsAddOn(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan);
+    handlePlanChange(filtPlan, false, false);
   }
 
   function handleImagesAddOn(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan);
+    handlePlanChange(filtPlan, false, false);
   }
 
   const handleSerialChange = useCallback((value) => {
