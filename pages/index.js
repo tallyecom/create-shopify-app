@@ -503,39 +503,43 @@ const Index = () => {
     intialSetup();
   }, []);
 
+  function handlePlanChange(planChange) {
+    console.log(planChange)
+  }
+
   function handleFreePlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    console.log(filtPlan);
+    handlePlanChange(filtPlan);
   }
 
   function handleOrderPlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    console.log(filtPlan);
+    handlePlanChange(filtPlan);
   }
 
   function handleYearlyPlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    console.log(filtPlan);
+    handlePlanChange(filtPlan);
   }
 
   function handleMonthlyPlan(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    console.log(filtPlan);
+    handlePlanChange(filtPlan);
   }
 
   function handleOrdersAddOn(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    console.log(filtPlan);
+    handlePlanChange(filtPlan);
   }
 
   function handleProductsAddOn(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    console.log(filtPlan);
+    handlePlanChange(filtPlan);
   }
 
   function handleImagesAddOn(plan, id) {
     let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    console.log(filtPlan);
+    handlePlanChange(filtPlan);
   }
 
   const handleSerialChange = useCallback((value) => {
