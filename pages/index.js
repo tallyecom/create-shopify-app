@@ -176,6 +176,7 @@ const Index = () => {
 
           <Card title={title} sectioned>
             <div style={{ height: 170 }} >
+              <p>{objID}</p>
               {
                 monthlyPrice === 0 ?
                   <>
