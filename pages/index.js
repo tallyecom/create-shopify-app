@@ -502,9 +502,9 @@ const Index = () => {
   }
 
   useEffect(() => {
-    const intialSetup = async () => {
-      await getData();
-      await getPlans();
+    const intialSetup = () => {
+      getData();
+      getPlans();
     };
     intialSetup();
   }, []);
