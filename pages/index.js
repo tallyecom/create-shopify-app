@@ -505,13 +505,7 @@ const Index = () => {
   const handleFreePlan = useCallback(() => {
     let id = document.getElementById('1').value
     console.log(id);
-    try {
-      const res = axios.get(`/api/plans/${id}?shop=` + shop);
-      console.log(res);
-      res.send(res);
-    } catch (e) {
-      console.log(E)
-    }
+    console.log(listOfPlans.filter((plan) => plan._id == id));
   }, []);
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
   const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
