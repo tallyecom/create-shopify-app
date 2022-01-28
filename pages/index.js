@@ -506,7 +506,7 @@ const Index = () => {
     let id = document.getElementById('1').value
     console.log(id);
     // console.log(listOfPlans);
-    let filtplan = listOfPlans.filter(plan => plan._id == id)
+    let filtplan = listOfPlans//.filter(plan => plan._id == id)
     console.log(filtplan);
   }, []);
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
