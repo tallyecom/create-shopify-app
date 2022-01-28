@@ -504,8 +504,8 @@ const Index = () => {
   }, []);
 
   function handlePlanChange(planChange) {
-    // console.log("trying to change the plan, fingers crossed :: ", planChange)
-    console.log({ "plan": planChange[0].name })
+    console.log("trying to change the plan, fingers crossed :: ", planChange)
+    console.log({ "plan": planChange[0].name, "id": planChange[0]._id })
   }
 
   function handleFreePlan(plan, id) {
