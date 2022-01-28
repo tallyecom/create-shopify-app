@@ -503,7 +503,7 @@ const Index = () => {
   }, []);
 
   const handleFreePlan = useCallback(async () => {
-    let data = listOfPlans;
+    let data = listOfPlans.map(plans => plans);
     console.log(data);
     // if (data) {
     //   console.log("Plan Details before filtering :: ", data);
