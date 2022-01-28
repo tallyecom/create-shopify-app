@@ -499,14 +499,14 @@ const Index = () => {
   }, []);
 
   const handleFreePlan = useCallback(() => {
-    console.log(document.getElementById('objID').value);
+    console.log(document.getElementById('1').value);
   }, []);
-  const handleOrderPlan = useCallback(() => { console.log(document.getElementById('objID').value); }, []);
-  const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('objID').value); }, []);
-  const handleMonthlyPlan = useCallback(() => { console.log(document.getElementById('objID').value); }, []);
-  const handleOrdersAddOn = useCallback(() => { console.log(document.getElementById('objID').value); }, []);
-  const handleProductsAddOn = useCallback(() => { console.log(document.getElementById('objID').value); }, []);
-  const handleImagesAddOn = useCallback(() => { console.log(document.getElementById('objID').value); }, []);
+  const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
+  const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
+  const handleMonthlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
+  const handleOrdersAddOn = useCallback(() => { console.log(document.getElementById('4').value); }, []);
+  const handleProductsAddOn = useCallback(() => { console.log(document.getElementById('5').value); }, []);
+  const handleImagesAddOn = useCallback(() => { console.log(document.getElementById('6').value); }, []);
 
 
   const handleSerialChange = useCallback((value) => {
