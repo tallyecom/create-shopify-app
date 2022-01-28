@@ -4,12 +4,12 @@ const planbyid = async (id) => {
     try {
         let doc = await Plan.findOne(id);
         if (doc) {
-            // console.log("Plan Details retrived from server :: ", doc);
+            console.log("Plan Details retrived from server :: ", doc);
             return doc;
         }
     } catch (error) {
         console.log(
-            "Error while fetching Registered serial from Database: ",
+            "Error while fetching plan detail from Database: ",
             error
         );
         return false;
