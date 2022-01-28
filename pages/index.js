@@ -57,7 +57,7 @@ const Index = () => {
   const [process, setProcess] = useState([]);
   const [result, setResult] = useState([]);
   const [listOfPlans, setListOfPlans] = useState([]);
-  const [orderRec, setOrderRec] = useState(30);
+  const [orderRec, setOrderRec] = useState(0);
   const [orderDel, setOrderDel] = useState(0);
   const [orderRet, setOrderRet] = useState(0);
   const [product, setProduct] = useState(0);
