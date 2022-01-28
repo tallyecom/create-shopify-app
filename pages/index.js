@@ -390,6 +390,8 @@ const Index = () => {
       setResult([]);
       console.log("ee : ", e);
     }
+  }
+  async function getPlans() {
     try {
       const res = await axios.get("/api/plans?shop=" + shop);
       if (res) console.log(res.data.data.planDetail);
@@ -502,6 +504,7 @@ const Index = () => {
   useEffect(() => {
     const intialSetup = async () => {
       await getData();
+      await getPlans();
     };
     intialSetup();
   }, []);
