@@ -501,7 +501,7 @@ const Index = () => {
     };
     intialSetup();
   }, []);
-  console.log("Plan Details :: ", listOfPlans);
+  console.log("Plan Details before filtering :: ", listOfPlans);
   const handleFreePlan = useCallback((listOfPlans) => {
     let id = document.getElementById('1').value
     console.log(id);
