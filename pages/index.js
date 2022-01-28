@@ -504,8 +504,8 @@ const Index = () => {
   }, []);
 
   function handleFreePlan(plan, id) {
-    console.log("called from plan change :: ", plan);
-    let filtPlan = plan.filter(plan => plan._id == id)
+    // console.log("called from plan change :: ", plan);
+    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
     console.log(filtPlan);
   }
 
