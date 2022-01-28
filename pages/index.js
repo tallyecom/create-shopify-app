@@ -223,7 +223,7 @@ const Index = () => {
               ? <>
                 {console.log(listOfPlans)}
                 <input hidden id="1" value={objID} />
-                <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={handleFreePlan(listOfPlans)}>Select Free Plan</Button>
+                <Button fullWidth primary size="large" disabled={orderRec !== 0} onClick={() => handleFreePlan(listOfPlans)}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
