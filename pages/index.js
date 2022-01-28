@@ -505,6 +505,7 @@ const Index = () => {
   const handleFreePlan = useCallback(() => {
     let id = document.getElementById('1').value
     console.log(id);
+    console.log(listOfPlans);
     console.log(listOfPlans.filter(plan => plan._id == id));
   }, []);
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
