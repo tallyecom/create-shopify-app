@@ -133,7 +133,8 @@ const Index = () => {
     return (
       <>
         <Layout.Section key={keyID} secondary  >
-          {console.log(`${isPlanActive} ${planNearExp} ${orderRec}`)}
+          {console.log('while actual rendering of component')}
+          {console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry :: ", planNearExp, "Number of Orders Received :: ", orderRec)}
           {/* if no plan is active & order received count = 0 */}
           {orderRec === 0
             ? <>
@@ -311,7 +312,7 @@ const Index = () => {
   }
 
   async function getData() {
-
+    console.log('setting process data')
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
       if (res) console.log(res.data.data);
@@ -392,6 +393,7 @@ const Index = () => {
     }
   }
   async function getPlans() {
+    console.log('setting plans :: ')
     // setIsPlanActive(true);
     // setIsPlanActive(!setIsPlanActive);
     // setPlanNearExp(true);
