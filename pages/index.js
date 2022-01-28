@@ -440,6 +440,7 @@ const Index = () => {
         <Layout>
           {listOfPlans.map(plan => (
             <PlanCard
+              _id={plan._id}
               isSelected={plan.id == 2}
               planId={plan.id}
               key={`key_${plan.id}`}
@@ -467,6 +468,7 @@ const Index = () => {
         <Layout>
           {listOfPlans.map(plan => (
             <PlanCard
+              _id={plan._id}
               isSelected={plan.id == 1}
               planId={plan.id}
               key={`key_${plan.id}`}
