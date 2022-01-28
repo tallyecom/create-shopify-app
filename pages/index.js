@@ -151,7 +151,7 @@ const Index = () => {
           {/* if no plan is active & order received count > 0 meaning there was an active plan earlier */}
           {!isPlanActive
             ? <>
-              {orderRec > 0
+              {orderRec !== 0
                 ? <>
                   {planId == 2
                     ? <Heading element='h1'>Kindly Select a Plan</Heading>
@@ -182,9 +182,9 @@ const Index = () => {
               {
                 monthlyPrice === 0 ?
                   <>
-                    {productPrice != 0 ? <DisplayText size="large">${productPrice}/{numProducts} Products</DisplayText> : null}
-                    {orderPrice != 0 ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
-                    {imagePrice != 0 ? <DisplayText size="large">${imagePrice}/{numImages} Images</DisplayText> : null}
+                    {productPrice !== 0 ? <DisplayText size="large">${productPrice}/{numProducts} Products</DisplayText> : null}
+                    {orderPrice !== 0 ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
+                    {imagePrice !== 0 ? <DisplayText size="large">${imagePrice}/{numImages} Images</DisplayText> : null}
                     {title == 'Free' ? <DisplayText size="large">${orderPrice}/{numOrders} Orders</DisplayText> : null}
                     <Stack>
                       <Stack.Item fill>Maximum Number of Orders</Stack.Item>
@@ -225,11 +225,11 @@ const Index = () => {
             </div>
             {planId == 1 ?
               <>
-                <Button fullWidth primary size="large" disabled={orderRec > 0}>Select Free Plan</Button>
+                <Button fullWidth primary size="large" disabled={orderRec !== 0}>Select Free Plan</Button>
                 <Button fullWidth disabled>
-                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
@@ -237,9 +237,9 @@ const Index = () => {
               <>
                 <Button fullWidth primary size="large" >Select Order Based Plan</Button>
                 <Button fullWidth disabled>
-                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
@@ -278,9 +278,9 @@ const Index = () => {
               <>
                 <Button fullWidth primary size="large" >Select Orders Add On</Button>
                 <Button fullWidth disabled>
-                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
@@ -288,9 +288,9 @@ const Index = () => {
               <>
                 <Button fullWidth primary size="large" >Select Products Add On</Button>
                 <Button fullWidth disabled>
-                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
@@ -298,9 +298,9 @@ const Index = () => {
               <>
                 <Button fullWidth primary size="large" >Select Images Add On</Button>
                 <Button fullWidth disabled>
-                  {productPrice != 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                  {orderPrice != 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  {imagePrice != 0 ? `$${imagePrice} / ${numImages} Images` : null}
+                  {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
+                  {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
+                  {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
@@ -353,7 +353,7 @@ const Index = () => {
         }).length
       );
       setOrderRec(30);
-      // if (orderRec > 0) setPlanNearExp(false);
+      // if (orderRec !== 0) setPlanNearExp(false);
       // setIsPlanActive(true);
       // setPlanNearExp(true);
       // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
@@ -397,7 +397,7 @@ const Index = () => {
             let planDetail = res.data.data.planDetail;
             planDetail = planDetail.sort((a, b) => {
               return a.id - b.id;
-            }).filter(plans => plans.name != 'Free');
+            }).filter(plans => plans.name !== 'Free');
             setListOfPlans(planDetail);
             console.log("List of Plans Filtered", planDetail);
           }
@@ -419,12 +419,12 @@ const Index = () => {
       }
 
       if (!isPlanActive) {
-        if (orderRec > 0) {
+        if (orderRec !== 0) {
           if (res) {
             let planDetail = res.data.data.planDetail;
             planDetail = planDetail.sort((a, b) => {
               return a.id - b.id;
-            }).filter(plans => plans.name != 'Free');
+            }).filter(plans => plans.name !== 'Free');
             setListOfPlans(planDetail);
             console.log("List of Plans Filtered", planDetail);
           }
@@ -516,7 +516,7 @@ const Index = () => {
     let err = {};
     if (!serialNum) {
       err.title = "Serial Number is Required";
-    } else if (serialNum % 9 != 0) {
+    } else if (serialNum % 9 !== 0) {
       err.title = "Invalid Serial Number";
     } else {
       err.title = "Thank you";
@@ -977,7 +977,7 @@ const Index = () => {
 
               {!isPlanActive ? <>{orderRec === 0 ? BillingPlansWithFree() : null}</> : null}
 
-              {!isPlanActive ? <>{orderRec > 0 ? BillingPlansWoFree() : null}</> : null}
+              {!isPlanActive ? <>{orderRec !== 0 ? BillingPlansWoFree() : null}</> : null}
 
               {isPlanActive ?
                 <>{planNearExp
