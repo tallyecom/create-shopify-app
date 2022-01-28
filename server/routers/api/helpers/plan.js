@@ -9,7 +9,7 @@ const plans = async () => {
         }
     } catch (error) {
         console.log(
-            "Error while fetching Registered serial from Database: ",
+            "Error while fetching plan details from Database: ",
             error
         );
         return false;
