@@ -128,7 +128,7 @@ const Index = () => {
     );
     return (
       <>
-        <Layout.Section key={keyID} secondary  >
+        <Layout.Section key={keyID} secondary >
           {/* {console.log('while actual rendering of component')} */}
           {/* {console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry :: ", planNearExp, "Number of Orders Received :: ", orderRec)} */}
           {/* if no plan is active & order received count = 0 */}
@@ -174,7 +174,7 @@ const Index = () => {
             : null
           }
 
-          <Card title={title} sectioned>
+          <Card title={title}>
             <div style={{ height: 170 }} >
               {
                 monthlyPrice === 0 ?
@@ -218,11 +218,9 @@ const Index = () => {
                     </Stack>
                   </>
               }
-              <div />
-
             </div>
-            {planId == 1 ?
-              <>
+            {planId == 1
+              ? <>
                 <input id="1" value={objID} />
                 <Button fullWidth primary size="large" value={objID} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
@@ -232,8 +230,8 @@ const Index = () => {
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
-            {planId == 2 ?
-              <>
+            {planId == 2
+              ? <>
                 <input id="2" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
@@ -243,15 +241,15 @@ const Index = () => {
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
-            {planId == 3 ?
-              <>
+            {planId == 3
+              ? <>
                 <input id="3" value={objID} />
                 <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
                 <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
               </>
               : null}
-            {planId == 4 ?
-              <>
+            {planId == 4
+              ? <>
                 <input id="4" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
@@ -261,8 +259,8 @@ const Index = () => {
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
               </> : null}
-            {planId == 5 ?
-              <>
+            {planId == 5
+              ? <>
                 <input id="5" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
@@ -271,9 +269,10 @@ const Index = () => {
                   {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
-              </> : null}
-            {planId == 6 ?
-              <>
+              </>
+              : null}
+            {planId == 6
+              ? <>
                 <input id="6" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleImagesAddOn} >Select Images Add On</Button>
                 <Button fullWidth disabled>
@@ -282,7 +281,8 @@ const Index = () => {
                   {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
                   {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
                 </Button>
-              </> : null}
+              </>
+              : null}
           </Card>
         </Layout.Section>
       </>
