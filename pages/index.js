@@ -99,6 +99,7 @@ const Index = () => {
 
   function PlanCard(props) {
     const {
+      _id,
       keyID,
       planId,
       isSelected,
@@ -221,8 +222,7 @@ const Index = () => {
             </div>
             {planId == 1 ?
               <>
-
-                <Button fullWidth primary size="large" value={id} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
+                <Button fullWidth primary size="large" value={_id} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -232,7 +232,7 @@ const Index = () => {
               </> : null}
             {planId == 2 ?
               <>
-                <Button fullWidth primary size="large" value={id} onClick={handleOrderPlan}>Select Order Based Plan</Button>
+                <Button fullWidth primary size="large" value={_id} onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -248,7 +248,7 @@ const Index = () => {
               : null}
             {planId == 4 ?
               <>
-                <Button fullWidth primary size="large" value={id} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
+                <Button fullWidth primary size="large" value={_id} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -258,7 +258,7 @@ const Index = () => {
               </> : null}
             {planId == 5 ?
               <>
-                <Button fullWidth primary size="large" value={id} onClick={handleProductsAddOn} >Select Products Add On</Button>
+                <Button fullWidth primary size="large" value={_id} onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
