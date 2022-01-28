@@ -30,7 +30,8 @@ import ReactPlayer from "react-player/lazy";
 import { render } from "react-dom";
 
 const Index = () => {
-
+  const nonceCreate = require("nonce")();
+  let nonce = nonceCreate();
   const [installedDays, setInstalledDays] = useState("");
   const [isPlanActive, setIsPlanActive] = useState(false);
   const [planNearExp, setPlanNearExp] = useState(false);
