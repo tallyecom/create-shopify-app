@@ -135,9 +135,9 @@ const Index = () => {
         <Layout.Section key={keyID} secondary  >
           {console.log(`${isPlanActive} ${planNearExp} ${orderRec}`)}
           {/* if no plan is active & order received count = 0 */}
-          {!isPlanActive
+          {orderRec === 0
             ? <>
-              {orderRec === 0
+              {!isPlanActive
                 ? <>
                   {planId == 1
                     ? <Heading element='h1'>Kindly Select a Plan</Heading>
@@ -149,9 +149,9 @@ const Index = () => {
             : null
           }
           {/* if no plan is active & order received count > 0 meaning there was an active plan earlier */}
-          {!isPlanActive
+          {orderRec !== 0
             ? <>
-              {orderRec !== 0
+              {!isPlanActive
                 ? <>
                   {planId == 2
                     ? <Heading element='h1'>Kindly Select a Plan</Heading>
@@ -974,9 +974,9 @@ const Index = () => {
                 ))}
               </Layout> */}
 
-              {!isPlanActive ? <>{orderRec === 0 ? BillingPlansWithFree() : null}</> : null}
+              {orderRec === 0 ? <>{!isPlanActive ? BillingPlansWithFree() : null}</> : null}
 
-              {!isPlanActive ? <>{orderRec !== 0 ? BillingPlansWoFree() : null}</> : null}
+              {orderRec !== 0 ? <>{!isPlanActive ? BillingPlansWoFree() : null}</> : null}
 
               {isPlanActive ?
                 <>{planNearExp
