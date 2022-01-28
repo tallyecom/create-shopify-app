@@ -393,6 +393,7 @@ const Index = () => {
     try {
       const res = await axios.get("/api/plans?shop=" + shop);
       if (res) console.log(res.data.data.planDetail);
+      console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry", planNearExp)
       if (isPlanActive) {
         if (planNearExp) {
           if (res) {
@@ -405,7 +406,7 @@ const Index = () => {
           }
         }
       }
-      console.log(orderRec)
+      console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
       if (orderRec === 0) {
         if (!isPlanActive) {
           if (res) {
@@ -418,7 +419,7 @@ const Index = () => {
           }
         }
       }
-
+      console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
       if (orderRec !== 0) {
         if (!isPlanActive) {
           if (res) {
