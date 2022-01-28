@@ -501,14 +501,14 @@ const Index = () => {
     };
     intialSetup();
   }, []);
-  const handleFreePlan = useCallback(() => {
-    getPlans();
-    console.log("Plan Details before filtering :: ", listOfPlans);
+  const handleFreePlan = useCallback(async () => {
+    let data = await getPlans();
+    console.log("Plan Details before filtering :: ", data);
     let id = document.getElementById('1').value
     console.log(id);
-    console.log("filtered Plan Detail :: ", listOfPlans.length);
-    let filtplan = listOfPlans//.filter(plan => plan._id == id)
-    if (filtplan) console.log(filtplan);
+    console.log("filtered Plan Detail :: ", data.length);
+    let filtplan = data.filter(plan => plan._id == id)
+    if (filtplan) console.log(data);
   }, []);
   const handleOrderPlan = useCallback(() => { console.log(document.getElementById('2').value); }, []);
   const handleYearlyPlan = useCallback(() => { console.log(document.getElementById('3').value); }, []);
