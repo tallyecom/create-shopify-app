@@ -550,8 +550,8 @@ const Index = () => {
         "numImages": planChange[0].numImages
       }
     }
-    console.log("planToChange :: ", planToChange);
-
+    // console.log("planToChange :: ", planToChange);
+    console.log({ planDetails: { newPlan: planToChange, nonce: nonce } })
     try {
       axios
         .post("/api/planchange", {
