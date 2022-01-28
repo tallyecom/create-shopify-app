@@ -5,6 +5,7 @@ const process = require("./helpers/process");
 const serialDetail = require("./helpers/serialdetail");
 const plan = require("./helpers/plan");
 const planByID = require("./helpers/planbyid");
+const planchange = require("./helpers/planchange")
 const Path = require("path");
 
 //api authentication
@@ -89,8 +90,8 @@ api.get("/shop", async (req, res) => {
   }
   // res.json(shopResult);
 });
-api.post("/process", async (req, res) => {
 
+api.post("/process", async (req, res) => {
   try {
     let processRes = await process(
       req.body.shop
@@ -98,6 +99,22 @@ api.post("/process", async (req, res) => {
         .replace("http://", "")
         .split(".")[0],
       req.body.process
+    );
+  } catch (e) {
+    console.log(e);
+  }
+  res.status(200).send("Process Addedd successfully");
+});
+
+api.post("/planchange", async (req, res) => {
+
+  try {
+    let planchange = await process(
+      req.body.shop
+        .replace("https://", "")
+        .replace("http://", "")
+        .split(".")[0],
+      req.body.planchange
     );
   } catch (e) {
     console.log(e);
