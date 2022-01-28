@@ -423,7 +423,10 @@ const Index = () => {
             let planDetail = res.data.data.planDetail;
             planDetail = planDetail.sort((a, b) => {
               return a.id - b.id;
-            }).filter(function (e) { return plans.name !== 'Free'; });//.filter(plans => plans.name !== 'Free');
+            }).filter(function (e) {
+              return e.name != "Free";
+            })
+            //.filter(plans => plans.name !== 'Free');
             setListOfPlans(planDetail);
             console.log("List of Plans Filtered", planDetail);
           }
