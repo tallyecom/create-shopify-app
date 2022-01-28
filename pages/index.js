@@ -403,7 +403,7 @@ const Index = () => {
           }
         }
       }
-      console.log(orderRec === 0)
+      console.log(orderRec == 0)
       if (orderRec === 0) {
         if (!isPlanActive) {
           if (res) {
@@ -421,7 +421,7 @@ const Index = () => {
         if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
-            for (var i = planDetail.length(); i != 0; i++) {
+            for (var i = 0; i < planDetail.length(); i++) {
               console.log("Before Filter is Applied :: ", planDetail[i].name)
             }
             planDetail = planDetail.sort((a, b) => {
@@ -429,7 +429,7 @@ const Index = () => {
             }).filter(function (e) {
               return e.name == "Free";
             })
-            for (var i = planDetail.length(); i != 0; i++) {
+            for (var i = 0; i < planDetail.length(); i++) {
               console.log("After Filter is Applied :: ", planDetail[i].name)
             }
             //.filter(plans => plans.name !== 'Free');
