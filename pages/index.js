@@ -352,35 +352,26 @@ const Index = () => {
           return e.type == "order" && e.status == "received";
         }).length
       );
-      setOrderRec(30);
-      // if (orderRec !== 0) setPlanNearExp(false);
-      // setIsPlanActive(true);
-      // setPlanNearExp(true);
-      // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
       setOrderDel(
         res.data.data.process.filter(function (e) {
           return e.type == "order" && e.status == "delivered";
         }).length
       );
-      // setOrderDel(20)
       setOrderRet(
         res.data.data.process.filter(function (e) {
           return e.type == "order" && e.status == "returned";
         }).length
       );
-      // setOrderRet(1);
       setProduct(
         res.data.data.process.filter(function (e) {
           return e.type == "product";
         }).length
       );
-      // setProduct(50);
       setImage(
         res.data.data.process.filter(function (e) {
           return e.type == "image";
         }).length
       );
-      // setImage(150);
       // setIsPlanActive(!setIsPlanActive);
     } catch (e) {
       setSerial(null);
@@ -498,6 +489,17 @@ const Index = () => {
 
   useEffect(() => {
     const intialSetup = async () => {
+      // setIsPlanActive(true);
+      // setPlanNearExp(true);
+      setOrderRec(30);
+      // setOrderDel(20)
+      // setOrderRet(1);
+      // setProduct(50);
+      // setImage(150);
+
+      // if (orderRec !== 0) setPlanNearExp(false);
+      // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
+
       await getData();
     };
     intialSetup();
