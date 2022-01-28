@@ -129,8 +129,8 @@ const Index = () => {
     return (
       <>
         <Layout.Section key={keyID} secondary  >
-          {console.log('while actual rendering of component')}
-          {console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry :: ", planNearExp, "Number of Orders Received :: ", orderRec)}
+          {/* {console.log('while actual rendering of component')} */}
+          {/* {console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry :: ", planNearExp, "Number of Orders Received :: ", orderRec)} */}
           {/* if no plan is active & order received count = 0 */}
           {orderRec === 0
             ? <>
@@ -176,7 +176,6 @@ const Index = () => {
 
           <Card title={title} sectioned>
             <div style={{ height: 170 }} >
-              <p hidden id="objID" value={objID}>{objID}</p>
               {
                 monthlyPrice === 0 ?
                   <>
@@ -220,9 +219,11 @@ const Index = () => {
                   </>
               }
               <div />
+
             </div>
             {planId == 1 ?
               <>
+                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -233,6 +234,7 @@ const Index = () => {
               </> : null}
             {planId == 2 ?
               <>
+                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -243,12 +245,14 @@ const Index = () => {
               </> : null}
             {planId == 3 ?
               <>
+                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
                 <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
               </>
               : null}
             {planId == 4 ?
               <>
+                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -259,6 +263,7 @@ const Index = () => {
               </> : null}
             {planId == 5 ?
               <>
+                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -269,6 +274,7 @@ const Index = () => {
               </> : null}
             {planId == 6 ?
               <>
+                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleImagesAddOn} >Select Images Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -366,7 +372,7 @@ const Index = () => {
   }
 
   async function getPlans() {
-    console.log('setting plans :: ')
+    // console.log('setting plans :: ')
     // setIsPlanActive(true);
     // setIsPlanActive(!setIsPlanActive);
     // setPlanNearExp(true);
@@ -380,8 +386,8 @@ const Index = () => {
     try {
 
       const res = await axios.get("/api/plans?shop=" + shop);
-      if (res) console.log(res.data.data.planDetail);
-      console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry", planNearExp)
+      // if (res) console.log(res.data.data.planDetail);
+      // console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry", planNearExp)
       if (isPlanActive) {
         if (planNearExp) {
           if (res) {
@@ -390,11 +396,11 @@ const Index = () => {
               return a.id - b.id;
             }).filter(plans => plans.name !== 'Free');
             setListOfPlans(planDetail);
-            console.log("List of Plans Filtered", planDetail);
+            // console.log("List of Plans Filtered", planDetail);
           }
         }
       }
-      console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
+      // console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
       if (orderRec === 0) {
         if (!isPlanActive) {
           if (res) {
@@ -403,17 +409,17 @@ const Index = () => {
               return a.id - b.id;
             });
             setListOfPlans(planDetail);
-            console.log("setting list of plans :: ", planDetail);
+            // console.log("setting list of plans :: ", planDetail);
           }
         }
       }
-      console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
+      // console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
       if (orderRec !== 0) {
         if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
             for (var i = 0; i < planDetail.length; i++) {
-              console.log("Before Filter is Applied :: ", planDetail[i].name)
+              // console.log("Before Filter is Applied :: ", planDetail[i].name)
             }
             planDetail = planDetail.sort((a, b) => {
               return a.id - b.id;
@@ -421,11 +427,11 @@ const Index = () => {
               return e.name != "Free";
             })
             for (var i = 0; i < planDetail.length; i++) {
-              console.log("After Filter is Applied :: ", planDetail[i].name)
+              // console.log("After Filter is Applied :: ", planDetail[i].name)
             }
             //.filter(plans => plans.name !== 'Free');
             setListOfPlans(planDetail);
-            console.log("List of Plans Filtered", planDetail);
+            // console.log("List of Plans Filtered", planDetail);
           }
         }
       }
