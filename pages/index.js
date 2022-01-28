@@ -421,11 +421,17 @@ const Index = () => {
         if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
+            for (var i = planDetail.length(); i != 0; i++) {
+              console.log("Before Filter is Applied :: ", planDetail[i].name)
+            }
             planDetail = planDetail.sort((a, b) => {
               return a.id - b.id;
             }).filter(function (e) {
-              return e.name != "Free";
+              return e.name == "Free";
             })
+            for (var i = planDetail.length(); i != 0; i++) {
+              console.log("After Filter is Applied :: ", planDetail[i].name)
+            }
             //.filter(plans => plans.name !== 'Free');
             setListOfPlans(planDetail);
             console.log("List of Plans Filtered", planDetail);
