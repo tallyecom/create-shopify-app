@@ -508,44 +508,10 @@ const Index = () => {
     if (!yearly) {
       if (!monthly) {
         console.log({
-          "planDetail": {
-            "_id": planChange[0]._id,
-            "plan": planChange[0].name,
-            "monthlyPrice": planChange[0].monthlyPrice,
-            "period": "unlimited",
-            "annualPrice": planChange[0].annualPrice,
-            "orderPrice": planChange[0].orderPrice,
-            "productPrice": planChange[0].productPrice,
-            "imagePrice": planChange[0].imagePrice,
-            "numOrders": planChange[0].numOrders,
-            "numProducts": planChange[0].numProducts,
-            "numImages": planChange[0].numImages
-          }
-        })
-      } else {
-        console.log({
-          "planDetail": {
-            "_id": planChange[0]._id,
-            "plan": planChange[0].name,
-            "monthlyPrice": planChange[0].monthlyPrice,
-            "period": "1 month",
-            "annualPrice": planChange[0].annualPrice,
-            "orderPrice": planChange[0].orderPrice,
-            "productPrice": planChange[0].productPrice,
-            "imagePrice": planChange[0].imagePrice,
-            "numOrders": planChange[0].numOrders,
-            "numProducts": planChange[0].numProducts,
-            "numImages": planChange[0].numImages
-          }
-        })
-      }
-    } else {
-      console.log({
-        "planDetail": {
           "_id": planChange[0]._id,
           "plan": planChange[0].name,
           "monthlyPrice": planChange[0].monthlyPrice,
-          "period": "1 Year",
+          "period": "unlimited",
           "annualPrice": planChange[0].annualPrice,
           "orderPrice": planChange[0].orderPrice,
           "productPrice": planChange[0].productPrice,
@@ -553,7 +519,35 @@ const Index = () => {
           "numOrders": planChange[0].numOrders,
           "numProducts": planChange[0].numProducts,
           "numImages": planChange[0].numImages
-        }
+        })
+      } else {
+        console.log({
+          "_id": planChange[0]._id,
+          "plan": planChange[0].name,
+          "monthlyPrice": planChange[0].monthlyPrice,
+          "period": "1 month",
+          "annualPrice": planChange[0].annualPrice,
+          "orderPrice": planChange[0].orderPrice,
+          "productPrice": planChange[0].productPrice,
+          "imagePrice": planChange[0].imagePrice,
+          "numOrders": planChange[0].numOrders,
+          "numProducts": planChange[0].numProducts,
+          "numImages": planChange[0].numImages
+        })
+      }
+    } else {
+      console.log({
+        "_id": planChange[0]._id,
+        "plan": planChange[0].name,
+        "monthlyPrice": planChange[0].monthlyPrice,
+        "period": "1 Year",
+        "annualPrice": planChange[0].annualPrice,
+        "orderPrice": planChange[0].orderPrice,
+        "productPrice": planChange[0].productPrice,
+        "imagePrice": planChange[0].imagePrice,
+        "numOrders": planChange[0].numOrders,
+        "numProducts": planChange[0].numProducts,
+        "numImages": planChange[0].numImages
       })
     }
   }
