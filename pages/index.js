@@ -501,11 +501,11 @@ const Index = () => {
     };
     intialSetup();
   }, []);
-  console.log("Plan Details :: ", listOfPlans.length);
+  console.log("Plan Details :: ", listOfPlans);
   const handleFreePlan = useCallback((listOfPlans) => {
     let id = document.getElementById('1').value
     console.log(id);
-    console.log("Plan Details :: ", listOfPlans.length);
+    console.log("filtered Plan Detail :: ", listOfPlans.length);
     let filtplan = listOfPlans//.filter(plan => plan._id == id)
     if (filtplan) console.log(filtplan);
   }, []);
