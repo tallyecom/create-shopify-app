@@ -97,11 +97,6 @@ const Index = () => {
     }
   }
 
-  function transpose(a) {
-    return Object.keys(a[0]).map(function (c) {
-      return a.map(function (r) { return r[c]; });
-    });
-  }
   function PlanCard(props) {
     const {
       keyID,
@@ -226,7 +221,8 @@ const Index = () => {
             </div>
             {planId == 1 ?
               <>
-                <Button fullWidth primary size="large" disabled={orderRec !== 0}>Select Free Plan</Button>
+                {console.log(_id)}
+                <Button fullWidth primary size="large" value={_id} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -236,7 +232,7 @@ const Index = () => {
               </> : null}
             {planId == 2 ?
               <>
-                <Button fullWidth primary size="large" >Select Order Based Plan</Button>
+                <Button fullWidth primary size="large" value={_id} onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -246,38 +242,13 @@ const Index = () => {
               </> : null}
             {planId == 3 ?
               <>
-                {/* <Stack vertical={true}> */}
-                <Button fullWidth secondary>$550 / Year</Button>
-                <Button fullWidth primary>$50 / Month</Button>
-                {/* </Stack> */}
-                {/* <div>
-
-                                <Popover
-                                    active={isActive}
-                                    activator={activator}
-                                    onClose={() => setStatus(!isActive)}
-                                    preferredAlignment="center"
-                                >
-
-                                    <ActionList
-                                        items={[
-                                            {
-                                                content: "Purchase Monthly",
-                                                onAction: () => { }
-                                            },
-                                            {
-                                                content: "Purchase Annual",
-                                                onAction: () => { }
-                                            }
-                                        ]}
-                                    />
-                                </Popover>
-                            </div> */}
+                <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
+                <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
               </>
               : null}
             {planId == 4 ?
               <>
-                <Button fullWidth primary size="large" >Select Orders Add On</Button>
+                <Button fullWidth primary size="large" value={_id} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -287,7 +258,7 @@ const Index = () => {
               </> : null}
             {planId == 5 ?
               <>
-                <Button fullWidth primary size="large" >Select Products Add On</Button>
+                <Button fullWidth primary size="large" value={_id} onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -297,7 +268,7 @@ const Index = () => {
               </> : null}
             {planId == 6 ?
               <>
-                <Button fullWidth primary size="large" >Select Images Add On</Button>
+                <Button fullWidth primary size="large" value={_id} onClick={handleImagesAddOn} >Select Images Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
                   {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
@@ -392,6 +363,7 @@ const Index = () => {
       console.log("ee : ", e);
     }
   }
+
   async function getPlans() {
     console.log('setting plans :: ')
     // setIsPlanActive(true);
@@ -522,6 +494,9 @@ const Index = () => {
     intialSetup();
   }, []);
 
+  const handleFreePlan = useCallback((value) => {
+
+  })
   const handleSerialChange = useCallback((value) => {
     setSerialNum(value);
   }, []);
