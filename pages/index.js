@@ -220,10 +220,10 @@ const Index = () => {
               }
               <div />
 
+              <input type="hidden" id="objID" value={objID} />
             </div>
             {planId == 1 ?
               <>
-                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} disabled={orderRec !== 0} onClick={handleFreePlan}>Select Free Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -234,7 +234,6 @@ const Index = () => {
               </> : null}
             {planId == 2 ?
               <>
-                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleOrderPlan}>Select Order Based Plan</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -245,14 +244,12 @@ const Index = () => {
               </> : null}
             {planId == 3 ?
               <>
-                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth secondary onClick={handleYearlyPlan}>$550 / Year</Button>
                 <Button fullWidth primary onClick={handleMonthlyPlan}>$50 / Month</Button>
               </>
               : null}
             {planId == 4 ?
               <>
-                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleOrdersAddOn}>Select Orders Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -263,7 +260,6 @@ const Index = () => {
               </> : null}
             {planId == 5 ?
               <>
-                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleProductsAddOn} >Select Products Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
@@ -274,7 +270,6 @@ const Index = () => {
               </> : null}
             {planId == 6 ?
               <>
-                <input type="hidden" id="objID" value={objID} />
                 <Button fullWidth primary size="large" value={objID} onClick={handleImagesAddOn} >Select Images Add On</Button>
                 <Button fullWidth disabled>
                   {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
