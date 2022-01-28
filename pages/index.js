@@ -557,7 +557,7 @@ const Index = () => {
       axios
         .post("/api/planchange", {
           shop: shop,
-          newPlan: planToChange
+          planLimits: planToChange
         })
         .catch((err) => {
           console.log("err: ", err);
