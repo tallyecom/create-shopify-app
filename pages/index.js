@@ -392,17 +392,17 @@ const Index = () => {
     }
   }
   async function getPlans() {
-    try {
-      // setIsPlanActive(true);
-      // setIsPlanActive(!setIsPlanActive);
-      // setPlanNearExp(true);
-      setOrderRec(30);
-      // setOrderDel(20)
-      // setOrderRet(1);
-      // setProduct(50);
+    // setIsPlanActive(true);
+    // setIsPlanActive(!setIsPlanActive);
+    // setPlanNearExp(true);
+    setOrderRec(30);
+    // setOrderDel(20)
+    // setOrderRet(1);
+    // setProduct(50);
 
-      // if (orderRec !== 0) setPlanNearExp(false);
-      // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
+    // if (orderRec !== 0) setPlanNearExp(false);
+    // if (orderRec === 0 || !orderRec) setPlanNearExp(true);
+    try {
 
       const res = await axios.get("/api/plans?shop=" + shop);
       if (res) console.log(res.data.data.planDetail);
