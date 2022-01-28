@@ -403,8 +403,8 @@ const Index = () => {
           }
         }
       }
-      console.log(orderRec == 0)
-      if (orderRec === 0) {
+      console.log(orderRec)
+      if (orderRec == 0) {
         if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
@@ -417,7 +417,7 @@ const Index = () => {
         }
       }
 
-      if (orderRec !== 0) {
+      if (orderRec != 0) {
         if (!isPlanActive) {
           if (res) {
             let planDetail = res.data.data.planDetail;
