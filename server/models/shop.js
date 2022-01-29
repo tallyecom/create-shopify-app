@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
 const processSchema = new Schema({
   id: { type: String, index: true, unique: true },
   date: Date,
@@ -12,6 +11,20 @@ const processSchema = new Schema({
   systemName: String,
 });
 
+const planSchema = new Schema({
+  id: { type: String, index: true, unique: true },
+  key: String,
+  isSelected: Boolean,
+  name: String,
+  monthlyPrice: Number,
+  annualPrice: Number,
+  orderPrice: Number,
+  productPrice: Number,
+  imagePrice: Number,
+  numOrders: Number,
+  numProducts: Number,
+  numImages: Number,
+})
 const planLimitSchema = new Schema({
   id: { type: String, index: true, unique: true },
   name: String,
@@ -71,6 +84,7 @@ const shopSchema = new Schema({
   isOrderPlan: { type: Boolean, default: false },
   isFreePlan: { type: Boolean, default: false },
   appSubscription: [appSubscriptionSchema],
+  activePlan: [planSchema],
   planLimits: [planLimitSchema],
   tallyPrime: { type: Boolean, default: false },
 });

@@ -509,7 +509,7 @@ const Index = () => {
     if (!yearly) {
       if (!monthly) {
         var planToChange = {
-          "_id": planChange[0]._id,
+          "planid": planChange[0]._id,
           "plan": planChange[0].name,
           "monthlyPrice": planChange[0].monthlyPrice,
           "period": "unlimited",
@@ -523,7 +523,7 @@ const Index = () => {
         }
       } else {
         var planToChange = {
-          "_id": planChange[0]._id,
+          "planid": planChange[0]._id,
           "plan": planChange[0].name,
           "monthlyPrice": planChange[0].monthlyPrice,
           "period": "1 month",
@@ -538,7 +538,7 @@ const Index = () => {
       }
     } else {
       var planToChange = {
-        "_id": planChange[0]._id,
+        "planid": planChange[0]._id,
         "plan": planChange[0].name,
         "monthlyPrice": planChange[0].monthlyPrice,
         "period": "1 Year",
