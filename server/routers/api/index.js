@@ -122,6 +122,7 @@ api.post("/planchange", async (req, res) => {
   res.status(200).send("Process Addedd successfully");
 });
 api.post("/regform", async (req, res) => {
+  console.log(req.body);
   try {
     let registrationRes = await registration(
       req.body.shop
@@ -129,7 +130,12 @@ api.post("/regform", async (req, res) => {
         .replace("http://", "")
         .split(".")[0],
       req.body.serialNumber,
-      req.body.tallyPrime
+      req.body.tallyPrime,
+      req.body.isPlanActive,
+      req.body.isFreePlan,
+      req.body.isOrderPlan,
+      req.body.isMonthlyPlan,
+      req.body.activePlan
     );
 
   } catch (e) {

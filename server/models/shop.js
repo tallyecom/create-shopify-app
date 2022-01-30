@@ -79,7 +79,7 @@ const shopSchema = new Schema({
   nonce: { type: String, default: null },
   webhooks: { type: Object, default: {} },
   info: { type: Object, default: {} },
-  process: [processSchema],
+  process: { type: [processSchema], default: [] },
   isMonthlyPlan: { type: Boolean, default: false },
   isOrderPlan: { type: Boolean, default: false },
   isFreePlan: { type: Boolean, default: false },
