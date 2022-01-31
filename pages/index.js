@@ -32,47 +32,57 @@ import { render } from "react-dom";
 const Index = () => {
   const nonceCreate = require("nonce")();
   let nonce = nonceCreate();
-  const [installedDays, setInstalledDays] = useState("");
+
+  // customer details
+  const [serialNum, setSerialNum] = useState({});
+  const [serial, setSerial] = useState("");
+  const [isPrime, setIsPrime] = useState(false);
+  const [userAccessToken, setUserAccessToken] = useState("");
+  const [edMode, setEdMode] = useState(false);
+
+  // plan details
+  const [listOfPlans, setListOfPlans] = useState([]);
   const [isPlanActive, setIsPlanActive] = useState(false);
   const [planNearExp, setPlanNearExp] = useState(false);
   const [isFreePlan, setIsFreePlan] = useState(false);
-  const [isOrderAddOnPlan, setIsOrderAddOnPlan] = useState(false);
-  const [planUsageDetails, setPlanUsageDetails] = useState([]);
-  const [changePlantoFree, setChangePlantoFree] = useState(false);
-  const [changePlantoOrder, setChangePlantoOrder] = useState(false);
-  const [changePlantoMonth, setChangePlantoMonth] = useState(false);
   const [isMonthlyPlan, setIsMonthlyPlan] = useState(false);
   const [isOrderPlan, setIsOrderPlan] = useState(false);
-  const [isProductAddOnPlan, setIsProductAddOnPlan] = useState(false);
-  const [isImageAddOnPlan, setIsImageAddOnPlan] = useState(false);
-  const [isProductPlan, setIsProductPlan] = useState(false);
   const [productLimit, setProductLimit] = useState(0);
   const [imageLimit, setImageLimit] = useState(0);
   const [orderRecLimit, setOrderRecLimit] = useState(0);
-  const [orderDelLimit, setOrderDelLimit] = useState(0);
-  const [orderRetLimit, setOrderRetLimit] = useState(0);
-  const [serialNum, setSerialNum] = useState({});
+  const [planToChange, setPlanToChange] = useState({})
+  const [planExpiry, setPlanExpiry] = useState()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [serial, setSerial] = useState("");
   const [process, setProcess] = useState([]);
+
+  // process details
   const [result, setResult] = useState([]);
-  const [listOfPlans, setListOfPlans] = useState([]);
   const [orderRec, setOrderRec] = useState(0);
   const [orderDel, setOrderDel] = useState(0);
   const [orderRet, setOrderRet] = useState(0);
   const [product, setProduct] = useState(0);
   const [image, setImage] = useState(0);
+
+  // miscellenous 
+  const [showPlans, setShowPlans] = useState(true);
   const [open, setOpen] = useState(false);
-  const [userAccessToken, setUserAccessToken] = useState("");
-  const [edMode, setEdMode] = useState(false);
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
-  const [planToChange, setPlanToChange] = useState({})
-  const [isPrime, setIsPrime] = useState(false);
+  const [installedDays, setInstalledDays] = useState("");
+  const [changePlantoOrder, setChangePlantoOrder] = useState(false);
+  const [changePlantoMonth, setChangePlantoMonth] = useState(false);
+  const [isOrderAddOnPlan, setIsOrderAddOnPlan] = useState(false);
+  const [planUsageDetails, setPlanUsageDetails] = useState([]);
+  const [changePlantoFree, setChangePlantoFree] = useState(false);
+  const [isProductAddOnPlan, setIsProductAddOnPlan] = useState(false);
+  const [isImageAddOnPlan, setIsImageAddOnPlan] = useState(false);
+  const [isProductPlan, setIsProductPlan] = useState(false);
+  const [orderDelLimit, setOrderDelLimit] = useState(0);
+  const [orderRetLimit, setOrderRetLimit] = useState(0);
   let varExpiry
-  const [planExpiry, setPlanExpiry] = useState()
+
   let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
   let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
   let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
@@ -184,7 +194,7 @@ const Index = () => {
           }
           <Card>
             <Card.Section title={title == 'Free' ? 'Free - Available only One Time' : title}>
-              <div style={{ height: 170 }}>
+              <div >
                 {
                   monthlyPrice === 0 ?
                     <>
@@ -209,10 +219,10 @@ const Index = () => {
                     </>
                     :
                     <>
-                      <DisplayText size="medium">${monthlyPrice}/30 Days</DisplayText>
-                      <p >
-                        or ${annualPriceB}/365 Days
-                      </p>
+                      <Stack>
+                        <DisplayText size="medium">${monthlyPrice}/30 Days</DisplayText>
+                        <a>or ${annualPriceB} / 365 Days</a>
+                      </Stack>
                       <Stack>
                         <Stack.Item fill>Number of Orders</Stack.Item>
                         <Stack.Item>Unlimited</Stack.Item>
@@ -224,6 +234,9 @@ const Index = () => {
                       <Stack>
                         <Stack.Item fill>Number of Images</Stack.Item>
                         <Stack.Item>Unlimited</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>Period : as per your selection</Stack.Item>
                       </Stack>
                     </>
                 }
@@ -303,66 +316,73 @@ const Index = () => {
     // console.log('setting process data')
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
-      if (res) console.log(res.data.data);
-      if (res.data.data.isFreePlan) setIsFreePlan(res.data.data.isFreePlan)
-      if (res.data.data.isOrderPlan) setIsOrderPlan(res.data.data.isOrderPlan);
-      if (res.data.data.isMonthlyPlan) setIsMonthlyPlan(res.data.data.isMonthlyPlan);
-      // console.log("Is free plan active :: ", res.data.data.isFreePlan)
-      var instOn = new Date(res.data.data.installedOn);
-      var dateDif = datediff(instOn, new Date(), 'days')
-      if (dateDif < 31) {
-        dateDif = datediff(instOn, new Date(), 'days');
-        setInstalledDays(dateDif, " Days");
-      }
-      if (dateDif >= 31 && dateDif < 365) {
-        dateDif = datediff(instOn, new Date(), 'months');
-        setInstalledDays(dateDif, " Months");
-      }
-      if (dateDif > 365) {
-        dateDif = datediff(instOn, new Date(), 'years');
-        setInstalledDays(dateDif, " Years");
-      }
-
-      setSerial(res.data.data.serial);
-      setIsPrime(res.data.data.isPrime);
-      setUserAccessToken(res.data.data.accessToken);
-      if (isPlanActive) {
-        setProcess(res.data.data.process);
-        let array = res.data.data.process
-        {
-          array[0] != null ? array = res.data.data.process.map(
-            ({ date, type, processid, status, url, systemName, ip }) => {
-              return [date, type, processid, status, url, systemName, ip];
-            }
-          )
-            : array = [];
+      if (res) {
+        console.log(res.data.data);
+        console.log("limit on Orders :: ", res.data.data.isPlanActive);
+        setIsPlanActive(res.data.data.isPlanActive);
+        setIsFreePlan(res.data.data.isFreePlan);
+        setIsOrderPlan(res.data.data.isOrderPlan);
+        setIsMonthlyPlan(res.data.data.isMonthlyPlan);
+        setImageLimit(res.data.data.imageLimit);
+        setProductLimit(res.data.data.productLimit);
+        setOrderRecLimit(res.data.data.orderRecLimit);
+        // console.log("Is free plan active :: ", res.data.data.isFreePlan)
+        var instOn = new Date(res.data.data.installedOn);
+        var dateDif = datediff(instOn, new Date(), 'days')
+        if (dateDif < 31) {
+          dateDif = datediff(instOn, new Date(), 'days');
+          setInstalledDays(dateDif, " Days");
         }
-        setResult(array);
-        setOrderRec(
-          res.data.data.process.filter(function (e) {
-            return e.type == "order" && e.status == "received";
-          }).length
-        );
-        setOrderDel(
-          res.data.data.process.filter(function (e) {
-            return e.type == "order" && e.status == "delivered";
-          }).length
-        );
-        setOrderRet(
-          res.data.data.process.filter(function (e) {
-            return e.type == "order" && e.status == "returned";
-          }).length
-        );
-        setProduct(
-          res.data.data.process.filter(function (e) {
-            return e.type == "product";
-          }).length
-        );
-        setImage(
-          res.data.data.process.filter(function (e) {
-            return e.type == "image";
-          }).length
-        );
+        if (dateDif >= 31 && dateDif < 365) {
+          dateDif = datediff(instOn, new Date(), 'months');
+          setInstalledDays(dateDif, " Months");
+        }
+        if (dateDif > 365) {
+          dateDif = datediff(instOn, new Date(), 'years');
+          setInstalledDays(dateDif, " Years");
+        }
+        setSerial(res.data.data.serial);
+        setIsPrime(res.data.data.isPrime);
+        setUserAccessToken(res.data.data.accessToken);
+        if (isPlanActive) {
+          setProcess(res.data.data.process);
+          let array = res.data.data.process
+          {
+            array[0] != null ? array = res.data.data.process.map(
+              ({ date, type, processid, status, url, systemName, ip }) => {
+                return [date, type, processid, status, url, systemName, ip];
+              }
+            )
+              : array = [];
+          }
+          setResult(array);
+          setOrderRec(
+            res.data.data.process.filter(function (e) {
+              return e.type == "order" && e.status == "received";
+            }).length
+          );
+          setOrderRec(5)
+          setOrderDel(
+            res.data.data.process.filter(function (e) {
+              return e.type == "order" && e.status == "delivered";
+            }).length
+          );
+          setOrderRet(
+            res.data.data.process.filter(function (e) {
+              return e.type == "order" && e.status == "returned";
+            }).length
+          );
+          setProduct(
+            res.data.data.process.filter(function (e) {
+              return e.type == "product";
+            }).length
+          );
+          setImage(
+            res.data.data.process.filter(function (e) {
+              return e.type == "image";
+            }).length
+          );
+        }
       }
     } catch (e) {
       setSerial(null);
@@ -384,8 +404,10 @@ const Index = () => {
       console.log("Plan is about to get over :: ", diffDays < 11)
       if (diffDays < 11) {
         setPlanNearExp(true)
+        setShowPlans(true);
       } else {
         setPlanNearExp(false);
+        setShowPlans(false);
       }
     }
 
@@ -449,7 +471,7 @@ const Index = () => {
     }
   }
 
-  function BillingPlansWoFree() {
+  function BillingPlans() {
     if (listOfPlans) return (
       <>
         <Layout>
@@ -475,7 +497,7 @@ const Index = () => {
       </>
     )
   }
-  function AddOnPlansforNonMonthly() {
+  function AddOnPlans() {
 
     // const plans = listOfPlans
     if (listOfPlans) return (
@@ -621,11 +643,13 @@ const Index = () => {
     console.log(planChange[0].name)
     if (planChange[0].name == "Free") {
       setIsFreePlan(true);
+      setShowPlans(false);
       setChangePlantoOrder(false);
       setChangePlantoMonth(false);
+      setPlanNearExp(true)
       console.log("Plan Changed to Free ::", isFreePlan);
       console.log("Changing plan to Free Plan")
-      if (!isPlanActive) setIsPlanActive(true);
+      setIsPlanActive(true);
       console.log("Free Plan Activated ", isPlanActive);
       setIsFreePlan(true);
       setOrderRecLimit(planChange[0].numOrders);
@@ -635,9 +659,10 @@ const Index = () => {
       // console.log("Plan Changed to Non-Free for next round ::", isFreePlan);
     }
     if (planChange[0].name == "Order Based Plan") {
-      if (!isPlanActive) setIsPlanActive(true);
+      setIsPlanActive(true);
       if (isFreePlan) {
         setIsFreePlan(false);
+        setShowPlans(false);
         setChangePlantoOrder(true);
         setIsOrderPlan(true);
         setSerialNum(serial);
@@ -648,6 +673,7 @@ const Index = () => {
         console.log("Changing Plan from Free Plan to Order based Plan")
       } else {
         setChangePlantoOrder(true);
+        setShowPlans(false);
         setIsOrderPlan(true);
         setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
         setProductLimit(productLimit + planChange[0].numProducts);
@@ -659,16 +685,18 @@ const Index = () => {
       if (isMonthlyPlan) {
         setIsMonthlyPlan(false)
         setChangePlantoOrder(true);
+        setShowPlans(false);
         setIsOrderPlan(true);
-        setOrderRecLimit(orderRec + 1000);
-        setProductLimit(product + 1000);
-        setImageLimit(image + 3000);
+        setOrderRecLimit(orderRec + planChange[0].numOrders);
+        setProductLimit(product + planChange[0].numProducts);
+        setImageLimit(image + planChange[0].numImages);
         setSerialNum(serial);
         console.log(isPlanActive);
         console.log("Changing Plan from Monthly Plan to Order based Plan")
       } else {
         setChangePlantoOrder(true);
         setIsOrderPlan(true);
+        setShowPlans(false);
         setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
         setProductLimit(productLimit + planChange[0].numProducts);
         setImageLimit(imageLimit + planChange[0].numImages);
@@ -679,6 +707,7 @@ const Index = () => {
       if (!isFreePlan && !isMonthlyPlan) {
         setChangePlantoOrder(true);
         setIsOrderPlan(true);
+        setShowPlans(false);
         setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
         setProductLimit(productLimit + planChange[0].numProducts);
         setImageLimit(imageLimit + planChange[0].numImages);
@@ -707,8 +736,10 @@ const Index = () => {
         setPlanExpiry(diffDays);
         if (diffDays < 11) {
           setPlanNearExp(true)
+          setShowPlans(true);
         } else {
           setPlanNearExp(false);
+          setShowPlans(false);
         }
       }
       if (monthly) {
@@ -728,14 +759,16 @@ const Index = () => {
         setPlanExpiry(diffDays);
         if (diffDays < 11) {
           setPlanNearExp(true)
+          setShowPlans(true);
         } else {
           setPlanNearExp(false);
+          setShowPlans(false);
         }
 
       }
       if (isFreePlan) setIsFreePlan(!isFreePlan);
       if (isOrderPlan) setChangePlantoOrder(!isOrderPlan)
-      if (!isPlanActive) setIsPlanActive(true);
+      setIsPlanActive(true);
       setChangePlantoMonth(true);
       setIsMonthlyPlan(true);
       setOrderRecLimit(0);
@@ -758,33 +791,38 @@ const Index = () => {
       }
     }
     console.log({
-      shop,
+      shop: shop,
       serialNumber: serial,
       tallyPrime: isPrime,
       isPlanActive,
       isFreePlan,
       isOrderPlan,
       isMonthlyPlan,
-      activePlan: planToChange,
+      orderRecLimit,
+      productLimit,
+      imageLimit,
     })
-    // try {
-    //   axios
-    //     .post("/api/regform", {
-    //       shop,
-    //       serialNumber: serial,
-    //       tallyPrime: isPrime,
-    //       isPlanActive,
-    //       isFreePlan,
-    //       isOrderPlan,
-    //       isMonthlyPlan,
-    //       activePlan: planToChange,
-    //     })
-    //     .catch((err) => {
-    //       console.log("err: ", err);
-    //     });
-    // } catch (e) {
-    //   console.log("e ::", e);
-    // }
+    try {
+      axios
+        .post("/api/regform", {
+          shop: shop,
+          serialNumber: serial,
+          tallyPrime: isPrime,
+          isPlanActive,
+          planNearExp,
+          isFreePlan,
+          isOrderPlan,
+          isMonthlyPlan,
+          orderRecLimit,
+          productLimit,
+          imageLimit,
+        })
+        .catch((err) => {
+          console.log("err: ", err);
+        });
+    } catch (e) {
+      console.log("e ::", e);
+    }
 
   }
 
@@ -835,6 +873,11 @@ const Index = () => {
     return;
   }, [edMode]);
 
+  const handleShowPlans = useCallback(() => {
+    setShowPlans(!showPlans);
+    return
+  }, [showPlans]);
+
   const handleIsPrime = useCallback(() => {
     setIsPrime(!isPrime);
     return;
@@ -859,77 +902,21 @@ const Index = () => {
     setErrors(errs);
     setIsSubmitting(true);
 
-    setChangePlantoMonth(false);
-    if (changePlantoMonth) {
-      console.log("Changing plan to Monthly Plan")
-      if (!isPlanActive) setIsPlanActive(true);
-      console.log(isPlanActive);
-      setIsMonthlyPlan(true);
-      setOrderRecLimit(0);
-      setProductLimit(0);
-      setImageLimit(0);
-      setChangePlantoMonth(false);
-    }
-    setIsProductAddOnPlan(false)
-    if (isProductAddOnPlan) {
-      console.log("Changing plan to product add on")
-      if (!isPlanActive) setIsPlanActive(true);
-      console.log(isPlanActive);
-      setOrderRecLimit(0);
-      setProductLimit(productLimit + planChange[0].numProducts);
-      setImageLimit(0);
-    }
-    setIsImageAddOnPlan(false)
-    if (isImageAddOnPlan) {
-      console.log("Changing plan to image add on")
-      if (!isPlanActive) setIsPlanActive(true);
-      console.log(isPlanActive);
-      setOrderRecLimit(0);
-      setProductLimit(0);
-      setImageLimit(imageLimit + planChange[0].numImages);
-    }
-    setIsOrderAddOnPlan(false);
-    if (isOrderAddOnPlan) {
-      console.log("Changing plan to Order add on")
-      if (!isPlanActive) setIsPlanActive(true);
-      console.log(isPlanActive);
-      setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
-      setProductLimit(0);
-      setImageLimit(0);
-    }
-    setPlanUsageDetails([
-      isPlanActive,
-      planNearExp,
-      isFreePlan,
-      isOrderPlan,
-      isMonthlyPlan,
-      orderRecLimit,
-      orderRec,
-      orderDelLimit,
-      orderDel,
-      orderRetLimit,
-      orderRet,
-      productLimit,
-      product,
-      imageLimit,
-      image])
-    console.log("Plan Usage Details :: ", planUsageDetails);
-
-    console.log("with active Plan :: ", isPlanActive);
-    console.log("Plan Near Expiry :: ", planNearExp);
-
     if (serialNum % 9 === 0) {
       try {
         axios
           .post("/api/regForm", {
             shop: shop,
-            serialNumber: serial,
+            serialNumber: serialNum,
             tallyPrime: isPrime,
             isPlanActive,
+            planNearExp,
             isFreePlan,
             isOrderPlan,
             isMonthlyPlan,
-            activePlan: planToChange,
+            orderRecLimit,
+            productLimit,
+            imageLimit,
           })
           .catch((err) => {
             console.log("err: ", err);
@@ -1022,6 +1009,107 @@ const Index = () => {
                 </Layout.Section>
               </>
               : null}
+            {/* <Layout.Section> */}
+            {isPlanActive ? (
+              <>
+                <Layout.Section>
+                  <Heading element="h1">
+                    Data Synchronised with Tally till Date
+                  </Heading>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element='h5'>Consumption</Heading>
+                    </Stack.Item>
+                  </Stack>
+                  {product ? (
+                    <>
+                      <Stack>
+                        <Stack.Item fill>Products Uploaded :</Stack.Item>
+                        <Stack.Item>{product}</Stack.Item>
+                      </Stack>
+                    </>
+                  ) : null}
+                  {image ? (
+                    <>
+                      <Stack>
+                        <Stack.Item fill>Images Uploaded :</Stack.Item>
+                        <Stack.Item>{image}</Stack.Item>
+                      </Stack>
+                    </>
+                  ) : null}
+                  {orderRec ? (
+                    <>
+                      <Stack>
+                        <Stack.Item fill>Orders Processed : </Stack.Item>
+                        <Stack.Item>{orderRec}</Stack.Item>
+                      </Stack>
+                    </>
+                  ) : null}
+                  {orderDel ? (
+                    <>
+                      <Stack>
+                        <Stack.Item fill>Orders Delivered : </Stack.Item>
+                        <Stack.Item>{orderDel}</Stack.Item>
+                      </Stack>
+                    </>
+                  ) : null}
+                  {orderRet ? (
+                    <>
+                      <Stack>
+                        <Stack.Item fill>Orders Returned : </Stack.Item>
+                        <Stack.Item>{orderRet}</Stack.Item>
+                      </Stack>
+                    </>
+                  ) : null}
+                  <Layout sectioned>
+                    <Button
+                      onClick={handleToggle}
+                      ariaExpanded={open || !serial}
+                      ariaControls="basic-collapsible"
+                      outline
+                      fullWidth={true}
+                    >
+                      Show Processed Data
+                    </Button>
+                    <Collapsible
+                      open={open}
+                      id="basic-collapsible"
+                      transition={{
+                        duration: "500ms",
+                        timingFunction: "ease-in-out",
+                      }}
+                      expandOnPrint
+                    >
+                      <DataTable
+                        columnContentTypes={[
+                          // "string",
+                          "date",
+                          "string",
+                          "string",
+                          "string",
+                          "string",
+                          "string",
+                          "string",
+                        ]}
+                        headings={[
+                          // "id",
+                          "Date",
+                          "Type",
+                          "ProcessID",
+                          "Status",
+                          "URL",
+                          "SystemName",
+                          "IP",
+                        ]}
+                        rows={result}
+                      />
+                    </Collapsible>
+                  </Layout>
+                </Layout.Section>
+
+              </>)
+              : null}
+            {/* </Layout.Section> */}
             {serial ? (
               <>
                 <Layout.Section>
@@ -1062,8 +1150,45 @@ const Index = () => {
                   preferredAlignment={screenLeft}
                 >
                   <FormLayout>
-                    {!serial ?
-                      <>
+                    <Card.Section>
+                      <Button
+                        pressed={!showPlans}
+                        onClick={handleShowPlans}
+                        outline
+                        fullWidth={true}
+                        ariaExpanded={showPlans}
+                        ariaControls="basic-collapsible"
+                      >
+                        Show Plans / Add ons
+                      </Button>
+                    </Card.Section>
+                    <Collapsible
+                      open={!showPlans}
+                      id="basic-collapsible"
+                      transition={{
+                        duration: "500ms",
+                        timingFunction: "ease-in-out",
+                      }}
+                      expandOnPrint
+                    >
+                      {orderRec === 0
+                        ? <> {FreeBillingPlan()};  {BillingPlans()}; {AddOnPlans()}; </>
+                        : <> {isMonthlyPlan
+                          ? <> {planNearExp
+                            ? <>
+                              <Heading element='h1'>Your Usage is about to reach the limits</Heading>
+                              {BillingPlans()};
+                            </>
+                            : null}
+                          </>
+                          : <> {BillingPlans()}; {AddOnPlans()};
+                          </>
+                        }
+                        </>
+                      }
+                    </Collapsible>
+                    {!serial
+                      ? <>
                         <Stack>
                           <Stack.Item fill>
                             <Heading element="h1">
@@ -1119,175 +1244,16 @@ const Index = () => {
                             min="700000000"
                             max="800000000"
                           />
+                          <Button primary={true} fullWidth={true} submit>Submit</Button>
                         </Collapsible>
-                      </> : null}
-                    {orderRec === 0
-                      ? <>
-                        {!isPlanActive
-                          ?
-                          <>
-                            {FreeBillingPlan()}
-                            {BillingPlansWoFree()}
-                            {AddOnPlansforNonMonthly()}
-                          </>
-                          : null}
-                      </>
-                      : null}
-                    {orderRec !== 0
-                      ? <>
-                        {!isPlanActive
-                          ?
-                          <>
-                            {/* {FreeBillingPlan()} */}
-                            {BillingPlansWoFree()}
-                            {AddOnPlansforNonMonthly()}
-                          </>
-                          : null
-                        }
                       </>
                       : null
                     }
-                    {isMonthlyPlan
-                      ? <>{planNearExp
-                        ? <>
-                          <Heading element='h1'>Your Usage is about to reach the limits</Heading>
-                          {/* {FreeBillingPlan()} */}
-                          {BillingPlansWoFree()}
-                          {/* {AddOnPlansforNonMonthly()} */}
-                        </>
-                        : null
-                      }</>
-                      : <>{planNearExp
-                        ? <>
-                          <Heading element='h1'>Your Usage is about to reach the limits</Heading>
-                          {/* {FreeBillingPlan()} */}
-                          {BillingPlansWoFree()}
-                          {AddOnPlansforNonMonthly()}
-                        </>
-                        : null
-                      }</>}
-                    {/* {!isPlanActive || isFreePlan || isOrderPlan ? AddOnPlansforNonMonthly() : null} */}
-                    {/* {isMonthlyPlan ? null : AddOnPlansforNonMonthly()} */}
-                    <Button primary={true} fullWidth={true} submit>Submit</Button>
+                    {/* {!isPlanActive || isFreePlan || isOrderPlan ? AddOnPlans() : null} */}
+                    {/* {isMonthlyPlan ? null : AddOnPlans()} */}
                   </FormLayout>
                 </Form>
               </>
-            </Layout.Section>
-            <Layout.Section>
-              {isPlanActive && (product || image || orderRec || orderDel || orderRet) ? (
-                <>
-                  <Layout.Section>
-                    <Heading element="h1">
-                      Data Synchronised with Tally till Date
-                    </Heading>
-                    <Stack.Item fill>
-                      <Heading element='h5'>Limits</Heading>
-                    </Stack.Item>
-                    {/* <Stack.Item>.</Stack.Item> */}
-                    <Stack>
-                      <Stack.Item fill>Products Limit :</Stack.Item>
-                      <Stack.Item>{isMonthlyPlan ? "Unlimited" : productLimit}</Stack.Item>
-                    </Stack>
-                    <Stack>
-                      <Stack.Item fill>Images Limit :</Stack.Item>
-                      <Stack.Item>{isMonthlyPlan ? "Unlimited" : imageLimit}</Stack.Item>
-                    </Stack>
-                    <Stack>
-                      <Stack.Item fill>Orders Limit :</Stack.Item>
-                      <Stack.Item>{isMonthlyPlan ? "Unlimited" : orderRecLimit}</Stack.Item>
-                    </Stack>
-                    <Stack>
-                      <Stack.Item fill>
-                        <Heading element='h5'>Consumption</Heading>
-                      </Stack.Item>
-                      {/* <Stack.Item>.</Stack.Item> */}
-                    </Stack>
-                    {product ? (
-                      <>
-                        <Stack>
-                          <Stack.Item fill>Products Uploaded :</Stack.Item>
-                          <Stack.Item>{product}</Stack.Item>
-                        </Stack>
-                      </>
-                    ) : null}
-                    {image ? (
-                      <>
-                        <Stack>
-                          <Stack.Item fill>Images Uploaded :</Stack.Item>
-                          <Stack.Item>{image}</Stack.Item>
-                        </Stack>
-                      </>
-                    ) : null}
-                    {orderRec ? (
-                      <>
-                        <Stack>
-                          <Stack.Item fill>Orders Processed : </Stack.Item>
-                          <Stack.Item>{orderRec}</Stack.Item>
-                        </Stack>
-                      </>
-                    ) : null}
-                    {orderDel ? (
-                      <>
-                        <Stack>
-                          <Stack.Item fill>Orders Delivered : </Stack.Item>
-                          <Stack.Item>{orderDel}</Stack.Item>
-                        </Stack>
-                      </>
-                    ) : null}
-                    {orderRec ? (
-                      <>
-                        <Stack>
-                          <Stack.Item fill>Orders Returned : </Stack.Item>
-                          <Stack.Item>{orderRet}</Stack.Item>
-                        </Stack>
-                      </>
-                    ) : null}
-                    <Layout sectioned>
-                      <Button
-                        onClick={handleToggle}
-                        ariaExpanded={open || !serial}
-                        ariaControls="basic-collapsible"
-                      >
-                        Show Processed Data
-                      </Button>
-                      <Collapsible
-                        open={open}
-                        id="basic-collapsible"
-                        transition={{
-                          duration: "500ms",
-                          timingFunction: "ease-in-out",
-                        }}
-                        expandOnPrint
-                      >
-                        <DataTable
-                          columnContentTypes={[
-                            // "string",
-                            "date",
-                            "string",
-                            "string",
-                            "string",
-                            "string",
-                            "string",
-                            "string",
-                          ]}
-                          headings={[
-                            // "id",
-                            "Date",
-                            "Type",
-                            "ProcessID",
-                            "Status",
-                            "URL",
-                            "SystemName",
-                            "IP",
-                          ]}
-                          rows={result}
-                        />
-                      </Collapsible>
-                    </Layout>
-                  </Layout.Section>
-
-                </>)
-                : null}
             </Layout.Section>
           </Layout>
         </Card.Section>
@@ -1296,9 +1262,9 @@ const Index = () => {
         <Layout.Section id="features">
           <Card.Section>
             <Button
+              onClick={handleFeatToggle}
               outline
               fullWidth={true}
-              onClick={handleFeatToggle}
               ariaExpanded={featureOpen}
               ariaControls="basic-collapsible"
             >

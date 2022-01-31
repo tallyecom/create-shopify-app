@@ -83,10 +83,14 @@ const shopSchema = new Schema({
   isMonthlyPlan: { type: Boolean, default: false },
   isOrderPlan: { type: Boolean, default: false },
   isFreePlan: { type: Boolean, default: false },
-  appSubscription: [appSubscriptionSchema],
-  activePlan: [planSchema],
-  planLimits: [planLimitSchema],
+  // appSubscription: [appSubscriptionSchema],
+  // activePlan: [planSchema],
+  // planLimits: [planLimitSchema],
   tallyPrime: { type: Boolean, default: false },
+  orderRecLimit: { type: Number, default: null },
+  productLimit: { type: Number, default: null },
+  imageLimit: { type: Number, default: null },
+  isPlanActive: { type: Boolean, default: false },
 });
 
 const Shop = mongoose.models.shop || mongoose.model("shop", shopSchema);

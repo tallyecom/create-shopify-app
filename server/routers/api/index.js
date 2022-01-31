@@ -76,12 +76,16 @@ api.get("/shop", async (req, res) => {
     let data = {
       serial: shopResult.serial,
       isPrime: shopResult.tallyPrime,
-      accessToken: shopResult.accessToken,
-      process: shopResult.process,
       isFreePlan: shopResult.isFreePlan,
+      accessToken: shopResult.accessToken,
       isMonthlyPlan: shopResult.isMonthlyPlan,
       isOrderPlan: shopResult.isOrderPlan,
-      installedOn: shopResult.installedOn
+      installedOn: shopResult.installedOn,
+      orderRecLimit: shopResult.orderRecLimit,
+      productLimit: shopResult.productLimit,
+      imageLimit: shopResult.imageLimit,
+      isPlanActive: shopResult.isPlanActive,
+      process: shopResult.process,
     };
     res.json({ success: true, data }).status(200);
   } catch (e) {
@@ -132,10 +136,13 @@ api.post("/regform", async (req, res) => {
       req.body.serialNumber,
       req.body.tallyPrime,
       req.body.isPlanActive,
+      req.body.planNearExp,
       req.body.isFreePlan,
       req.body.isOrderPlan,
       req.body.isMonthlyPlan,
-      req.body.activePlan
+      req.body.orderRecLimit,
+      req.body.productLimit,
+      req.body.imageLimit
     );
 
   } catch (e) {
