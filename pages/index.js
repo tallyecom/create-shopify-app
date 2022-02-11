@@ -1,30 +1,34 @@
 import React, { useEffect, useState, useCallback } from "react";
 import download from "downloadjs";
 import {
+  Badge,
+  Banner,
+  Button,
+  ButtonGroup,
+  Card,
+  ChoiceList,
+  Collapsible,
+  DataTable,
+  DisplayText,
   Form,
   FormLayout,
-  TextField,
-  Button,
-  DisplayText,
-  Layout,
-  Banner,
-  Page,
-  Card,
   Heading,
-  Subheading,
-  List,
+  Layout,
   Link,
-  TextContainer,
-  DataTable,
-  Stack,
-  Badge,
-  VideoThumbnail,
-  Collapsible,
+  List,
   MediaCard,
-  ButtonGroup,
+  Modal,
+  Page,
+  PageActions,
+  Stack,
+  Subheading,
+  TextContainer,
+  TextField,
+  VideoThumbnail,
 } from "@shopify/polaris";
 import axios from "axios";
 import ReactPlayer from "react-player/lazy";
+import PlanModal from "./planmodal"
 // import BillingWOFree from "./billingwofree";
 // import BillingWithFree from "./billingwithfree"
 import { render } from "react-dom";
@@ -50,7 +54,6 @@ const Index = () => {
   const [productLimit, setProductLimit] = useState(0);
   const [imageLimit, setImageLimit] = useState(0);
   const [orderRecLimit, setOrderRecLimit] = useState(0);
-  const [planToChange, setPlanToChange] = useState({})
   const [planExpiry, setPlanExpiry] = useState()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -66,27 +69,20 @@ const Index = () => {
 
   // miscellenous 
   const [showPlans, setShowPlans] = useState(true);
+  const [changeOfPlans, setChangeOfPlans] = useState(true);
   const [open, setOpen] = useState(false);
   const [featureOpen, setFeatureOpen] = useState(
     serialNum === null ? true : false
   );
   const [installedDays, setInstalledDays] = useState("");
-  const [changePlantoOrder, setChangePlantoOrder] = useState(false);
-  const [changePlantoMonth, setChangePlantoMonth] = useState(false);
-  const [isOrderAddOnPlan, setIsOrderAddOnPlan] = useState(false);
-  const [planUsageDetails, setPlanUsageDetails] = useState([]);
-  const [changePlantoFree, setChangePlantoFree] = useState(false);
-  const [isProductAddOnPlan, setIsProductAddOnPlan] = useState(false);
-  const [isImageAddOnPlan, setIsImageAddOnPlan] = useState(false);
-  const [isProductPlan, setIsProductPlan] = useState(false);
-  const [orderDelLimit, setOrderDelLimit] = useState(0);
-  const [orderRetLimit, setOrderRetLimit] = useState(0);
-  let varExpiry
+  const [isFPAOnce, setIsFPAOnce] = useState(false);
+  const [icCharged, setIcCharged] = useState(false);
+  const [isPlanChanged, setIsPlanChanged] = useState(false);
 
-  let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
-  let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
-  let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
-  let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?enablejsapi=1&origin=https://${window.location.host}&host=https://www.youtube.com`;
+  let url1 = `https://www.youtube.com/embed/xKC_wnO1fFc?showinfo=0&enablejsapi=1&origin=${window.location.origin}`;
+  let url2 = `https://www.youtube.com/embed/3LZ-i-JOmZE?showinfo=0&enablejsapi=1&origin=${window.location.origin}`;
+  let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?showinfo=0&enablejsapi=1&origin=${window.location.origin}`;
+  let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?showinfo=0&enablejsapi=1&origin=${window.location.origin}`;
 
   function datediff(date1, date2, interval) {
     var second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24, week = day * 7;
@@ -110,12 +106,206 @@ const Index = () => {
     }
   }
 
+  // console.log(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged)
+  const postPlanDetailtoDB = (isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged) => {
+    // console.log("Plan About to be updated : ", { shop: shop, serialNumber: serial, tallyPrime: isPrime, isPlanActive: isPlanActive, planNearExp: planNearExp, isFreePlan: isFreePlan, isFPAOnce: isFPAOnce, isOrderPlan: isOrderPlan, isMonthlyPlan: isMonthlyPlan, orderRecLimit: orderRecLimit, productLimit: productLimit, imageLimit: imageLimit, icCharged: icCharged })
+    try {
+      axios
+        .post("/api/regform", {
+          shop: shop,
+          serialNumber: serial,
+          tallyPrime: isPrime,
+          isPlanActive: isPlanActive,
+          planNearExp: planNearExp,
+          isFreePlan: isFreePlan,
+          isFPAOnce: isFPAOnce,
+          isOrderPlan: isOrderPlan,
+          isMonthlyPlan: isMonthlyPlan,
+          orderRecLimit: orderRecLimit,
+          productLimit: productLimit,
+          imageLimit: imageLimit,
+          icCharged: icCharged
+        })
+        .catch((err) => {
+          console.log("err: ", err);
+        });
+    } catch (e) {
+      console.log("e ::", e);
+    }
+    // getData()
+  }
+
+  if (isPlanChanged) {
+    // console.log("Is Installation Charges Charged :: ", icCharged);
+    postPlanDetailtoDB(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged);
+    setIsPlanChanged(false);
+  }
+  const handlePlanChange = (planChange, yearly, monthly) => {
+    // console.log("trying to change the plan, fingers crossed :: ", planChange)
+    // console.log("planToChange :: ", planToChange);
+    // console.log("Monthly :: ", monthly, "Yearly :: ", yearly);
+    // console.log("Serial :: ", serialNum)
+    // console.log("Plan about to be changed to :: ", planChange.title, planChange.title == "Free")
+    if (planChange.title == "Free") {
+      setIsPlanActive(true);
+      setPlanNearExp(true);
+      setIsFreePlan(true);
+      setIsOrderPlan(false);
+      setIsMonthlyPlan(false);
+      setIsFPAOnce(true);
+      setIsPlanChanged(true);
+      setIcCharged(false)
+      setOrderRecLimit(planChange.numOrders);
+      setProductLimit(planChange.numProducts);
+      setImageLimit(planChange.numImages);
+      setSerialNum(serial);
+      // console.log("Plan Changed to Non-Free for next round ::", isFreePlan);
+    } else
+    // console.log("Plan about to be changed to :: ", planChange.title, planChange.title == "Order Based Plan")
+    {
+      setIsPlanActive(true);
+      setIsPlanChanged(true);
+      setIsFreePlan(false);
+      setIcCharged(true)
+      setIsOrderPlan(true);
+      setSerialNum(serial);
+      setIsMonthlyPlan(false);
+      setOrderRecLimit(orderRecLimit + planChange.numOrders);
+      setProductLimit(productLimit + planChange.numProducts);
+      setImageLimit(imageLimit + planChange.numImages);
+      setPlanNearExp(false);
+      setIsFPAOnce(true);
+      setShowPlans(true);
+    }
+    // console.log("a :: ", { shop, serial, isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged });
+    // else {
+    //   setShowPlans(false);
+    //   setIsOrderPlan(true);
+    //   setIsMonthlyPlan(false)
+    //   setOrderRecLimit(orderRecLimit + planChange.numOrders);
+    //   setProductLimit(productLimit + planChange.numProducts);
+    //   setImageLimit(imageLimit + planChange.numImages);
+    //   setSerialNum(serial);
+    //   if (!isPlanActive) setIsPlanActive(!isPlanActive);
+    //   console.log("Changing Plan to Order based Plan")
+
+    // }
+    // if (isMonthlyPlan) {
+    //   setIsMonthlyPlan(false)
+    //   setShowPlans(false);
+    //   setIsOrderPlan(true);
+    //   setOrderRecLimit(orderRec + planChange.numOrders);
+    //   setProductLimit(product + planChange.numProducts);
+    //   setImageLimit(image + planChange.numImages);
+    //   setSerialNum(serial);
+    //   if (!isPlanActive) setIsPlanActive(!isPlanActive);
+    //   console.log("Changing Plan from Monthly Plan to Order based Plan")
+
+    // } else {
+    //   setIsOrderPlan(true);
+    //   setShowPlans(false);
+    //   setOrderRecLimit(orderRecLimit + planChange.numOrders);
+    //   setProductLimit(productLimit + planChange.numProducts);
+    //   setImageLimit(imageLimit + planChange.numImages);
+    //   setSerialNum(serial);
+    //   if (!isPlanActive) setIsPlanActive(!isPlanActive);
+    //   console.log("Changing Plan to Order based Plan")
+
+    // }
+    // if (isOrderPlan) {
+    //   // setShowPlans(false);
+    //   setOrderRecLimit(orderRecLimit + planChange.numOrders);
+    //   setProductLimit(productLimit + planChange.numProducts);
+    //   setImageLimit(imageLimit + planChange.numImages);
+    //   setSerialNum(serial);
+    //   if (!isPlanActive) setIsPlanActive(!isPlanActive);
+    //   console.log("Changing Plan to Order based Plan")
+
+    // }
+
+    //     }
+    // if (isPlanActive) console.log("Is Order Plan Active :: ", isOrderPlan, "New Order Limit :: ", orderRecLimit, "New Product Limit :: ", productLimit, "New Image Limit :: ", imageLimit)
+    // console.log("Plan about to be changed to :: ", planChange.title, planChange.title == "Periodic Plan")
+    // if (planChange.title == "Periodic Plan") {
+    //   if (yearly) {
+    //     var now = new Date();
+    //     const one_day = 1000 * 60 * 60 * 24
+    //     console.log('Plan Start :: ', now);
+    //     var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
+    //     console.log('Expiry :: ', expiry);
+    //     var date1 = new Date();
+    //     var date2 = new Date(expiry);
+    //     console.log(date2);
+    //     const diffTime = Math.abs(date2 - date1);
+    //     const diffDays = Math.ceil(diffTime / one_day);
+    //     console.log("Difference in MilliSeconds :: ", diffTime);
+    //     console.log('Difference in Days', diffDays);
+    //     console.log("Plan is about to get over :: ", diffDays < 11)
+    //     setPlanExpiry(diffDays);
+    //     if (diffDays < 11) {
+    //       setPlanNearExp(true)
+    //       setShowPlans(true);
+    //     } else {
+    //       setPlanNearExp(false);
+    //       setShowPlans(false);
+    //     }
+    //   }
+    //   if (monthly) {
+    //     var now = new Date();
+    //     const one_day = 1000 * 60 * 60 * 24
+    //     console.log('Plan Start :: ', now);
+    //     var expiry = new Date(now.setDate(now.getDate() + 30));
+    //     console.log('Expiry :: ', expiry);
+    //     var date1 = new Date();
+    //     var date2 = new Date(expiry);
+    //     console.log(date2);
+    //     const diffTime = Math.abs(date2 - date1);
+    //     const diffDays = Math.ceil(diffTime / one_day);
+    //     console.log("Difference in MilliSeconds :: ", diffTime);
+    //     console.log('Difference in Days', diffDays);
+    //     console.log("Plan is about to get over :: ", diffDays < 11)
+    //     setPlanExpiry(diffDays);
+    //     if (diffDays < 11) {
+    //       setPlanNearExp(true)
+    //       setShowPlans(true);
+    //     } else {
+    //       setPlanNearExp(false);
+    //       setShowPlans(false);
+    //     }
+    //   }
+    //   if (isFreePlan) setIsFreePlan(!isFreePlan);
+    //   if (isOrderPlan) setIsOrderPlan(!isOrderPlan);
+    //   setIsPlanActive(true);
+    //   setIsMonthlyPlan(true);
+    //   setOrderRecLimit(null);
+    //   setProductLimit(null);
+    //   setImageLimit(null);
+    //   if (!isPlanActive) setIsPlanActive(!isPlanActive);
+    //   console.log("Changing Plan to Periodic Plan")
+    //   setSerialNum(serial);
+    //   //     } else {
+    //   console.log(planChange.title);
+    //   if (planChange.title == "Orders Add-On") {
+    //     console.log("Number of Orders to be added :: ", planChange.numOrders)
+    //     setOrderRecLimit(orderRecLimit + planChange.numOrders);
+    //   }
+    //   if (planChange.title == "Products Add-On") {
+    //     console.log("Number of Products to be added :: ", planChange.numProducts, "Number of Images to be added :: ", planChange.numImages)
+    //     setProductLimit(productLimit + planChange.numProducts);
+    //     setImageLimit(imageLimit + planChange.numImages);
+    //   }
+
+    // }
+
+  }
+
   function PlanCard(props) {
     const {
       objID,
       keyID,
       planId,
       isSelected,
+      installationCharge,
       title,
       monthlyPrice,
       annualPriceA,
@@ -127,189 +317,106 @@ const Index = () => {
       numProducts,
       numImages,
     } = props;
-    const [isActive, setStatus] = React.useState(false);
+    const planDetail = props
+    // const [isActive, setStatus] = React.useState(false);
+    // console.log("checking plan detail :: ", planDetail);
 
     return (
       <>
         <Layout.Section key={keyID} secondary >
-          {!isMonthlyPlan
-            ?
-            <>
-              {planId == 4
-                ? <Heading element='h1'>Kindly Select an Add On Plan</Heading>
-                : <>
-                  {planId > 4 ? <p>.</p> : null}
-                </>
-              }
-            </>
-            : null
-          }
-          {orderRec === 0
-            ? <>
-              {!isPlanActive
-                ? <>{planId > 3
-                  ? null
-                  : <>{planId == 1
-                    ? <Heading element='h1'>Kindly Select a Plan</Heading>
-                    : <p>.</p>}
-                  </>
-                }
-                </>
-                : null
-              }
-            </>
-            : null}
-          {/* if no plan is active & order received count > 0 meaning there was an active plan earlier */}
-          {orderRec !== 0
-            ? <>
-              {!isPlanActive
-                ? <>
-                  {planId > 3
-                    ? null
-                    : <>
-                      {planId == 2
-                        ? <Heading element='h1'>Kindly Select a Plan</Heading>
-                        : <p>.</p>
-                      }
-                    </>
-                  }
-                </>
-                : null
-              }
-            </>
-            : null
-          }
-          {isPlanActive
-            ? <>
-              {planNearExp
-                ? <>
-                  {planId == 2 ?
-                    <Heading element='h1'>Kindly Select a Plan</Heading>
-                    : <p>.</p>}
-                </>
-                : null
-              }
-            </>
-            : null
-          }
+          {!isFreePlan && !isOrderPlan && !isMonthlyPlan && planId == 1 ? <Heading element='h1'>Kindly Select an Plan</Heading> : null}
+          {(isFreePlan || isOrderPlan || isMonthlyPlan) && planId == 2 ? <Heading element='h1'>Kindly Select an Plan</Heading> : null}
+          {/* {planId == 2 ? <Heading element='h1'>.</Heading> : null} */}
+          {/* {planId == 3 ? <Heading element='h1'>.</Heading> : null} */}
+          {planId == 4 ? <Heading element='h1'>Add-On Plans</Heading> : null}
+          {planId == 5 ? <Heading element='h1' style="color:#ffffff;">:</Heading> : null}
+          {/* </Layout.Section> */}
+          {/* <Layout.Section> */}
           <Card>
-            <Card.Section title={title == 'Free' ? 'Free - Available only One Time' : title}>
-              <div >
-                {
-                  monthlyPrice === 0 ?
-                    <>
+            {monthlyPrice == 0
+              ? <>
+                <Card.Section style={{ height: 160 }} title={title == 'Free' ? 'Free - Available only One Time' : title} >
+                  <Stack>
+                    <Stack.Item fill>
                       {productPrice !== 0 ? <DisplayText size="medium">${productPrice}/{numProducts} Products</DisplayText> : null}
                       {orderPrice !== 0 ? <DisplayText size="medium">${orderPrice}/{numOrders} Orders</DisplayText> : null}
                       {imagePrice !== 0 ? <DisplayText size="medium">${imagePrice}/{numImages} Images</DisplayText> : null}
                       {title == 'Free' ? <DisplayText size="medium">${orderPrice}/{numOrders} Orders</DisplayText> : null}
-                      <Stack>
-                        <Stack.Item fill>Add Number of Orders</Stack.Item>
-                        <Stack.Item>{numOrders}</Stack.Item>
-                      </Stack>
-                      <Stack>
-                        <Stack.Item fill>Add Number of Products</Stack.Item>
-                        <Stack.Item>{numProducts}</Stack.Item>
-                      </Stack>
-                      <Stack>
-                        <Stack.Item fill>Add Number of Images</Stack.Item>
-                        <Stack.Item>{numImages}</Stack.Item>
-                      </Stack>
-                      {title == 'Free' ? <Stack><Stack.Item fill>Period</Stack.Item><Stack.Item>30 Days</Stack.Item></Stack> : <Stack.Item fill>Period : use at your convenience with Balance Carry Forward</Stack.Item>}
-                      {/* {title == 'Free' ? <Stack.Item fill>Available only One Time</Stack.Item> : null} */}
-                    </>
-                    :
+                    </Stack.Item>
+                    <Stack.Item>{null}
+                    </Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>Add Number of Orders</Stack.Item>
+                    <Stack.Item>{numOrders}</Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>Add Number of Products</Stack.Item>
+                    <Stack.Item>{numProducts}</Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>Add Number of Images</Stack.Item>
+                    <Stack.Item>{numImages}</Stack.Item>
+                  </Stack>
+                  {!icCharged && installationCharge > 0
+                    ?
                     <>
                       <Stack>
-                        <DisplayText size="medium">${monthlyPrice}/30 Days</DisplayText>
-                        <a>or ${annualPriceB} / 365 Days</a>
-                      </Stack>
-                      <Stack>
-                        <Stack.Item fill>Number of Orders</Stack.Item>
-                        <Stack.Item>Unlimited</Stack.Item>
-                      </Stack>
-                      <Stack>
-                        <Stack.Item fill>Number of Products</Stack.Item>
-                        <Stack.Item>Unlimited</Stack.Item>
-                      </Stack>
-                      <Stack>
-                        <Stack.Item fill>Number of Images</Stack.Item>
-                        <Stack.Item>Unlimited</Stack.Item>
-                      </Stack>
-                      <Stack>
-                        <Stack.Item fill>Period : as per your selection</Stack.Item>
+                        <Stack.Item fill>Installation Charge (Applicable One-Time)</Stack.Item>
+                        <Stack.Item>${installationCharge}</Stack.Item>
                       </Stack>
                     </>
-                }
-              </div>
-              {planId == 1
-                ? <>
-                  <input width="100%" id="1" defaultValue={objID} />
-                  <Button fullWidth primary size="medium" disabled={orderRec !== 0} onClick={() => handleFreePlan(listOfPlans, objID)}>Select Free Plan</Button>
-                  <Button fullWidth disabled>
-                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  </Button>
-                </> : null}
-              {planId == 2
-                ? <>
-                  <input width="100%" id="2" defaultValue={objID} />
-                  <Button fullWidth primary size="medium" onClick={() => handleOrderPlan(listOfPlans, objID)}>Select Order Based Plan</Button>
-                  <Button fullWidth disabled>
-                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  </Button>
-                </> : null}
-              {planId == 3
-                ? <>
-                  <input width="100%" id="3" defaultValue={objID} />
-                  <Button fullWidth secondary onClick={() => handleYearlyPlan(listOfPlans, objID)}>$550 / 365 Days</Button>
-                  <Button fullWidth primary onClick={() => handleMonthlyPlan(listOfPlans, objID)}>$50 / 30 Days</Button>
-                </>
-                : null}
-              {planId == 4
-                ? <>
-                  <input width="100%" id="4" defaultValue={objID} />
-                  <Button fullWidth primary size="medium" onClick={() => handleOrdersAddOn(listOfPlans, objID)}>Select Orders Add On</Button>
-                  <Button fullWidth disabled>
-                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  </Button>
-                </> : null}
-              {planId == 5
-                ? <>
-                  <input width="100%" id="5" defaultValue={objID} />
-                  <Button fullWidth primary size="medium" onClick={() => handleProductsAddOn(listOfPlans, objID)} >Select Products Add On</Button>
-                  <Button fullWidth disabled>
-                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  </Button>
-                </>
-                : null}
-              {planId == 6
-                ? <>
-                  <input width="100%" id="6" defaultValue={objID} />
-                  <Button fullWidth primary size="medium" onClick={() => handleImagesAddOn(listOfPlans, objID)} >Select Images Add On</Button>
-                  <Button fullWidth disabled>
-                    {productPrice !== 0 ? `$${productPrice} / ${numProducts} Products` : null}
-                    {orderPrice !== 0 ? `$${orderPrice} / ${numOrders} Orders` : null}
-                    {imagePrice !== 0 ? `$${imagePrice} / ${numImages} Images` : null}
-                    {title == 'Free' ? `$${orderPrice} / ${numOrders} Orders` : null}
-                  </Button>
-                </>
-                : null}
+                    : null
+                  }
+                  {title == 'Free' ? <Stack><Stack.Item fill>Period</Stack.Item><Stack.Item>30 Days</Stack.Item></Stack> : <Stack.Item fill>Period : use at your convenience with Balance Carry Forward</Stack.Item>}
+                </Card.Section>
+              </>
+              : <>
+                <Card.Section style={{ height: 160 }} title={title == 'Free' ? 'Free - Available only One Time' : title} >
+                  <Stack>
+                    <Stack.Item fill>
+                      <DisplayText size="medium">
+                        ${monthlyPrice}/30 Days
+                      </DisplayText>
+                    </Stack.Item>
+                    <Stack.Item>
+                      ${annualPriceB} / 365 Days
+                    </Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>Number of Orders</Stack.Item>
+                    <Stack.Item>Unlimited</Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>Number of Products</Stack.Item>
+                    <Stack.Item>Unlimited</Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>Number of Images</Stack.Item>
+                    <Stack.Item>Unlimited</Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>Period : as per your selection</Stack.Item>
+                  </Stack>
+                  {!icCharged && installationCharge > 0
+                    ? <>
+                      <Stack>
+                        <Stack.Item fill>Installation Charge (Applicable One-Time)</Stack.Item>
+                        <Stack.Item>${installationCharge}</Stack.Item>
+                      </Stack>
+                    </>
+                    : null
+                  }
+                </Card.Section>
+              </>
+            }
+            <Card.Section>
+              <PlanModal planDetail={planDetail} handlePlanChange={handlePlanChange} />
             </Card.Section>
           </Card>
         </Layout.Section>
       </>
-    );
+    )
   }
 
   async function getData() {
@@ -317,8 +424,8 @@ const Index = () => {
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
       if (res) {
-        console.log(res.data.data);
-        console.log("limit on Orders :: ", res.data.data.isPlanActive);
+        // console.log(res.data.data);
+        // console.log("limit on Orders :: ", res.data.data.isPlanActive);
         setIsPlanActive(res.data.data.isPlanActive);
         setIsFreePlan(res.data.data.isFreePlan);
         setIsOrderPlan(res.data.data.isOrderPlan);
@@ -326,6 +433,8 @@ const Index = () => {
         setImageLimit(res.data.data.imageLimit);
         setProductLimit(res.data.data.productLimit);
         setOrderRecLimit(res.data.data.orderRecLimit);
+        setIsFPAOnce(res.data.data.isFPAOnce);
+        setIcCharged(res.data.data.icCharged);
         // console.log("Is free plan active :: ", res.data.data.isFreePlan)
         var instOn = new Date(res.data.data.installedOn);
         var dateDif = datediff(instOn, new Date(), 'days')
@@ -361,7 +470,6 @@ const Index = () => {
               return e.type == "order" && e.status == "received";
             }).length
           );
-          setOrderRec(5)
           setOrderDel(
             res.data.data.process.filter(function (e) {
               return e.type == "order" && e.status == "delivered";
@@ -383,6 +491,7 @@ const Index = () => {
             }).length
           );
         }
+        // setOrderRec(5)
       }
     } catch (e) {
       setSerial(null);
@@ -416,55 +525,60 @@ const Index = () => {
   async function getPlans() {
     try {
       const res = await axios.get("/api/plans?shop=" + shop);
+      let planDetail = res.data.data.planDetail
+      setListOfPlans(planDetail);
       // if (res) console.log(res.data.data.planDetail);
+
       // console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry", planNearExp)
-      if (isPlanActive) {
-        if (planNearExp) {
-          if (res) {
-            let planDetail = res.data.data.planDetail;
-            planDetail = planDetail.sort((a, b) => {
-              return a.id - b.id;
-            }).filter(plans => plans.name !== 'Free');
-            setListOfPlans(planDetail);
-            // console.log("List of Plans Filtered", planDetail);
-          }
-        }
-      }
+      // if (isPlanActive) {
+      //   if (planNearExp) {
+      //     if (res) {
+      //       let planDetail = res.data.data.planDetail;
+      //       planDetail = planDetail.sort((a, b) => {
+      //         return a.id - b.id;
+      //       }).filter(plans => plans.name !== 'Free');
+      //       setListOfPlans(planDetail);
+      //       // console.log("List of Plans Filtered", planDetail);
+      //     }
+      //   }
+      // }
+
       // console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
-      if (orderRec === 0) {
-        if (!isPlanActive) {
-          if (res) {
-            let planDetail = res.data.data.planDetail;
-            planDetail = planDetail.sort((a, b) => {
-              return a.id - b.id;
-            });
-            setListOfPlans(planDetail);
-            // console.log("setting list of plans :: ", planDetail);
-          }
-        }
-      }
+      // if (orderRec === 0) {
+      //   if (!isPlanActive) {
+      //     if (res) {
+      //       let planDetail = res.data.data.planDetail;
+      //       planDetail = planDetail.sort((a, b) => {
+      //         return a.id - b.id;
+      //       });
+      //       setListOfPlans(planDetail);
+      //       // console.log("setting list of plans :: ", planDetail);
+      //     }
+      //   }
+      // }
+
       // console.log("Plan is Active :: ", isPlanActive, "Number of Orders Processed :: ", orderRec)
-      if (orderRec !== 0) {
-        if (!isPlanActive) {
-          if (res) {
-            let planDetail = res.data.data.planDetail;
-            for (var i = 0; i < planDetail.length; i++) {
-              // console.log("Before Filter is Applied :: ", planDetail[i].name)
-            }
-            planDetail = planDetail.sort((a, b) => {
-              return a.id - b.id;
-            }).filter(function (e) {
-              return e.name != "Free";
-            })
-            for (var i = 0; i < planDetail.length; i++) {
-              // console.log("After Filter is Applied :: ", planDetail[i].name)
-            }
-            //.filter(plans => plans.name !== 'Free');
-            setListOfPlans(planDetail);
-            // console.log("List of Plans Filtered", planDetail);
-          }
-        }
-      }
+      // if (orderRec !== 0) {
+      //   if (!isPlanActive) {
+      //     if (res) {
+      //       let planDetail = res.data.data.planDetail;
+      //       for (var i = 0; i < planDetail.length; i++) {
+      //         // console.log("Before Filter is Applied :: ", planDetail[i].name)
+      //       }
+      //       planDetail = planDetail.sort((a, b) => {
+      //         return a.id - b.id;
+      //       }).filter(function (e) {
+      //         return e.name != "Free";
+      //       })
+      //       for (var i = 0; i < planDetail.length; i++) {
+      //         // console.log("After Filter is Applied :: ", planDetail[i].name)
+      //       }
+      //       //.filter(plans => plans.name !== 'Free');
+      //       setListOfPlans(planDetail);
+      //       // console.log("List of Plans Filtered", planDetail);
+      //     }
+      //   }
+      // }
       // console.log(planArray);
     } catch (e) {
       console.log("errors while fatching plans ::", e)
@@ -472,85 +586,68 @@ const Index = () => {
   }
 
   function BillingPlans() {
-    if (listOfPlans) return (
+    let data = listOfPlans.filter(function (plan) { return plan.id == 2 })
+    // console.log(data)
+    return (
       <>
         <Layout>
-          {listOfPlans.filter(function (plan) { return plan.name != "Free" && plan.id < 4 }).map(plan => (
-            <PlanCard
-              objID={plan._id}
-              isSelected={plan.id == 2}
-              planId={plan.id}
-              key={`key_${plan.id}`}
-              title={plan.name}
-              orderPrice={plan.orderPrice}
-              productPrice={plan.productPrice}
-              imagePrice={plan.imagePrice}
-              numOrders={plan.numOrders}
-              numProducts={plan.numProducts}
-              numImages={plan.numImages}
-              monthlyPrice={plan.monthlyPrice}
-              annualPriceA={(plan.annualPrice / 12).toFixed(2)}
-              annualPriceB={plan.annualPrice.toString()}
-            />
-          ))}
+          {data
+            .map(plan => (
+              <PlanCard
+                objID={plan._id}
+                isSelected={plan.id == 2}
+                planId={plan.id}
+                key={`key_${plan.id}`}
+                title={plan.name}
+                installationCharge={plan.installationCharge}
+                orderPrice={plan.orderPrice}
+                productPrice={plan.productPrice}
+                imagePrice={plan.imagePrice}
+                numOrders={plan.numOrders}
+                numProducts={plan.numProducts}
+                numImages={plan.numImages}
+                monthlyPrice={plan.monthlyPrice}
+                annualPriceA={(plan.annualPrice / 12).toFixed(2)}
+                annualPriceB={plan.annualPrice.toString()}
+              />
+            ))}
         </Layout>
       </>
     )
   }
+
   function AddOnPlans() {
 
     // const plans = listOfPlans
     if (listOfPlans) return (
       <>
         <Layout>
-          {listOfPlans.filter(function (e) { return e.id > 3 }).map(plan => (
-            <PlanCard
-              objID={plan._id}
-              isSelected={plan.id == 1}
-              planId={plan.id}
-              key={`key_${plan.id}`}
-              title={plan.name}
-              orderPrice={plan.orderPrice}
-              productPrice={plan.productPrice}
-              imagePrice={plan.imagePrice}
-              numOrders={plan.numOrders}
-              numProducts={plan.numProducts}
-              numImages={plan.numImages}
-              monthlyPrice={plan.monthlyPrice}
-              annualPriceA={(plan.annualPrice / 12).toFixed(2)}
-              annualPriceB={plan.annualPrice.toString()}
-            />
-          ))}
+          {listOfPlans
+            .filter(function (e) { return (e.id == 4 || e.id == 5) })
+            .sort((a, b) => { return a.id - b.id; })
+            .map(plan => (
+              <PlanCard
+                objID={plan._id}
+                isSelected={plan.id == 1}
+                planId={plan.id}
+                key={`key_${plan.id}`}
+                title={plan.name}
+                installationCharge={plan.installationCharge}
+                orderPrice={plan.orderPrice}
+                productPrice={plan.productPrice}
+                imagePrice={plan.imagePrice}
+                numOrders={plan.numOrders}
+                numProducts={plan.numProducts}
+                numImages={plan.numImages}
+                monthlyPrice={plan.monthlyPrice}
+                annualPriceA={(plan.annualPrice / 12).toFixed(2)}
+                annualPriceB={plan.annualPrice.toString()}
+              />
+            ))}
         </Layout>
       </>)
   }
-  // function BillingPlansWithFree() {
 
-  //   // const plans = listOfPlans
-  //   if (listOfPlans) return (
-  //     <>
-  //       <Layout>
-  //         {listOfPlans.filter(function (plan) { return plan.id < 4 }).map(plan => (
-  //           <PlanCard
-  //             objID={plan._id}
-  //             isSelected={plan.id == 1}
-  //             planId={plan.id}
-  //             key={`key_${plan.id}`}
-  //             title={plan.name}
-  //             orderPrice={plan.orderPrice}
-  //             productPrice={plan.productPrice}
-  //             imagePrice={plan.imagePrice}
-  //             numOrders={plan.numOrders}
-  //             numProducts={plan.numProducts}
-  //             numImages={plan.numImages}
-  //             monthlyPrice={plan.monthlyPrice}
-  //             annualPriceA={(plan.annualPrice / 12).toFixed(2)}
-  //             annualPriceB={plan.annualPrice.toString()}
-  //           />
-  //         ))}
-  //       </Layout>
-  //     </>)
-  // }
   function FreeBillingPlan() {
 
     // const plans = listOfPlans
@@ -564,6 +661,7 @@ const Index = () => {
               planId={plan.id}
               key={`key_${plan.id}`}
               title={plan.name}
+              installationCharge={plan.installationCharge}
               orderPrice={plan.orderPrice}
               productPrice={plan.productPrice}
               imagePrice={plan.imagePrice}
@@ -584,282 +682,25 @@ const Index = () => {
       await getData();
       await getPlans();
       checkPlanValidity();
+
+      {
+        !serial
+          ? <>
+            {!isPlanActive
+              ? <>
+                {planNearExp
+                  ? setShowPlans(true)
+                  : setShowPlans(false)}
+              </>
+              : setShowPlans(false)
+            }
+          </>
+          : setShowPlans(false)
+      }
     };
     intialSetup();
   }, []);
 
-  function handlePlanChange(planChange, yearly, monthly) {
-    console.log("trying to change the plan, fingers crossed :: ", planChange)
-    if (!yearly) {
-      if (!monthly) {
-        setPlanToChange(
-          {
-            "planid": planChange[0]._id,
-            "name": planChange[0].name,
-            "monthlyPrice": planChange[0].monthlyPrice,
-            "period": "unlimited",
-            "annualPrice": planChange[0].annualPrice,
-            "orderPrice": planChange[0].orderPrice,
-            "productPrice": planChange[0].productPrice,
-            "imagePrice": planChange[0].imagePrice,
-            "numOrders": planChange[0].numOrders,
-            "numProducts": planChange[0].numProducts,
-            "numImages": planChange[0].numImages
-          }
-        )
-      } else {
-        setPlanToChange({
-          "planid": planChange[0]._id,
-          "name": planChange[0].name,
-          "monthlyPrice": planChange[0].monthlyPrice,
-          "period": "1 month",
-          "annualPrice": planChange[0].annualPrice,
-          "orderPrice": planChange[0].orderPrice,
-          "productPrice": planChange[0].productPrice,
-          "imagePrice": planChange[0].imagePrice,
-          "numOrders": planChange[0].numOrders,
-          "numProducts": planChange[0].numProducts,
-          "numImages": planChange[0].numImages
-        })
-      }
-    } else {
-      setPlanToChange({
-        "planid": planChange[0]._id,
-        "name": planChange[0].name,
-        "monthlyPrice": planChange[0].monthlyPrice,
-        "period": "1 Year",
-        "annualPrice": planChange[0].annualPrice,
-        "orderPrice": planChange[0].orderPrice,
-        "productPrice": planChange[0].productPrice,
-        "imagePrice": planChange[0].imagePrice,
-        "numOrders": planChange[0].numOrders,
-        "numProducts": planChange[0].numProducts,
-        "numImages": planChange[0].numImages
-      })
-    }
-    // console.log("planToChange :: ", planToChange);
-    console.log("Monthly :: ", monthly, "Yearly :: ", yearly);
-    console.log("Serial :: ", serialNum)
-    console.log(planChange[0].name)
-    if (planChange[0].name == "Free") {
-      setIsFreePlan(true);
-      setShowPlans(false);
-      setChangePlantoOrder(false);
-      setChangePlantoMonth(false);
-      setPlanNearExp(true)
-      console.log("Plan Changed to Free ::", isFreePlan);
-      console.log("Changing plan to Free Plan")
-      setIsPlanActive(true);
-      console.log("Free Plan Activated ", isPlanActive);
-      setIsFreePlan(true);
-      setOrderRecLimit(planChange[0].numOrders);
-      setProductLimit(planChange[0].numProducts);
-      setImageLimit(planChange[0].numImages);
-      setSerialNum(serial);
-      // console.log("Plan Changed to Non-Free for next round ::", isFreePlan);
-    }
-    if (planChange[0].name == "Order Based Plan") {
-      setIsPlanActive(true);
-      if (isFreePlan) {
-        setIsFreePlan(false);
-        setShowPlans(false);
-        setChangePlantoOrder(true);
-        setIsOrderPlan(true);
-        setSerialNum(serial);
-        setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
-        setProductLimit(productLimit + planChange[0].numProducts);
-        setImageLimit(imageLimit + planChange[0].numImages);
-        console.log(isPlanActive);
-        console.log("Changing Plan from Free Plan to Order based Plan")
-      } else {
-        setChangePlantoOrder(true);
-        setShowPlans(false);
-        setIsOrderPlan(true);
-        setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
-        setProductLimit(productLimit + planChange[0].numProducts);
-        setImageLimit(imageLimit + planChange[0].numImages);
-        setSerialNum(serial);
-        console.log(isPlanActive);
-        console.log("Changing Plan to Order based Plan")
-      }
-      if (isMonthlyPlan) {
-        setIsMonthlyPlan(false)
-        setChangePlantoOrder(true);
-        setShowPlans(false);
-        setIsOrderPlan(true);
-        setOrderRecLimit(orderRec + planChange[0].numOrders);
-        setProductLimit(product + planChange[0].numProducts);
-        setImageLimit(image + planChange[0].numImages);
-        setSerialNum(serial);
-        console.log(isPlanActive);
-        console.log("Changing Plan from Monthly Plan to Order based Plan")
-      } else {
-        setChangePlantoOrder(true);
-        setIsOrderPlan(true);
-        setShowPlans(false);
-        setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
-        setProductLimit(productLimit + planChange[0].numProducts);
-        setImageLimit(imageLimit + planChange[0].numImages);
-        setSerialNum(serial);
-        console.log(isPlanActive);
-        console.log("Changing Plan to Order based Plan")
-      }
-      if (!isFreePlan && !isMonthlyPlan) {
-        setChangePlantoOrder(true);
-        setIsOrderPlan(true);
-        setShowPlans(false);
-        setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
-        setProductLimit(productLimit + planChange[0].numProducts);
-        setImageLimit(imageLimit + planChange[0].numImages);
-        setSerialNum(serial);
-        console.log(isPlanActive);
-        console.log("Changing Plan to Order based Plan")
-      }
-      // setChangePlantoOrder(false);
-    }
-    if (isPlanActive) console.log("Is Order Plan Active :: ", isOrderPlan, "New Order Limit :: ", orderRecLimit, "New Product Limit :: ", productLimit, "New Image Limit :: ", imageLimit)
-    if (planChange[0].name == "Periodic Plan") {
-      if (yearly) {
-        var now = new Date();
-        const one_day = 1000 * 60 * 60 * 24
-        console.log('Plan Start :: ', now);
-        var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
-        console.log('Expiry :: ', expiry);
-        var date1 = new Date();
-        var date2 = new Date(expiry);
-        console.log(date2);
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / one_day);
-        console.log("Difference in MilliSeconds :: ", diffTime);
-        console.log('Difference in Days', diffDays);
-        console.log("Plan is about to get over :: ", diffDays < 11)
-        setPlanExpiry(diffDays);
-        if (diffDays < 11) {
-          setPlanNearExp(true)
-          setShowPlans(true);
-        } else {
-          setPlanNearExp(false);
-          setShowPlans(false);
-        }
-      }
-      if (monthly) {
-        var now = new Date();
-        const one_day = 1000 * 60 * 60 * 24
-        console.log('Plan Start :: ', now);
-        var expiry = new Date(now.setDate(now.getDate() + 30));
-        console.log('Expiry :: ', expiry);
-        var date1 = new Date();
-        var date2 = new Date(expiry);
-        console.log(date2);
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / one_day);
-        console.log("Difference in MilliSeconds :: ", diffTime);
-        console.log('Difference in Days', diffDays);
-        console.log("Plan is about to get over :: ", diffDays < 11)
-        setPlanExpiry(diffDays);
-        if (diffDays < 11) {
-          setPlanNearExp(true)
-          setShowPlans(true);
-        } else {
-          setPlanNearExp(false);
-          setShowPlans(false);
-        }
-
-      }
-      if (isFreePlan) setIsFreePlan(!isFreePlan);
-      if (isOrderPlan) setChangePlantoOrder(!isOrderPlan)
-      setIsPlanActive(true);
-      setChangePlantoMonth(true);
-      setIsMonthlyPlan(true);
-      setOrderRecLimit(0);
-      setProductLimit(0);
-      setImageLimit(0);
-      console.log(isPlanActive);
-      console.log("Changing Plan to Periodic Plan")
-      setSerialNum(serial);
-      // setChangePlantoOrder(false);
-    } else {
-      console.log(planChange[0].name);
-      if (planChange[0].name == "Orders Add-On") {
-        console.log("Number of Orders to be added :: ", planChange[0].numOrders)
-        setOrderRecLimit(orderRecLimit + planChange[0].numOrders);
-      }
-      if (planChange[0].name == "Products Add-On") {
-        console.log("Number of Products to be added :: ", planChange[0].numProducts, "Number of Images to be added :: ", planChange[0].numImages)
-        setProductLimit(productLimit + planChange[0].numProducts);
-        setImageLimit(imageLimit + planChange[0].numImages);
-      }
-    }
-    console.log({
-      shop: shop,
-      serialNumber: serial,
-      tallyPrime: isPrime,
-      isPlanActive,
-      isFreePlan,
-      isOrderPlan,
-      isMonthlyPlan,
-      orderRecLimit,
-      productLimit,
-      imageLimit,
-    })
-    try {
-      axios
-        .post("/api/regform", {
-          shop: shop,
-          serialNumber: serial,
-          tallyPrime: isPrime,
-          isPlanActive,
-          planNearExp,
-          isFreePlan,
-          isOrderPlan,
-          isMonthlyPlan,
-          orderRecLimit,
-          productLimit,
-          imageLimit,
-        })
-        .catch((err) => {
-          console.log("err: ", err);
-        });
-    } catch (e) {
-      console.log("e ::", e);
-    }
-
-  }
-
-  function handleFreePlan(plan, id) {
-    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan, false, true);
-  }
-
-  function handleOrderPlan(plan, id) {
-    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan, false, false);
-  }
-
-  function handleYearlyPlan(plan, id) {
-    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan, true, false);
-  }
-
-  function handleMonthlyPlan(plan, id) {
-    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan, false, true);
-  }
-
-  function handleOrdersAddOn(plan, id) {
-    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan, false, false);
-  }
-
-  function handleProductsAddOn(plan, id) {
-    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan, false, false);
-  }
-
-  function handleImagesAddOn(plan, id) {
-    let filtPlan = plan.filter(plan => plan._id == id).map(plan => plan)
-    handlePlanChange(filtPlan, false, false);
-  }
 
   const handleSerialChange = useCallback((value) => {
     setSerialNum(value);
@@ -914,9 +755,9 @@ const Index = () => {
             isFreePlan,
             isOrderPlan,
             isMonthlyPlan,
-            orderRecLimit,
-            productLimit,
-            imageLimit,
+            orderRecLimit: 0,
+            productLimit: 0,
+            imageLimit: 0,
           })
           .catch((err) => {
             console.log("err: ", err);
@@ -951,13 +792,14 @@ const Index = () => {
     } catch (e) {
       console.log("e ::", e);
     }
+    getData()
   };
-
-  const plans = listOfPlans;
 
   return (
     <Page>
-      <Card title="Simplified E-Commerce Accounting - Synchronise Data with Tally">
+      <Card
+        title="Simplified E-Commerce Accounting - Synchronise Data with Tally"
+      >
         <Card.Section >
           <Layout>
             <Layout.Section>
@@ -1006,6 +848,34 @@ const Index = () => {
                     <Stack.Item fill>Max Number of Images</Stack.Item>
                     <Stack.Item >{imageLimit}</Stack.Item>
                   </Stack>
+                  {isFPAOnce
+                    ? <>
+                      <Stack>
+                        <Stack.Item fill>Is Free Plan Activated already : </Stack.Item>
+                        <Stack.Item>Yes</Stack.Item>
+                      </Stack>
+                    </>
+                    : <>
+                      <Stack>
+                        <Stack.Item fill>Is Free Plan Activated already : </Stack.Item>
+                        <Stack.Item>No</Stack.Item>
+                      </Stack>
+                    </>
+                  }
+                  {icCharged
+                    ? <>
+                      <Stack>
+                        <Stack.Item fill>Is Installation Charges Charged : </Stack.Item>
+                        <Stack.Item>Yes</Stack.Item>
+                      </Stack>
+                    </>
+                    : <>
+                      <Stack>
+                        <Stack.Item fill>Is Installation Charges Charged : </Stack.Item>
+                        <Stack.Item>No</Stack.Item>
+                      </Stack>
+                    </>
+                  }
                 </Layout.Section>
               </>
               : null}
@@ -1150,43 +1020,6 @@ const Index = () => {
                   preferredAlignment={screenLeft}
                 >
                   <FormLayout>
-                    <Card.Section>
-                      <Button
-                        pressed={!showPlans}
-                        onClick={handleShowPlans}
-                        outline
-                        fullWidth={true}
-                        ariaExpanded={showPlans}
-                        ariaControls="basic-collapsible"
-                      >
-                        Show Plans / Add ons
-                      </Button>
-                    </Card.Section>
-                    <Collapsible
-                      open={!showPlans}
-                      id="basic-collapsible"
-                      transition={{
-                        duration: "500ms",
-                        timingFunction: "ease-in-out",
-                      }}
-                      expandOnPrint
-                    >
-                      {orderRec === 0
-                        ? <> {FreeBillingPlan()};  {BillingPlans()}; {AddOnPlans()}; </>
-                        : <> {isMonthlyPlan
-                          ? <> {planNearExp
-                            ? <>
-                              <Heading element='h1'>Your Usage is about to reach the limits</Heading>
-                              {BillingPlans()};
-                            </>
-                            : null}
-                          </>
-                          : <> {BillingPlans()}; {AddOnPlans()};
-                          </>
-                        }
-                        </>
-                      }
-                    </Collapsible>
                     {!serial
                       ? <>
                         <Stack>
@@ -1196,11 +1029,10 @@ const Index = () => {
                             </Heading>
                           </Stack.Item>
                           <Stack.Item>
-                            {isPrime ? (
+                            <ButtonGroup segmented>
+                              <Button pressed={!isPrime} onClick={handleIsPrime}>Tally.ERP9</Button>
                               <Button pressed={isPrime} onClick={handleIsPrime}>Tally Prime</Button>
-                            ) : (
-                              <Button pressed={isPrime} onClick={handleIsPrime}>Tally.ERP9</Button>
-                            )}
+                            </ButtonGroup>
                           </Stack.Item>
                         </Stack>
                         <p>
@@ -1259,74 +1091,121 @@ const Index = () => {
         </Card.Section>
       </Card>
       <Card>
-        <Layout.Section id="features">
-          <Card.Section>
-            <Button
-              onClick={handleFeatToggle}
-              outline
-              fullWidth={true}
-              ariaExpanded={featureOpen}
-              ariaControls="basic-collapsible"
-            >
-              Features
-            </Button>
-            <Collapsible
-              open={featureOpen || !serial}
-              id="basic-collapsible"
-              transition={{
-                duration: "500ms",
-                timingFunction: "ease-in-out",
-              }}
-              expandOnPrint
-            >
-              <List type="bullet">
-                <List.Item>Scope of Duplication : 0</List.Item>
-                <List.Item>need to Import / Export Data : 0</List.Item>
-                <List.Item>
-                  Fully Automated Synchronisation of Orders & Tracking Status
-                </List.Item>
-                <List.Item>
-                  Create Stock Item / Group in Tally.ERP9 / Tally Prime with
-                  Images and post them as Single / Multi Variant Products on
-                  Shopify
-                </List.Item>
-                <List.Item>
-                  Order Process :
-                  <List type="number">
-                    <List.Item>
-                      Receive Orders in Tally.ERP9 / Tally Prime as soon as they
-                      are booked on Shopify
-                    </List.Item>
-                    <List.Item>
-                      Material dispatch entry is booked in Tally.ERP9 / Tally
-                      Prime along with courier details once the Material is
-                      Dispatched
-                    </List.Item>
-                    <List.Item>
-                      keep track of material with the link provided in the
-                      Tally.ERP9 / Tally Prime interface
-                    </List.Item>
-                    <List.Item>
-                      Sales Entry is booked with necessary adjustment entry for
-                      COD Partner / Payment Gateway.
-                    </List.Item>
-                    <List.Item>
-                      Easy reconciliation with COD Partner / Payment Gateway
-                    </List.Item>
-                    <List.Item>
-                      In case Material is returned undelivered / post delivery,
-                      Automated rejection note is duly processed
-                    </List.Item>
-                    <List.Item>
-                      Automated Reversal is done for COD partner / Payment
-                      Gateway
-                    </List.Item>
-                  </List>
-                </List.Item>
-              </List>
-            </Collapsible>
-          </Card.Section>
-        </Layout.Section>
+        <Card.Section>
+          <Layout>
+            <Layout.Section>
+              <Button
+                pressed={!showPlans}
+                onClick={handleShowPlans}
+                outline
+                fullWidth={true}
+                ariaExpanded={showPlans}
+                ariaControls="basic-collapsible"
+              >
+                Show Plans / Add ons
+              </Button>
+              <Collapsible
+                open={!showPlans}
+                id="basic-collapsible"
+                transition={{
+                  duration: "500ms",
+                  timingFunction: "ease-in-out",
+                }}
+                expandOnPrint
+              >
+                {!isFPAOnce
+                  ? FreeBillingPlan()
+                  : null
+                }
+                {isMonthlyPlan ?
+                  <>
+                    {planNearExp ?
+                      <>
+                        <Heading element='h1'>Your Usage is about to reach the limits</Heading>
+                        {BillingPlans()}
+                      </>
+                      :
+                      null
+                    }
+                  </>
+                  :
+                  <>
+                    {BillingPlans()}
+                    {AddOnPlans()}
+                  </>
+                }
+              </Collapsible>
+            </Layout.Section>
+          </Layout>
+        </Card.Section>
+      </Card>
+      <Card>
+        <Card.Section id="features">
+          <Button
+            onClick={handleFeatToggle}
+            outline
+            fullWidth={true}
+            ariaExpanded={featureOpen}
+            ariaControls="basic-collapsible"
+          >
+            Features
+          </Button>
+          <Collapsible
+            open={featureOpen || !serial}
+            id="basic-collapsible"
+            transition={{
+              duration: "500ms",
+              timingFunction: "ease-in-out",
+            }}
+            expandOnPrint
+          >
+            <List type="bullet">
+              <List.Item>Scope of Duplication : 0</List.Item>
+              <List.Item>need to Import / Export Data : 0</List.Item>
+              <List.Item>
+                Fully Automated Synchronisation of Orders & Tracking Status
+              </List.Item>
+              <List.Item>
+                Create Stock Item / Group in Tally.ERP9 / Tally Prime with
+                Images and post them as Single / Multi Variant Products on
+                Shopify
+              </List.Item>
+              <List.Item>
+                Order Process :
+                <List type="number">
+                  <List.Item>
+                    Receive Orders in Tally.ERP9 / Tally Prime as soon as they
+                    are booked on Shopify
+                  </List.Item>
+                  <List.Item>
+                    Material dispatch entry is booked in Tally.ERP9 / Tally
+                    Prime along with courier details once the Material is
+                    Dispatched
+                  </List.Item>
+                  <List.Item>
+                    keep track of material with the link provided in the
+                    Tally.ERP9 / Tally Prime interface
+                  </List.Item>
+                  <List.Item>
+                    Sales Entry is booked with necessary adjustment entry for
+                    COD Partner / Payment Gateway.
+                  </List.Item>
+                  <List.Item>
+                    Easy reconciliation with COD Partner / Payment Gateway
+                  </List.Item>
+                  <List.Item>
+                    In case Material is returned undelivered / post delivery,
+                    Automated rejection note is duly processed
+                  </List.Item>
+                  <List.Item>
+                    Automated Reversal is done for COD partner / Payment
+                    Gateway
+                  </List.Item>
+                </List>
+              </List.Item>
+            </List>
+          </Collapsible>
+        </Card.Section>
       </Card>
       <Card>
         <div className="player-wrapper" title="Steps to Implement">
@@ -1398,8 +1277,8 @@ const Index = () => {
           </Layout>
         </Card.Section>
       </Card>
-    </Page >
+    </Page>
   );
-};
+}
 
 export default Index;

@@ -60,7 +60,7 @@ function MyApp({ Component, pageProps, router }) {
         <Head>
           <title>Shopify App</title>
           <meta charSet="utf-8" />
-          <meta http-equiv="refresh" content="1800" />
+          <meta http-equiv="refresh" content="18000" />
         </Head>
         <Provider config={config}>
           <AppProvider i18n={translations}>

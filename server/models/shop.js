@@ -83,6 +83,8 @@ const shopSchema = new Schema({
   isMonthlyPlan: { type: Boolean, default: false },
   isOrderPlan: { type: Boolean, default: false },
   isFreePlan: { type: Boolean, default: false },
+  isFPAOnce: { type: Boolean, default: false },
+  icCharged: { type: Boolean, default: false },
   // appSubscription: [appSubscriptionSchema],
   // activePlan: [planSchema],
   // planLimits: [planLimitSchema],

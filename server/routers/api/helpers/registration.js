@@ -6,32 +6,39 @@ const registration = async (
   serialNum,
   isPrime,
   isPlanActive,
-  isFreePlan,
   planNearExp,
+  isFreePlan,
+  isFPAOnce,
   isOrderPlan,
   isMonthlyPlan,
   orderRecLimit,
   productLimit,
-  imageLimit) => {
+  imageLimit,
+  icCharged,
+) => {
   let nonce = nonceCreate();
   try {
-    await Shop.updateOne(
+    let doc = await Shop.updateOne(
       { shop: shop },
       {
         shop: shop,
         serial: serialNum,
         tallyPrime: isPrime,
-        isFreePlan: isFreePlan,
         isPlanActive: isPlanActive,
         planNearExp: planNearExp,
+        isFreePlan: isFreePlan,
+        isFPAOnce: isFPAOnce,
         isOrderPlan: isOrderPlan,
         isMonthlyPlan: isMonthlyPlan,
         orderRecLimit: orderRecLimit,
         productLimit: productLimit,
-        imageLimit: imageLimit
+        imageLimit: imageLimit,
+        icCharged: icCharged,
       },
       { upsert: true }
     );
+    return doc
+    // console.log(doc);
   } catch (error) {
     console.log("Error while adding Nonce to Database: ", error);
     return false;

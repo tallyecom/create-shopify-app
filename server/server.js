@@ -62,13 +62,16 @@ server.get("/_next/*", (req, res) => {
 server.use(function (req, res, next) {
   var shopurl;
   var fa;
+  const allowedOrigins = ['https://www.youtube.com']
+  const origin = req.headers.origin;
 
   if (req.query.shop !== "") {
+    if (allowedOrigins.includes(origin)) { res.setHeader("Access-Control-Allow-Origin", origin); }
     shopurl = req.query.shop;
     fa = `frame-ancestors ${shopurl} admin.shopify.com`;
     res.setHeader("Content-Security-Policy", fa);
     // res.setHeader("Accept-CH", "Sec-CH-UA-Full-Version-List");
-    res.setHeader("Access-Control-Allow-Origin", "www.youtube.com");
+    // res.setHeader("Access-Control-Allow-Origin",);
     // res.setHeader("Access-Control-Allow-Origin", "https://8316-103-216-215-179.ngrok.io/*");
   }
   next();
