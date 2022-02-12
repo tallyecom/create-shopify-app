@@ -809,6 +809,38 @@ const Index = () => {
               </Banner>
             </Layout.Section>
             {/* {isPlanActive ? console.log("Is Order Plan Active :: ", isOrderPlan, "New Order Limit :: ", orderRecLimit, "New Product Limit :: ", productLimit, "New Image Limit :: ", imageLimit) : null} */}
+            {serial ? (
+              <>
+                <Layout.Section>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">Tally.ERP9 / Tally Prime :</Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Heading element='h3'>
+                        {isPrime ? "Tally Prime" : "Tally.ERP9"}
+                      </Heading>
+                    </Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">Serial Number : </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Heading element='h3'>{serial}</Heading>
+                    </Stack.Item>
+                  </Stack>
+                  <Stack>
+                    <Stack.Item fill>
+                      <Heading element="h1">Access Token : </Heading>
+                    </Stack.Item>
+                    <Stack.Item>
+                      <Heading element='h3'>{userAccessToken}</Heading>
+                    </Stack.Item>
+                  </Stack>
+                </Layout.Section>
+              </>
+            ) : null}
             {isPlanActive
               ? <>
                 <Layout.Section>
@@ -980,38 +1012,6 @@ const Index = () => {
               </>)
               : null}
             {/* </Layout.Section> */}
-            {serial ? (
-              <>
-                <Layout.Section>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">Tally.ERP9 / Tally Prime :</Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      <Heading element='h3'>
-                        {isPrime ? "Tally Prime" : "Tally.ERP9"}
-                      </Heading>
-                    </Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">Serial Number : </Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      <Heading element='h3'>{serial}</Heading>
-                    </Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>
-                      <Heading element="h1">Access Token : </Heading>
-                    </Stack.Item>
-                    <Stack.Item>
-                      <Heading element='h3'>{userAccessToken}</Heading>
-                    </Stack.Item>
-                  </Stack>
-                </Layout.Section>
-              </>
-            ) : null}
             <Layout.Section>
               <>
                 <Form
