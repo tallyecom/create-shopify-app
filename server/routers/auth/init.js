@@ -72,8 +72,8 @@ const init = async (req, res) => {
       );
       console.log("Install URL :: ", installUrl);
       if (installUrl) {
-        // res.redirect("/billing")
-        res.redirect(installUrl);
+        res.redirect("/billing")
+        // res.redirect(installUrl);
       }
       else {
         res.send("An Error Occurred! Please go back and try again.");
