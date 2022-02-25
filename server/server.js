@@ -28,6 +28,7 @@ const Path = require("path");
 const nextapp = require("next");
 const server = express();
 
+
 // const bodyParser = require("body-parser");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
@@ -102,6 +103,7 @@ server.use('/graphql', graphqlHTTP({
   schema, graphiql: true
 }))
 
+// app.use('/graphql', graphqlController);
 app
   .prepare()
   .then(() => {

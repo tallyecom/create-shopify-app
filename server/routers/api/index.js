@@ -48,8 +48,8 @@ api.get("/plans", async (req, res) => {
 });
 
 api.get("/plans/:_id", async (req, res) => {
-  console.log(req.url);
-  console.log(req.params._id);
+  // console.log(req.url);
+  // console.log(req.params._id);
   try {
     let id = req.params._id
     var shop = req.query.shop
@@ -57,7 +57,7 @@ api.get("/plans/:_id", async (req, res) => {
       .replace("http://", "")
       .split(".")[0];
     var planDetail = await planByID({ id });
-    console.log({ planDetail });
+    // console.log({ planDetail });
     let data = { planDetail }
     res.json({ success: true, data }).status(200);
   } catch (e) {
@@ -128,9 +128,9 @@ api.post("/planchange", async (req, res) => {
   res.status(200).send("Process Addedd successfully");
 });
 api.post("/regform", async (req, res) => {
-  console.log("data received while changing plan :: ", req.body);
+  // console.log("data received while changing plan :: ", req.body);
   try {
-    let registrationRes = await registration(
+    await registration(
       req.body.shop
         .replace("https://", "")
         .replace("http://", "")
@@ -148,7 +148,7 @@ api.post("/regform", async (req, res) => {
       req.body.imageLimit,
       req.body.icCharged
     );
-    if (registrationRes) console.log(registrationRes);
+    // if (registrationRes) console.log(registrationRes);
   } catch (e) {
     console.log(e);
   }

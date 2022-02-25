@@ -5,9 +5,16 @@ import { Button, ChoiceList, Modal, Stack, TextContainer, Heading, Popover, Acti
 export default function PlanModal(props) {
     // console.log(props)
     const [active, setActive] = useState(false);
-    const [monthly, setMonthly] = useState(false);
-    const [annually, setAnnually] = useState(false);
-    const [selected, setSelected] = useState(['Monthly'])
+    const [selected, setSelected] = useState([])
+    const [month, setMonth] = useState(false)
+    const [year, setYear] = useState(false)
+
+    const handleSelectionChange = useCallback((value) => {
+        console.log("handleSelectionChange", value);
+        setSelected(value)
+        setMonth(value == "Monthly")
+        setYear(value == "Annually")
+    }, []);
 
     const handleModalChange = useCallback(() => { setActive(!active) }, [active]);
 
@@ -16,8 +23,10 @@ export default function PlanModal(props) {
     }
     // console.log(props.planDetail.title);
     const handleAcceptPlanChange = () => {
-        props.handlePlanChange(props.planDetail, monthly, annually)
-        handleModalChange();
+        // console.log(selected[0]);
+        // console.log("selected :: ", selected[0], " Monthly :: ", month, " Yearly ::", year)
+        props.handlePlanChange(props.planDetail, month, year)
+
     };
 
     let result
@@ -56,9 +65,7 @@ export default function PlanModal(props) {
             >
                 <Modal.Section>
                     <Stack.Item>
-                        <Heading element="h1">
-                            You've selected Free Plan, Please Confirm your Choice & you'll be entitled to following benefits.
-                        </Heading>
+                        <Heading element="h1">`You've selected ${props.planDetail.title}, Please Confirm your Choice & you'll be entitled to following benefits.`</Heading>
                         <Stack>
                             <Stack.Item fill>Orders :</Stack.Item>
                             <Stack.Item><Heading element="h3">{props.planDetail.numOrders == null ? 'Unlimited' : props.planDetail.numOrders}</Heading></Stack.Item>
@@ -71,19 +78,14 @@ export default function PlanModal(props) {
                             <Stack.Item fill>Images :</Stack.Item>
                             <Stack.Item><Heading element="h3">{props.planDetail.numImages == null ? 'Unlimited' : props.planDetail.numImages}</Heading></Stack.Item>
                         </Stack>
-                        {props.planDetail.installationCharge > 0
-                            ? <>
-                                <Stack>
-                                    <Stack.Item fill>Installation Charge :</Stack.Item>
-                                    <Stack.Item>
-                                        <Heading element="h3">
-                                            ${props.planDetail.installationCharge}
-                                        </Heading>
-                                    </Stack.Item>
-                                </Stack>
-                            </>
-                            : null
-                        }
+                        <Stack>
+                            <Stack.Item fill>Installation Charge :</Stack.Item>
+                            <Stack.Item>
+                                <Heading element="h3">
+                                    ${props.planDetail.installationCharge.toFixed(2)}
+                                </Heading>
+                            </Stack.Item>
+                        </Stack>
                         {props.planDetail.monthlyPrice > 0
                             ? <>
                                 <Stack>
@@ -100,7 +102,7 @@ export default function PlanModal(props) {
 
                                             ]}
                                             selected={selected}
-                                            onChange={selected == 'Monthly' ? setMonthly(true) : setAnnually(true)}
+                                            onChange={handleSelectionChange}
                                         />
                                     </Stack.Item>
                                 </Stack>
