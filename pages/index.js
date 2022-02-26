@@ -434,7 +434,7 @@ const Index = () => {
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
       if (res) {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         // console.log("limit on Orders :: ", res.data.data.isPlanActive);
         setIsPlanActive(res.data.data.isPlanActive);
         setIsFreePlan(res.data.data.isFreePlan);
