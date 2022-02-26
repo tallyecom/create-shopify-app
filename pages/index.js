@@ -136,7 +136,7 @@ const Index = () => {
 
   // console.log(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged)
   const postPlanDetailtoDB = (isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged, planChangeDate, planExpiryDate) => {
-    console.log("Plan About to be updated : ", { shop: shop, serialNumber: serial, tallyPrime: isPrime, isPlanActive: isPlanActive, planNearExp: planNearExp, isFreePlan: isFreePlan, isFPAOnce: isFPAOnce, isOrderPlan: isOrderPlan, isMonthlyPlan: isMonthlyPlan, orderRecLimit: orderRecLimit, productLimit: productLimit, imageLimit: imageLimit, icCharged: icCharged, planChangeDate: planChangeDate, planExpiryDate: planExpiryDate })
+    // console.log("Plan About to be updated :: ", { shop: shop, serialNumber: serial, tallyPrime: isPrime, isPlanActive: isPlanActive, planNearExp: planNearExp, isFreePlan: isFreePlan, isFPAOnce: isFPAOnce, isOrderPlan: isOrderPlan, isMonthlyPlan: isMonthlyPlan, orderRecLimit: orderRecLimit, productLimit: productLimit, imageLimit: imageLimit, icCharged: icCharged, planChangeDate: planChangeDate, planExpiryDate: planExpiryDate })
     try {
       axios
         .post("/api/regform", {
@@ -174,7 +174,7 @@ const Index = () => {
     }
   }
   const handlePlanChange = (planChange, monthly, yearly) => {
-    console.log('Plan Start :: ', planChangeDate);
+    // console.log('Plan Start :: ', planChangeDate);
     // console.log("trying to change the plan, fingers crossed :: ", planChange)
     // console.log("planToChange :: ", planChange, " Monthly :: ", monthly, " Yearly :: ", yearly, " title :: ", planChange.title);
     // console.log("Serial :: ", serialNum)

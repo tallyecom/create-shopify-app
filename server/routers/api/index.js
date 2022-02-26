@@ -130,7 +130,7 @@ api.post("/planchange", async (req, res) => {
   res.status(200).send("Process Addedd successfully");
 });
 api.post("/regform", async (req, res) => {
-  console.log("data received while changing plan :: ", req.body);
+  // console.log("data received while changing plan :: ", req.body);
   try {
     await registration(
       req.body.shop
