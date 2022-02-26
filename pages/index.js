@@ -62,6 +62,7 @@ const Index = () => {
   const [yearly, setYearly] = useState(false);
   const [planChangeDate, setPlanChangeDate] = useState();
   const [planExpiryDate, setPlanExpiryDate] = useState();
+  const [planExpired, setPlanExpired] = useState(false);
 
   // process details
   const [result, setResult] = useState([]);
@@ -461,6 +462,10 @@ const Index = () => {
       </>
     )
   }
+  const dateInPast = function (firstDate, secondDate) {
+    var cond = firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)
+    setPlanExpired(cond)
+  };
 
   async function getData() {
     const one_day = 1000 * 60 * 60 * 24
@@ -499,6 +504,7 @@ const Index = () => {
           setPlanNearExp(false);
           setShowPlans(false);
         }
+        dateInPast(date2, date1);
         var dateDif = datediff(planChangeDate, new Date(), 'days')
         if (dateDif < 31) {
           dateDif = datediff(planChangeDate, new Date(), 'days');
@@ -908,73 +914,73 @@ const Index = () => {
             {isPlanActive
               ? <>
                 <Layout.Section>
-                  <Stack>
-                    <Stack.Item fill>Active Plan :</Stack.Item>
-                    {isFreePlan
-                      ? <Stack.Item>Free</Stack.Item>
-                      : <>{isMonthlyPlan
-                        ? <Stack.Item>Periodic</Stack.Item>
-                        : <>{isOrderPlan
-                          ? <Stack.Item>Order Based</Stack.Item>
-                          : "None"}
-                        </>}
-                      </>}
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>Plan Expiry</Stack.Item>
-                    <Stack.Item>{planExpiry}</Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>Plan Near Expiry : </Stack.Item>
-                    <Stack.Item>
-                      {planNearExp ? 'Yes' : 'No'}
-                    </Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>Max Number of Orders</Stack.Item>
-                    <Stack.Item >{orderRecLimit != null ? orderRecLimit : "unlimited"}</Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>Max Number of Products</Stack.Item>
-                    <Stack.Item >{productLimit != null ? productLimit : "unlimited"}</Stack.Item>
-                  </Stack>
-                  <Stack>
-                    <Stack.Item fill>Max Number of Images</Stack.Item>
-                    <Stack.Item >{imageLimit != null ? imageLimit : "unlimited"}</Stack.Item>
-                  </Stack>
-                  {isFPAOnce
+                  {planExpired
                     ? <>
                       <Stack>
-                        <Stack.Item fill>Is Free Plan Activated already : </Stack.Item>
-                        <Stack.Item>Yes</Stack.Item>
+                        <Stack.Item fill>Plan Expired</Stack.Item>
+                        <Stack.Item>{planExpired ? 'True' : 'False'}</Stack.Item>
                       </Stack>
                     </>
                     : <>
                       <Stack>
-                        <Stack.Item fill>Is Free Plan Activated already : </Stack.Item>
-                        <Stack.Item>No</Stack.Item>
+                        <Stack.Item fill>Active Plan :</Stack.Item>
+                        {isFreePlan
+                          ? <Stack.Item>Free</Stack.Item>
+                          : <>{isMonthlyPlan
+                            ? <Stack.Item>Periodic</Stack.Item>
+                            : <>{isOrderPlan
+                              ? <Stack.Item>Order Based</Stack.Item>
+                              : "None"}
+                            </>}
+                          </>}
                       </Stack>
-                    </>
-                  }
-                  {icCharged
-                    ? <>
                       <Stack>
-                        <Stack.Item fill>Is Installation Charges Charged : </Stack.Item>
-                        <Stack.Item>Yes</Stack.Item>
+                        <Stack.Item fill>Plan Expiry in</Stack.Item>
+                        <Stack.Item>{planExpiry} Days</Stack.Item>
                       </Stack>
-                    </>
-                    : <>
                       <Stack>
-                        <Stack.Item fill>Is Installation Charges Charged : </Stack.Item>
-                        <Stack.Item>No</Stack.Item>
+                        <Stack.Item fill>Plan Near Expiry : </Stack.Item>
+                        <Stack.Item>
+                          {planNearExp ? 'True' : 'False'}
+                        </Stack.Item>
                       </Stack>
+                      <Stack>
+                        <Stack.Item fill>Max Number of Orders</Stack.Item>
+                        <Stack.Item >{orderRecLimit != null ? orderRecLimit : "unlimited"}</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>Max Number of Products</Stack.Item>
+                        <Stack.Item >{productLimit != null ? productLimit : "unlimited"}</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>Max Number of Images</Stack.Item>
+                        <Stack.Item >{imageLimit != null ? imageLimit : "unlimited"}</Stack.Item>
+                      </Stack>
+                      {isFPAOnce
+                        ? <>
+                          <Stack>
+                            <Stack.Item fill>Is Free Plan Activated already : </Stack.Item>
+                            <Stack.Item>{isFPAOnce ? 'True' : 'False'}</Stack.Item>
+                          </Stack>
+                        </>
+                        : null
+                      }
+                      {icCharged
+                        ? <>
+                          <Stack>
+                            <Stack.Item fill>Is Installation Charges Charged : </Stack.Item>
+                            <Stack.Item>{icCharged ? 'True' : 'False'}</Stack.Item>
+                          </Stack>
+                        </>
+                        : null
+                      }
                     </>
                   }
                 </Layout.Section>
               </>
               : null}
             {/* <Layout.Section> */}
-            {isPlanActive ? (
+            {isPlanActive && !planExpired ? (
               <>
                 <Layout.Section>
                   <Heading element="h1">
