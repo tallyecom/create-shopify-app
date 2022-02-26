@@ -15,6 +15,8 @@ const registration = async (
   productLimit,
   imageLimit,
   icCharged,
+  planChangeDate,
+  planExpiryDate
 ) => {
   let nonce = nonceCreate();
   try {
@@ -34,6 +36,8 @@ const registration = async (
         productLimit: productLimit,
         imageLimit: imageLimit,
         icCharged: icCharged,
+        planChangeDate: planChangeDate,
+        planExpiryDate: planExpiryDate,
       },
       { upsert: true }
     );

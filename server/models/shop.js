@@ -93,6 +93,8 @@ const shopSchema = new Schema({
   productLimit: { type: Number, default: null },
   imageLimit: { type: Number, default: null },
   isPlanActive: { type: Boolean, default: false },
+  planChangeDate: { type: Date },
+  planExpiryDate: { type: Date },
 });
 
 const Shop = mongoose.models.shop || mongoose.model("shop", shopSchema);

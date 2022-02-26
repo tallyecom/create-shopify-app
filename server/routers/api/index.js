@@ -88,6 +88,8 @@ api.get("/shop", async (req, res) => {
       process: shopResult.process,
       isFPAOnce: shopResult.isFPAOnce,
       icCharged: shopResult.icCharged,
+      planChangeDate: shopResult.planChangeDate,
+      planExpiryDate: shopResult.planExpiryDate,
     };
     res.json({ success: true, data }).status(200);
   } catch (e) {
@@ -128,7 +130,7 @@ api.post("/planchange", async (req, res) => {
   res.status(200).send("Process Addedd successfully");
 });
 api.post("/regform", async (req, res) => {
-  // console.log("data received while changing plan :: ", req.body);
+  console.log("data received while changing plan :: ", req.body);
   try {
     await registration(
       req.body.shop
@@ -146,7 +148,9 @@ api.post("/regform", async (req, res) => {
       req.body.orderRecLimit,
       req.body.productLimit,
       req.body.imageLimit,
-      req.body.icCharged
+      req.body.icCharged,
+      req.body.planChangeDate,
+      req.body.planExpiryDate
     );
     // if (registrationRes) console.log(registrationRes);
   } catch (e) {

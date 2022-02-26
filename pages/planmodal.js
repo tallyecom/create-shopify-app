@@ -10,7 +10,7 @@ export default function PlanModal(props) {
     const [year, setYear] = useState(false)
 
     const handleSelectionChange = useCallback((value) => {
-        console.log("handleSelectionChange", value);
+        // console.log("handleSelectionChange", value);
         setSelected(value)
         setMonth(value == "Monthly")
         setYear(value == "Annually")
@@ -78,14 +78,19 @@ export default function PlanModal(props) {
                             <Stack.Item fill>Images :</Stack.Item>
                             <Stack.Item><Heading element="h3">{props.planDetail.numImages == null ? 'Unlimited' : props.planDetail.numImages}</Heading></Stack.Item>
                         </Stack>
-                        <Stack>
-                            <Stack.Item fill>Installation Charge :</Stack.Item>
-                            <Stack.Item>
-                                <Heading element="h3">
-                                    ${props.planDetail.installationCharge.toFixed(2)}
-                                </Heading>
-                            </Stack.Item>
-                        </Stack>
+                        {props.icCharged
+                            ? null
+                            : <>
+                                <Stack>
+                                    <Stack.Item fill>Installation Charge :</Stack.Item>
+                                    <Stack.Item>
+                                        <Heading element="h3">
+                                            ${props.planDetail.installationCharge.toFixed(2)}
+                                        </Heading>
+                                    </Stack.Item>
+                                </Stack>
+                            </>
+                        }
                         {props.planDetail.monthlyPrice > 0
                             ? <>
                                 <Stack>

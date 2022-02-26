@@ -60,7 +60,8 @@ const Index = () => {
   const [process, setProcess] = useState([]);
   const [monthly, setMonthly] = useState(false);
   const [yearly, setYearly] = useState(false);
-
+  const [planChangeDate, setPlanChangeDate] = useState();
+  const [planExpiryDate, setPlanExpiryDate] = useState();
 
   // process details
   const [result, setResult] = useState([]);
@@ -87,6 +88,30 @@ const Index = () => {
   let url3 = `https://www.youtube.com/embed/P7q_7k8t3-I?showinfo=0&enablejsapi=1&origin=${window.location.origin}`;
   let url4 = `https://www.youtube.com/embed/uZ-DQhNqlzc?showinfo=0&enablejsapi=1&origin=${window.location.origin}`;
 
+  Date.isLeapYear = function (year) {
+    return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
+  };
+
+  Date.getDaysInMonth = function (year, month) {
+    return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+  };
+
+  Date.prototype.isLeapYear = function () {
+    return Date.isLeapYear(this.getFullYear());
+  };
+
+  Date.prototype.getDaysInMonth = function () {
+    return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+  };
+
+  Date.prototype.addMonths = function (value) {
+    var n = this.getDate();
+    this.setDate(1);
+    this.setMonth(this.getMonth() + value);
+    this.setDate(Math.min(n, this.getDaysInMonth()));
+    return this;
+  };
+
   function datediff(date1, date2, interval) {
     var second = 1000, minute = second * 60, hour = minute * 60, day = hour * 24, week = day * 7;
     date1 = new Date(date1);
@@ -110,8 +135,8 @@ const Index = () => {
   }
 
   // console.log(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged)
-  const postPlanDetailtoDB = (isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged) => {
-    // console.log("Plan About to be updated : ", { shop: shop, serialNumber: serial, tallyPrime: isPrime, isPlanActive: isPlanActive, planNearExp: planNearExp, isFreePlan: isFreePlan, isFPAOnce: isFPAOnce, isOrderPlan: isOrderPlan, isMonthlyPlan: isMonthlyPlan, orderRecLimit: orderRecLimit, productLimit: productLimit, imageLimit: imageLimit, icCharged: icCharged })
+  const postPlanDetailtoDB = (isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged, planChangeDate, planExpiryDate) => {
+    console.log("Plan About to be updated : ", { shop: shop, serialNumber: serial, tallyPrime: isPrime, isPlanActive: isPlanActive, planNearExp: planNearExp, isFreePlan: isFreePlan, isFPAOnce: isFPAOnce, isOrderPlan: isOrderPlan, isMonthlyPlan: isMonthlyPlan, orderRecLimit: orderRecLimit, productLimit: productLimit, imageLimit: imageLimit, icCharged: icCharged, planChangeDate: planChangeDate, planExpiryDate: planExpiryDate })
     try {
       axios
         .post("/api/regform", {
@@ -127,7 +152,9 @@ const Index = () => {
           orderRecLimit: orderRecLimit,
           productLimit: productLimit,
           imageLimit: imageLimit,
-          icCharged: icCharged
+          icCharged: icCharged,
+          planChangeDate: planChangeDate,
+          planExpiryDate: planExpiryDate
         })
         .catch((err) => {
           console.log("err: ", err);
@@ -139,19 +166,44 @@ const Index = () => {
   }
 
   if (isPlanChanged) {
-    // console.log("a :: ", isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged);
-    // console.log("Is Installation Charges Charged :: ", icCharged);
-    postPlanDetailtoDB(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged);
-    setIsPlanChanged(false);
+    try {
+      postPlanDetailtoDB(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged, planChangeDate, planExpiryDate);
+      setIsPlanChanged(false);
+    } catch (error) {
+      console.log("Error :: ", error);
+    }
   }
   const handlePlanChange = (planChange, monthly, yearly) => {
+    console.log('Plan Start :: ', planChangeDate);
     // console.log("trying to change the plan, fingers crossed :: ", planChange)
     // console.log("planToChange :: ", planChange, " Monthly :: ", monthly, " Yearly :: ", yearly, " title :: ", planChange.title);
     // console.log("Serial :: ", serialNum)
     // console.log("Plan about to be changed to :: ", planChange.title, planChange.title == "Free")
-    if (planChange.title != "Periodic Plan" && planChange.title != "Free") {
+    setIsPlanChanged(true);
+    var now = new Date();
+    const one_day = 1000 * 60 * 60 * 24
+    if (planChange.title == "Order Based Plan") {
+      setPlanChangeDate(new Date());
+      var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
+      setPlanExpiryDate(expiry)
       if (!isPlanActive) setIsPlanActive(!isPlanActive);
-      setIsPlanChanged(true);
+      setIsFreePlan(false);
+      setIcCharged(true)
+      setIsOrderPlan(true);
+      setSerialNum(serial);
+      setIsMonthlyPlan(false);
+      setOrderRecLimit(orderRecLimit + planChange.numOrders);
+      setProductLimit(productLimit + planChange.numProducts);
+      setImageLimit(imageLimit + planChange.numImages);
+      setPlanNearExp(false);
+      setIsFPAOnce(true);
+      setShowPlans(true);
+    } else if (planChange.title == "Orders Add-On" || planChange.title == "Products Add-On") {
+      // var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
+      // console.log(planChangeDate, planExpiryDate)
+      setPlanChangeDate(planChangeDate)
+      setPlanExpiryDate(planExpiryDate)
+      if (!isPlanActive) setIsPlanActive(!isPlanActive);
       setIsFreePlan(false);
       setIcCharged(true)
       setIsOrderPlan(true);
@@ -164,14 +216,33 @@ const Index = () => {
       setIsFPAOnce(true);
       setShowPlans(true);
     } else if (planChange.title == "Free") {
-      console.log(planChange.numOrders, planChange.numProducts, planChange.numImages);
+      setPlanChangeDate(new Date());
+      var expiry = new Date().addMonths(1);
+      setPlanExpiryDate(new Date().addMonths(1))
+      console.log('Expiry :: ', expiry);
+      var date1 = new Date();
+      var date2 = new Date(expiry);
+      console.log(date2);
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / one_day);
+      console.log("Difference in MilliSeconds :: ", diffTime);
+      console.log('Difference in Days', diffDays);
+      console.log("Plan is about to get over :: ", diffDays < 11)
+      setPlanExpiry(diffDays);
+      if (diffDays < 11) {
+        setPlanNearExp(true)
+        setShowPlans(true);
+      } else {
+        setPlanNearExp(false);
+        setShowPlans(false);
+      }
+      // console.log(planChange.numOrders, planChange.numProducts, planChange.numImages);
       if (!isPlanActive) setIsPlanActive(!isPlanActive);
       setPlanNearExp(true);
       setIsFreePlan(true);
       setIsOrderPlan(false);
       setIsMonthlyPlan(false);
       setIsFPAOnce(true);
-      setIsPlanChanged(true);
       setIcCharged(false)
       setOrderRecLimit(planChange.numOrders);
       setProductLimit(planChange.numProducts);
@@ -179,11 +250,10 @@ const Index = () => {
       setSerialNum(serial);
       // console.log("Plan Changed to Non-Free for next round ::", isFreePlan);
     } else if (planChange.title == "Periodic Plan") {
+      setPlanChangeDate(new Date());
       if (yearly) {
-        var now = new Date();
-        const one_day = 1000 * 60 * 60 * 24
-        console.log('Plan Start :: ', now);
         var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
+        setPlanExpiryDate(expiry)
         console.log('Expiry :: ', expiry);
         var date1 = new Date();
         var date2 = new Date(expiry);
@@ -192,9 +262,9 @@ const Index = () => {
         const diffDays = Math.ceil(diffTime / one_day);
         console.log("Difference in MilliSeconds :: ", diffTime);
         console.log('Difference in Days', diffDays);
-        console.log("Plan is about to get over :: ", diffDays < 41)
+        console.log("Plan is about to get over :: ", diffDays < 11)
         setPlanExpiry(diffDays);
-        if (diffDays < 41) {
+        if (diffDays < 11) {
           setPlanNearExp(true)
           setShowPlans(true);
         } else {
@@ -203,21 +273,19 @@ const Index = () => {
         }
       }
       if (monthly) {
-        var now = new Date();
-        const one_day = 1000 * 60 * 60 * 24
-        console.log('Plan Start :: ', now);
-        var expiry = new Date(now.setDate(now.getDate() + 30));
-        console.log('Expiry :: ', expiry);
+        var expiry = new Date().addMonths(1);
+        setPlanExpiryDate(new Date().addMonths(1))
+        console.log('Expiry :: ', planExpiryDate);
         var date1 = new Date();
-        var date2 = new Date(expiry);
+        var date2 = new Date(planExpiryDate);
         console.log(date2);
         const diffTime = Math.abs(date2 - date1);
         const diffDays = Math.ceil(diffTime / one_day);
         console.log("Difference in MilliSeconds :: ", diffTime);
         console.log('Difference in Days', diffDays);
-        console.log("Plan is about to get over :: ", diffDays < 41)
+        console.log("Plan is about to get over :: ", diffDays < 11)
         setPlanExpiry(diffDays);
-        if (diffDays < 41) {
+        if (diffDays < 11) {
           setPlanNearExp(true)
           setShowPlans(true);
         } else {
@@ -232,7 +300,6 @@ const Index = () => {
       if (isFreePlan) setIsFreePlan(!isFreePlan);
       if (isOrderPlan) setIsOrderPlan(!isOrderPlan);
     }
-    setIsPlanChanged(true);
     if (!isPlanActive) setIsPlanActive(!isPlanActive);
     setSerialNum(serial);
   }
@@ -301,13 +368,16 @@ const Index = () => {
                     ?
                     <>
                       <Stack>
-                        <Stack.Item fill>Installation Charge (Applicable One-Time)</Stack.Item>
+                        <Stack.Item fill>Installation Charge</Stack.Item>
                         <Stack.Item>${installationCharge.toFixed(2)}</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill><a>(Applicable One-Time)</a></Stack.Item>
                       </Stack>
                     </>
                     : null
                   }
-                  {title == 'Free' ? <Stack><Stack.Item fill>Period</Stack.Item><Stack.Item>30 Days</Stack.Item></Stack> : <Stack.Item fill>Period : use at your convenience with Balance Carry Forward</Stack.Item>}
+                  {title == 'Free' ? <Stack><Stack.Item fill>Period</Stack.Item><Stack.Item>30 Days</Stack.Item></Stack> : <Stack><Stack.Item fill>Period :</Stack.Item><Stack.Item>1 Year</Stack.Item></Stack>}
                 </Card.Section>
               </>
               : <>
@@ -335,7 +405,8 @@ const Index = () => {
                     <Stack.Item>Unlimited</Stack.Item>
                   </Stack>
                   <Stack>
-                    <Stack.Item fill>Period : as per your selection</Stack.Item>
+                    <Stack.Item fill>Period :</Stack.Item>
+                    <Stack.Item>Monthly / Annually</Stack.Item>
                   </Stack>
                   {!icCharged
                     ? <>
@@ -350,7 +421,7 @@ const Index = () => {
               </>
             }
             <Card.Section>
-              <PlanModal planDetail={planDetail} handlePlanChange={handlePlanChange} />
+              <PlanModal planDetail={planDetail} handlePlanChange={handlePlanChange} icCharged={icCharged} />
             </Card.Section>
           </Card>
         </Layout.Section>
@@ -363,7 +434,7 @@ const Index = () => {
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
       if (res) {
-        // console.log(res.data.data);
+        console.log(res.data.data);
         // console.log("limit on Orders :: ", res.data.data.isPlanActive);
         setIsPlanActive(res.data.data.isPlanActive);
         setIsFreePlan(res.data.data.isFreePlan);
@@ -374,8 +445,10 @@ const Index = () => {
         setOrderRecLimit(res.data.data.orderRecLimit);
         setIsFPAOnce(res.data.data.isFPAOnce);
         setIcCharged(res.data.data.icCharged);
+        setPlanChangeDate(res.data.data.planChangeDate);
+        setPlanExpiryDate(res.data.data.planExpiryDate);
         // console.log("Is free plan active :: ", res.data.data.isFreePlan)
-        var instOn = new Date(res.data.data.installedOn);
+        var instOn = new Date(res.data.data.planChangeDate);
         var dateDif = datediff(instOn, new Date(), 'days')
         if (dateDif < 31) {
           dateDif = datediff(instOn, new Date(), 'days');
@@ -449,8 +522,8 @@ const Index = () => {
       // console.log(diffTime + " milliseconds");
       // console.log(diffDays + " days");
       setPlanExpiry(diffDays);
-      console.log("Plan is about to get over :: ", diffDays < 41)
-      if (diffDays < 41) {
+      console.log("Plan is about to get over :: ", diffDays < 11)
+      if (diffDays < 11) {
         setPlanNearExp(true)
         setShowPlans(true);
       } else {

@@ -5,7 +5,7 @@ const serialDetail = async (shop) => {
   try {
     let doc = await Shop.findOne(shop);
     if (doc) {
-      // console.log(doc);
+      console.log(doc);
       return doc;
     }
   } catch (error) {
