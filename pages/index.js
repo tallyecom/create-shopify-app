@@ -219,15 +219,15 @@ const Index = () => {
       setPlanChangeDate(new Date());
       var expiry = new Date().addMonths(1);
       setPlanExpiryDate(new Date().addMonths(1))
-      console.log('Expiry :: ', expiry);
+      // console.log('Expiry :: ', expiry);
       var date1 = new Date();
       var date2 = new Date(expiry);
-      console.log(date2);
+      // console.log(date2);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / one_day);
-      console.log("Difference in MilliSeconds :: ", diffTime);
-      console.log('Difference in Days', diffDays);
-      console.log("Plan is about to get over :: ", diffDays < 11)
+      // console.log("Difference in MilliSeconds :: ", diffTime);
+      // console.log('Difference in Days', diffDays);
+      // console.log("Plan is about to get over :: ", diffDays < 11)
       setPlanExpiry(diffDays);
       if (diffDays < 11) {
         setPlanNearExp(true)
@@ -257,12 +257,12 @@ const Index = () => {
         console.log('Expiry :: ', expiry);
         var date1 = new Date();
         var date2 = new Date(expiry);
-        console.log(date2);
+        // console.log(date2);
         const diffTime = Math.abs(date2 - date1);
         const diffDays = Math.ceil(diffTime / one_day);
-        console.log("Difference in MilliSeconds :: ", diffTime);
-        console.log('Difference in Days', diffDays);
-        console.log("Plan is about to get over :: ", diffDays < 11)
+        // console.log("Difference in MilliSeconds :: ", diffTime);
+        // console.log('Difference in Days', diffDays);
+        // console.log("Plan is about to get over :: ", diffDays < 11)
         setPlanExpiry(diffDays);
         if (diffDays < 11) {
           setPlanNearExp(true)
@@ -278,12 +278,12 @@ const Index = () => {
         console.log('Expiry :: ', planExpiryDate);
         var date1 = new Date();
         var date2 = new Date(planExpiryDate);
-        console.log(date2);
+        // console.log(date2);
         const diffTime = Math.abs(date2 - date1);
         const diffDays = Math.ceil(diffTime / one_day);
-        console.log("Difference in MilliSeconds :: ", diffTime);
-        console.log('Difference in Days', diffDays);
-        console.log("Plan is about to get over :: ", diffDays < 11)
+        // console.log("Difference in MilliSeconds :: ", diffTime);
+        // console.log('Difference in Days', diffDays);
+        // console.log("Plan is about to get over :: ", diffDays < 11)
         setPlanExpiry(diffDays);
         if (diffDays < 11) {
           setPlanNearExp(true)
