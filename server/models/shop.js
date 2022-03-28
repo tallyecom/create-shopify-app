@@ -58,6 +58,22 @@ const appSubscriptionSchema = new Schema({
     }
   }]
 })
+const plan = new Schema({
+  id: { type: String, index: true, unique: true },
+  name: { type: String, unique: true },
+  planID: String,
+  monthlyPrice: Number,
+  annualPrice: Number,
+  orderPrice: Number,
+  productPrice: Number,
+  imagePrice: Number,
+  numOrders: Number,
+  numProducts: Number,
+  numImages: Number,
+  activateFrom: Date,
+  period: String,
+  planExpiry: Date
+})
 
 const shopSchema = new Schema({
   shop: { type: String, required: true },
@@ -89,12 +105,14 @@ const shopSchema = new Schema({
   // activePlan: [planSchema],
   // planLimits: [planLimitSchema],
   tallyPrime: { type: Boolean, default: false },
-  orderRecLimit: { type: Number, default: null },
-  productLimit: { type: Number, default: null },
-  imageLimit: { type: Number, default: null },
+  // orderRecLimit: { type: Number, default: null },
+  // productLimit: { type: Number, default: null },
+  // imageLimit: { type: Number, default: null },
   isPlanActive: { type: Boolean, default: false },
   planChangeDate: { type: Date },
   planExpiryDate: { type: Date },
+  plans: { type: [plan], default: [] },
+  lpe: { type: Date, default: null }
 });
 
 const Shop = mongoose.models.shop || mongoose.model("shop", shopSchema);

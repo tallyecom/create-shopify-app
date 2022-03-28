@@ -1,5 +1,5 @@
 const Shop = require("../../../models/shop");
-const nonceCreate = require("nonce")();
+// const nonceCreate = require("nonce")();
 
 const registration = async (
   shop,
@@ -11,14 +11,14 @@ const registration = async (
   isFPAOnce,
   isOrderPlan,
   isMonthlyPlan,
-  orderRecLimit,
-  productLimit,
-  imageLimit,
+  // orderRecLimit,
+  // productLimit,
+  // imageLimit,
   icCharged,
   planChangeDate,
-  planExpiryDate
+  planExpiryDate,
+  planID
 ) => {
-  let nonce = nonceCreate();
   try {
     let doc = await Shop.updateOne(
       { shop: shop },
@@ -32,33 +32,21 @@ const registration = async (
         isFPAOnce: isFPAOnce,
         isOrderPlan: isOrderPlan,
         isMonthlyPlan: isMonthlyPlan,
-        orderRecLimit: orderRecLimit,
-        productLimit: productLimit,
-        imageLimit: imageLimit,
+        // orderRecLimit: orderRecLimit,
+        // productLimit: productLimit,
+        // imageLimit: imageLimit,
         icCharged: icCharged,
         planChangeDate: planChangeDate,
         planExpiryDate: planExpiryDate,
+        planID: planID,
       },
       { upsert: true }
     );
     return doc
-    // console.log(doc);
   } catch (error) {
     console.log("Error while adding Nonce to Database: ", error);
     return false;
   }
-  return (
-    "https://" +
-    shop +
-    ".myshopify.com/admin/oauth/authorize?client_id=" +
-    SHOPIFY_API_KEY +
-    "&scope=" +
-    SCOPES +
-    "&redirect_uri=" +
-    SHOPIFY_REDIRECT_URI +
-    "&state=" +
-    nonce
-  );
 };
 
 module.exports = registration;

@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import download from "downloadjs";
 import {
-  Badge,
   Banner,
   Button,
   ButtonGroup,
   Card,
-  ChoiceList,
   Collapsible,
   DataTable,
   DisplayText,
@@ -16,22 +14,15 @@ import {
   Layout,
   Link,
   List,
-  MediaCard,
-  Modal,
   Page,
-  PageActions,
   Stack,
-  Subheading,
-  TextContainer,
   TextField,
-  VideoThumbnail,
 } from "@shopify/polaris";
 import axios from "axios";
 import ReactPlayer from "react-player/lazy";
 import PlanModal from "./planmodal"
 // import BillingWOFree from "./billingwofree";
 // import BillingWithFree from "./billingwithfree"
-import { render } from "react-dom";
 
 const Index = () => {
   const nonceCreate = require("nonce")();
@@ -55,14 +46,14 @@ const Index = () => {
   const [imageLimit, setImageLimit] = useState(0);
   const [orderRecLimit, setOrderRecLimit] = useState(0);
   const [planExpiry, setPlanExpiry] = useState()
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [process, setProcess] = useState([]);
-  const [monthly, setMonthly] = useState(false);
-  const [yearly, setYearly] = useState(false);
+  const [curPlan, setCurPlan] = useState()
+  const [prevPlan, setPrevPlan] = useState()
+  const [planName, setPlanName] = useState()
+  // const [monthly, setMonthly] = useState(false);
+  // const [yearly, setYearly] = useState(false);
   const [planChangeDate, setPlanChangeDate] = useState();
   const [planExpiryDate, setPlanExpiryDate] = useState();
-  const [planExpired, setPlanExpired] = useState(false);
+  const [planExpired, setPlanExpired] = useState(true);
 
   // process details
   const [result, setResult] = useState([]);
@@ -71,9 +62,10 @@ const Index = () => {
   const [orderRet, setOrderRet] = useState(0);
   const [product, setProduct] = useState(0);
   const [image, setImage] = useState(0);
+  const [process, setProcess] = useState([])
 
   // miscellenous 
-  const [showPlans, setShowPlans] = useState(true);
+  const [showPlans, setShowPlans] = useState(false);
   const [changeOfPlans, setChangeOfPlans] = useState(true);
   const [open, setOpen] = useState(false);
   const [featureOpen, setFeatureOpen] = useState(
@@ -136,208 +128,88 @@ const Index = () => {
   }
 
   // console.log(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged)
-  const postPlanDetailtoDB = (isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged, planChangeDate, planExpiryDate) => {
-    // console.log("Plan About to be updated :: ", { shop: shop, serialNumber: serial, tallyPrime: isPrime, isPlanActive: isPlanActive, planNearExp: planNearExp, isFreePlan: isFreePlan, isFPAOnce: isFPAOnce, isOrderPlan: isOrderPlan, isMonthlyPlan: isMonthlyPlan, orderRecLimit: orderRecLimit, productLimit: productLimit, imageLimit: imageLimit, icCharged: icCharged, planChangeDate: planChangeDate, planExpiryDate: planExpiryDate })
-    try {
-      axios
-        .post("/api/regform", {
-          shop: shop,
-          serialNumber: serial,
-          tallyPrime: isPrime,
-          isPlanActive: isPlanActive,
-          planNearExp: planNearExp,
-          isFreePlan: isFreePlan,
-          isFPAOnce: isFPAOnce,
-          isOrderPlan: isOrderPlan,
-          isMonthlyPlan: isMonthlyPlan,
-          orderRecLimit: orderRecLimit,
-          productLimit: productLimit,
-          imageLimit: imageLimit,
-          icCharged: icCharged,
-          planChangeDate: planChangeDate,
-          planExpiryDate: planExpiryDate
-        })
-        .catch((err) => {
-          console.log("err: ", err);
-        });
-    } catch (e) {
-      console.log("e ::", e);
+  // const postPlanDetailtoDB = (isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged, planChangeDate, planExpiryDate) => {
+  //   // console.log("Plan About to be updated :: ", { shop: shop, serialNumber: serial, tallyPrime: isPrime, isPlanActive: isPlanActive, planNearExp: planNearExp, isFreePlan: isFreePlan, isFPAOnce: isFPAOnce, isOrderPlan: isOrderPlan, isMonthlyPlan: isMonthlyPlan, orderRecLimit: orderRecLimit, productLimit: productLimit, imageLimit: imageLimit, icCharged: icCharged, planChangeDate: planChangeDate, planExpiryDate: planExpiryDate })
+  //   try {
+  //     axios
+  //       .post("/api/regform", {
+  //         shop: shop,
+  //         serialNumber: serial,
+  //         tallyPrime: isPrime,
+  //         isPlanActive: isPlanActive,
+  //         planNearExp: planNearExp,
+  //         isFreePlan: isFreePlan,
+  //         isFPAOnce: isFPAOnce,
+  //         isOrderPlan: isOrderPlan,
+  //         isMonthlyPlan: isMonthlyPlan,
+  //         orderRecLimit: orderRecLimit,
+  //         productLimit: productLimit,
+  //         imageLimit: imageLimit,
+  //         icCharged: icCharged,
+  //         planChangeDate: planChangeDate,
+  //         planExpiryDate: planExpiryDate,
+  //         planID: pid
+  //       })
+  //       .catch((err) => {
+  //         console.log("err: ", err);
+  //       });
+  //   } catch (e) {
+  //     console.log("e ::", e);
+  //   }
+  //   getData()
+  // }
+
+  const postPlanChangetoDB = async (pid, m, y, ol, pl, il) => {
+    // console.log("m :: ", m, "y :: ", y)
+    if (m) {
+      try {
+        let data = await axios
+          .post("/api/planchange", {
+            shop: shop,
+            planID: pid,
+            period: "1 Month",
+            numOrders: ol,
+            numImages: il,
+            numProducts: pl
+          }).finally(() => {
+            // console.log("Plan Changed Successfully :: ", data)
+            getData()
+          })
+      } catch (e) {
+        console.log("e ::", e);
+      }
     }
-    // getData()
+    if (y) {
+      try {
+        let data = await axios
+          .post("/api/planchange", {
+            shop: shop,
+            planID: pid,
+            period: "1 Year",
+            numOrders: ol,
+            numImages: il,
+            numProducts: pl
+          }).finally(() => {
+            // console.log("Plan Changed Successfully :: ", data)
+            getData()
+          })
+      } catch (e) {
+        console.log("e ::", e);
+      }
+    }
   }
 
-  if (isPlanChanged) {
+  const handlePlanChange = (pid, m, y, ol, pl, il) => {
     try {
-      postPlanDetailtoDB(isPlanActive, planNearExp, isFreePlan, isFPAOnce, isOrderPlan, isMonthlyPlan, orderRecLimit, productLimit, imageLimit, icCharged, planChangeDate, planExpiryDate);
-      setIsPlanChanged(false);
-    } catch (error) {
-      console.log("Error :: ", error);
+      postPlanChangetoDB(pid, m, y, ol, pl, il)
     }
-  }
-  const handlePlanChange = (planChange, monthly, yearly) => {
-    // console.log('Plan Start :: ', planChangeDate);
-    // console.log("trying to change the plan, fingers crossed :: ", planChange)
-    // console.log("planToChange :: ", planChange, " Monthly :: ", monthly, " Yearly :: ", yearly, " title :: ", planChange.title);
-    // console.log("Serial :: ", serialNum)
-    // console.log("Plan about to be changed to :: ", planChange.title, planChange.title == "Free")
-    setIsPlanChanged(true);
-    var now = new Date();
-    const one_day = 1000 * 60 * 60 * 24
-    if (planChange.title == "Order Based Plan") {
-      setPlanChangeDate(new Date());
-      var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
-      var date1 = new Date();
-      var date2 = new Date(expiry);
-      // console.log(date2);
-      const diffTime = Math.abs(date2 - date1);
-      const diffDays = Math.ceil(diffTime / one_day);
-      // console.log("Difference in MilliSeconds :: ", diffTime);
-      // console.log('Difference in Days', diffDays);
-      // console.log("Plan is about to get over :: ", diffDays < 11)
-      setPlanExpiry(diffDays);
-      if (diffDays < 11) {
-        setPlanNearExp(true)
-        setShowPlans(true);
-      } else {
-        setPlanNearExp(false);
-        setShowPlans(false);
-      }
-      setPlanExpiryDate(expiry)
-      if (!isPlanActive) setIsPlanActive(!isPlanActive);
-      setIsFreePlan(false);
-      setIcCharged(true)
-      setIsOrderPlan(true);
-      setSerialNum(serial);
-      setIsMonthlyPlan(false);
-      setOrderRecLimit(orderRecLimit + planChange.numOrders);
-      setProductLimit(productLimit + planChange.numProducts);
-      setImageLimit(imageLimit + planChange.numImages);
-      setPlanNearExp(false);
-      setIsFPAOnce(true);
-      setShowPlans(true);
-    } else if (planChange.title == "Orders Add-On" || planChange.title == "Products Add-On") {
-      // var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
-      // console.log(planChangeDate, planExpiryDate)
-      setPlanChangeDate(planChangeDate)
-      setPlanExpiryDate(planExpiryDate)
-      // var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
-      var date1 = new Date();
-      var date2 = new Date(planExpiryDate);
-      // console.log(date2);
-      const diffTime = Math.abs(date2 - date1);
-      const diffDays = Math.ceil(diffTime / one_day);
-      // console.log("Difference in MilliSeconds :: ", diffTime);
-      // console.log('Difference in Days', diffDays);
-      // console.log("Plan is about to get over :: ", diffDays < 11)
-      setPlanExpiry(diffDays);
-      if (diffDays < 11) {
-        setPlanNearExp(true)
-        setShowPlans(true);
-      } else {
-        setPlanNearExp(false);
-        setShowPlans(false);
-      }
-      if (!isPlanActive) setIsPlanActive(!isPlanActive);
-      setIsFreePlan(false);
-      setIcCharged(true)
-      setIsOrderPlan(true);
-      setSerialNum(serial);
-      setIsMonthlyPlan(false);
-      setOrderRecLimit(orderRecLimit + planChange.numOrders);
-      setProductLimit(productLimit + planChange.numProducts);
-      setImageLimit(imageLimit + planChange.numImages);
-      setPlanNearExp(false);
-      setIsFPAOnce(true);
-      setShowPlans(true);
-    } else if (planChange.title == "Free") {
-      setPlanChangeDate(new Date());
-      var expiry = new Date().addMonths(1);
-      var date1 = new Date();
-      var date2 = new Date(expiry);
-      // console.log(date2);
-      const diffTime = Math.abs(date2 - date1);
-      const diffDays = Math.ceil(diffTime / one_day);
-      // console.log("Difference in MilliSeconds :: ", diffTime);
-      // console.log('Difference in Days', diffDays);
-      // console.log("Plan is about to get over :: ", diffDays < 11)
-      setPlanExpiry(diffDays);
-      if (diffDays < 11) {
-        setPlanNearExp(true)
-        setShowPlans(true);
-      } else {
-        setPlanNearExp(false);
-        setShowPlans(false);
-      }
-      setPlanExpiryDate(new Date().addMonths(1))
-      // console.log('Expiry :: ', expiry);
-      // console.log(planChange.numOrders, planChange.numProducts, planChange.numImages);
-      if (!isPlanActive) setIsPlanActive(!isPlanActive);
-      setPlanNearExp(true);
-      setIsFreePlan(true);
-      setIsOrderPlan(false);
-      setIsMonthlyPlan(false);
-      setIsFPAOnce(true);
-      setIcCharged(false)
-      setOrderRecLimit(planChange.numOrders);
-      setProductLimit(planChange.numProducts);
-      setImageLimit(planChange.numImages);
-      setSerialNum(serial);
-      // console.log("Plan Changed to Non-Free for next round ::", isFreePlan);
-    } else if (planChange.title == "Periodic Plan") {
-      setPlanChangeDate(new Date());
-      if (yearly) {
-        var expiry = new Date(now.setFullYear(now.getFullYear() + 1));
-        setPlanExpiryDate(expiry)
-        // console.log('Expiry :: ', expiry);
-        var date1 = new Date();
-        var date2 = new Date(expiry);
-        // console.log(date2);
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / one_day);
-        // console.log("Difference in MilliSeconds :: ", diffTime);
-        // console.log('Difference in Days', diffDays);
-        // console.log("Plan is about to get over :: ", diffDays < 11)
-        setPlanExpiry(diffDays);
-        if (diffDays < 11) {
-          setPlanNearExp(true)
-          setShowPlans(true);
-        } else {
-          setPlanNearExp(false);
-          setShowPlans(false);
-        }
-      }
-      if (monthly) {
-        var expiry = new Date().addMonths(1);
-        setPlanExpiryDate(new Date().addMonths(1))
-        // console.log('Expiry :: ', planExpiryDate);
-        var date1 = new Date();
-        var date2 = new Date(planExpiryDate);
-        // console.log(date2);
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / one_day);
-        // console.log("Difference in MilliSeconds :: ", diffTime);
-        // console.log('Difference in Days', diffDays);
-        // console.log("Plan is about to get over :: ", diffDays < 11)
-        setPlanExpiry(diffDays);
-        if (diffDays < 11) {
-          setPlanNearExp(true)
-          setShowPlans(true);
-        } else {
-          setPlanNearExp(false);
-          setShowPlans(false);
-        }
-      }
-      setOrderRecLimit(null);
-      setProductLimit(null);
-      setImageLimit(null);
-      setIsMonthlyPlan(true);
-      if (isFreePlan) setIsFreePlan(!isFreePlan);
-      if (isOrderPlan) setIsOrderPlan(!isOrderPlan);
+    catch (e) {
+      console.log("Error :: ", e)
     }
-    if (!isPlanActive) setIsPlanActive(!isPlanActive);
-    setSerialNum(serial);
+    // setSerialNum(serial);
   }
 
+  // if (planChangeDate != undefined && planExpiryDate != undefined) console.log("Plan Change Date :: ", planChangeDate, " Plan Expiry Date :: ", planExpiryDate);
   function PlanCard(props) {
     const {
       objID,
@@ -347,6 +219,7 @@ const Index = () => {
       installationCharge,
       title,
       monthlyPrice,
+      annualPrice,
       annualPriceA,
       annualPriceB,
       orderPrice,
@@ -387,15 +260,15 @@ const Index = () => {
                     </Stack.Item>
                   </Stack>
                   <Stack>
-                    <Stack.Item fill>Add Number of Orders</Stack.Item>
+                    <Stack.Item fill>Number of Orders</Stack.Item>
                     <Stack.Item>{numOrders}</Stack.Item>
                   </Stack>
                   <Stack>
-                    <Stack.Item fill>Add Number of Products</Stack.Item>
+                    <Stack.Item fill>Number of Products</Stack.Item>
                     <Stack.Item>{numProducts}</Stack.Item>
                   </Stack>
                   <Stack>
-                    <Stack.Item fill>Add Number of Images</Stack.Item>
+                    <Stack.Item fill>Number of Images</Stack.Item>
                     <Stack.Item>{numImages}</Stack.Item>
                   </Stack>
                   {!icCharged
@@ -406,12 +279,38 @@ const Index = () => {
                         <Stack.Item>${installationCharge.toFixed(2)}</Stack.Item>
                       </Stack>
                       <Stack>
-                        <Stack.Item fill><a>(Applicable One-Time)</a></Stack.Item>
+                        <Stack.Item fill>(One-Time)</Stack.Item>
                       </Stack>
                     </>
                     : null
                   }
-                  {title == 'Free' ? <Stack><Stack.Item fill>Period</Stack.Item><Stack.Item>30 Days</Stack.Item></Stack> : <Stack><Stack.Item fill>Period :</Stack.Item><Stack.Item>1 Year</Stack.Item></Stack>}
+                  {title == 'Free'
+                    ? <>
+                      <Stack>
+                        <Stack.Item fill>Period</Stack.Item>
+                        <Stack.Item>1 Month</Stack.Item>
+                      </Stack>
+                    </>
+                    : null
+                  }
+                  {title == 'Order Based Plan'
+                    ? <>
+                      <Stack>
+                        <Stack.Item fill>Period</Stack.Item>
+                        <Stack.Item>1 Year</Stack.Item>
+                      </Stack>
+                    </>
+                    : null
+                  }
+                  {title.includes('Add-On')
+                    ? <>
+                      <Stack>
+                        <Stack.Item fill>Period</Stack.Item>
+                        <Stack.Item>0 Days</Stack.Item>
+                      </Stack>
+                    </>
+                    : null
+                  }
                 </Card.Section>
               </>
               : <>
@@ -442,11 +341,14 @@ const Index = () => {
                     <Stack.Item fill>Period :</Stack.Item>
                     <Stack.Item>Monthly / Annually</Stack.Item>
                   </Stack>
-                  {!icCharged
+                  {!icCharged && title != 'Free'
                     ? <>
                       <Stack>
-                        <Stack.Item fill>Installation Charge (Applicable One-Time)</Stack.Item>
+                        <Stack.Item fill>Installation Charge</Stack.Item>
                         <Stack.Item>${installationCharge.toFixed(2)}</Stack.Item>
+                      </Stack>
+                      <Stack>
+                        <Stack.Item fill>(One-Time)</Stack.Item>
                       </Stack>
                     </>
                     : null
@@ -455,7 +357,7 @@ const Index = () => {
               </>
             }
             <Card.Section>
-              <PlanModal planDetail={planDetail} handlePlanChange={handlePlanChange} icCharged={icCharged} />
+              <PlanModal planDetail={planDetail} handlePlanChange={handlePlanChange} icCharged={icCharged} orderRecLimit={orderRecLimit} productLimit={productLimit} imageLimit={imageLimit} />
             </Card.Section>
           </Card>
         </Layout.Section>
@@ -463,64 +365,99 @@ const Index = () => {
     )
   }
   const dateInPast = function (firstDate, secondDate) {
+    // console.log(firstDate.setHours(0, 0, 0, 0), secondDate.setHours(0, 0, 0, 0))
     var cond = firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)
     setPlanExpired(cond)
+    // console.log(cond)
   };
-
   async function getData() {
     const one_day = 1000 * 60 * 60 * 24
     // console.log('setting process data')
     try {
       const res = await axios.get("/api/shop?shop=" + shop);
+      let d = new Date()
+      let f, t
+      let plans
       if (res) {
+        plans = res.data.data.plans
+        // console.log("plans :: ", plans)
+        for (var k in plans) {
+          setCurPlan(plans[k].name)
+          // console.log("Current Plan :: ", plans[k].name, " Previous Plan :: ", prevPlan)
+          if (plans[k].activateFrom != undefined || plans[k].planExpiry != undefined) {
+            let diffTime = Math.abs(new Date(plans[k].planExpiry) - new Date());
+            let diffDays = Math.ceil(diffTime / one_day);
+            f = new Date(plans[k].activateFrom)
+            t = new Date(plans[k].planExpiry)
+            // console.log(d, f, t)
+            setPlanExpiry(diffDays);
+            if (diffDays < 11) {
+              setPlanNearExp(true)
+            } else {
+              setPlanNearExp(false);
+            }
+            if (plans[k].name == 'Free') {
+              setIsFreePlan(res.data.data.isFreePlan)
+              setImageLimit(plans[k].numImages);
+              setProductLimit(plans[k].numProducts);
+              setOrderRecLimit(plans[k].numOrders);
+              setIsOrderPlan(false)
+              setIsMonthlyPlan(false)
+            }
+            if (plans[k].name == 'Order Based Plan') {
+              setIsFreePlan(false)
+              setIsOrderPlan(res.data.data.isOrderPlan);
+              setImageLimit(plans[k].numImages);
+              setProductLimit(plans[k].numProducts);
+              setOrderRecLimit(plans[k].numOrders);
+              setIsMonthlyPlan(false)
+            }
+            if (plans[k].name == 'Periodic Plan') {
+              setIsFreePlan(false)
+              setIsOrderPlan(false)
+              setIsMonthlyPlan(res.data.data.isMonthlyPlan);
+              setImageLimit(plans[k].numImages);
+              setProductLimit(plans[k].numProducts);
+              setOrderRecLimit(plans[k].numOrders);
+            }
+            setPlanName(plans[k].name)
+            dateInPast(new Date(plans[k].planExpiry), new Date())
+            var dateDif = datediff(new Date(res.data.data.installedOn), new Date(), 'days')
+            if (dateDif < 31) {
+              dateDif = datediff(new Date(res.data.data.installedOn), new Date(), 'days');
+              setInstalledDays(dateDif, " Days");
+            }
+            if (dateDif >= 31 && dateDif < 365) {
+              dateDif = datediff(new Date(res.data.data.installedOn), new Date(), 'months');
+              setInstalledDays(dateDif, " Months");
+            }
+            if (dateDif > 365) {
+              dateDif = datediff(new Date(res.data.data.installedOn), new Date(), 'years');
+              setInstalledDays(dateDif, " Years");
+            }
+            if (d > f && d < t) {
+              setIsPlanActive(true)
+              setPlanChangeDate(plans[k].activateFrom)
+              setPlanExpiryDate(plans[k].planExpiryDate);
+              break
+            }
+            if (f > d && d < t) {
+              setIsPlanActive(true)
+              setPlanChangeDate(plans[k].activateFrom)
+              setPlanExpiryDate(plans[k].planExpiryDate);
+              break
+            }
+          }
+          setPrevPlan(plans[k].name)
+        }
+        setIcCharged(res.data.data.icCharged);
+        setIsFPAOnce(res.data.data.isFPAOnce);
+        setUserAccessToken(res.data.data.accessToken);
+        setIsPrime(res.data.data.isPrime);
+        setSerial(res.data.data.serial);
         // console.log(res.data.data);
         // console.log("limit on Orders :: ", res.data.data.isPlanActive);
-        setIsPlanActive(res.data.data.isPlanActive);
-        setIsFreePlan(res.data.data.isFreePlan);
-        setIsOrderPlan(res.data.data.isOrderPlan);
-        setIsMonthlyPlan(res.data.data.isMonthlyPlan);
-        setImageLimit(res.data.data.imageLimit);
-        setProductLimit(res.data.data.productLimit);
-        setOrderRecLimit(res.data.data.orderRecLimit);
-        setIsFPAOnce(res.data.data.isFPAOnce);
-        setIcCharged(res.data.data.icCharged);
-        setPlanChangeDate(res.data.data.planChangeDate);
-        setPlanExpiryDate(res.data.data.planExpiryDate);
-        // console.log("Is free plan active :: ", res.data.data.isFreePlan)
-        // var instOn = new Date(res.data.data.planChangeDate);
-        var date1 = new Date();
-        var date2 = new Date(res.data.data.planExpiryDate);
-        // console.log(date2);
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / one_day);
-        // console.log("Difference in MilliSeconds :: ", diffTime);
-        // console.log('Difference in Days', diffDays);
-        // console.log("Plan is about to get over :: ", diffDays < 11)
-        setPlanExpiry(diffDays);
-        if (diffDays < 11) {
-          setPlanNearExp(true)
-          setShowPlans(true);
-        } else {
-          setPlanNearExp(false);
-          setShowPlans(false);
-        }
-        dateInPast(date2, date1);
-        var dateDif = datediff(planChangeDate, new Date(), 'days')
-        if (dateDif < 31) {
-          dateDif = datediff(planChangeDate, new Date(), 'days');
-          setInstalledDays(dateDif, " Days");
-        }
-        if (dateDif >= 31 && dateDif < 365) {
-          dateDif = datediff(planChangeDate, new Date(), 'months');
-          setInstalledDays(dateDif, " Months");
-        }
-        if (dateDif > 365) {
-          dateDif = datediff(planChangeDate, new Date(), 'years');
-          setInstalledDays(dateDif, " Years");
-        }
-        setSerial(res.data.data.serial);
-        setIsPrime(res.data.data.isPrime);
-        setUserAccessToken(res.data.data.accessToken);
+        // setIsFreePlan(res.data.data.isFreePlan);
         if (isPlanActive) {
           setProcess(res.data.data.process);
           let array = res.data.data.process
@@ -569,33 +506,31 @@ const Index = () => {
     }
   }
 
-  function checkPlanValidity() {
-    if (isMonthlyPlan) {
-      var date1 = new Date();
-      var date2 = new Date(planExpiryDate);
-      const diffTime = Math.abs(date2 - date1);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      console.log(diffTime + " milliseconds");
-      console.log(diffDays + " days");
-      setPlanExpiry(diffDays);
-      // console.log("Plan is about to get over :: ", diffDays < 11)
-      if (diffDays < 11) {
-        setPlanNearExp(true)
-        setShowPlans(true);
-      } else {
-        setPlanNearExp(false);
-        setShowPlans(false);
-      }
-    }
+  // const checkPlanValidity = (date1, date2) => {
+  //   if (isMonthlyPlan) {
+  //     const diffTime = Math.abs(date2 - date1);
+  //     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  //     // console.log(diffTime + " milliseconds");
+  //     // console.log(diffDays + " days");
+  //     setPlanExpiry(diffDays);
+  //     // console.log("Plan is about to get over :: ", diffDays < 11)
+  //     if (diffDays < 11) {
+  //       setPlanNearExp(true)
+  //       setShowPlans(true);
+  //     } else {
+  //       setPlanNearExp(false);
+  //       setShowPlans(false);
+  //     }
+  //   }
 
-  }
+  // }
 
   async function getPlans() {
     try {
       const res = await axios.get("/api/plans?shop=" + shop);
       let planDetail = res.data.data.planDetail
       setListOfPlans(planDetail);
-      // if (res) console.log(res.data.data.planDetail);
+      // if (res) console.log("planDetail :: ", res.data.data.planDetail);
 
       // console.log("Plan is Active :: ", isPlanActive, "Plan Near Expiry", planNearExp)
       // if (isPlanActive) {
@@ -746,30 +681,24 @@ const Index = () => {
       </>)
   }
 
+
+
   useEffect(() => {
-    const intialSetup = async () => {
+    const initialSetup = async () => {
       await getData();
       await getPlans();
-      checkPlanValidity();
-
-      {
-        !serial
-          ? <>
-            {!isPlanActive
-              ? <>
-                {planNearExp
-                  ? setShowPlans(true)
-                  : setShowPlans(false)}
-              </>
-              : setShowPlans(false)
-            }
-          </>
-          : setShowPlans(false)
-      }
+      // checkPlanValidity();
     };
-    intialSetup();
+    console.log("plan Expired :: ", planExpired, " plan Near Expiry :: ", planNearExp, " is Plan Active :: ", !isPlanActive, " is Free Plan :: ", isFreePlan)
+    if (planExpired || planNearExp || !isPlanActive || isFreePlan) {
+      setShowPlans(true)
+    } else {
+      setShowPlans(false)
+    }
+    // { planExpired || planNearExp || !isPlanActive || isFreePlan ? setShowPlans(true) : setShowPlans(false) }
+    initialSetup();
+    console.log("Plans should show up :: ", showPlans)
   }, []);
-
 
   const handleSerialChange = useCallback((value) => {
     setSerialNum(value);
@@ -825,9 +754,6 @@ const Index = () => {
             isFreePlan,
             isOrderPlan,
             isMonthlyPlan,
-            orderRecLimit: 0,
-            productLimit: 0,
-            imageLimit: 0,
           })
           .catch((err) => {
             console.log("err: ", err);
@@ -878,9 +804,66 @@ const Index = () => {
                 <p> Create Products, Upload Product Images, Manage Accurate Accounting with Statutory Compliances, Keep Accutate Records.</p>
               </Banner>
             </Layout.Section>
+          </Layout>
+        </Card.Section>
+      </Card>
+      <Card>
+        <Card.Section>
+          <Layout>
+            <Layout.Section>
+              <Button
+                pressed={showPlans}
+                onClick={handleShowPlans}
+                outline
+                fullWidth={true}
+                ariaExpanded={!showPlans}
+                ariaControls="basic-collapsible-show-plans"
+              >
+                Show Plans / Add ons
+              </Button>
+              <Collapsible
+                open={showPlans}
+                id="basic-collapsible-show-plans"
+                transition={{
+                  duration: "500ms",
+                  timingFunction: "ease-in-out",
+                }}
+                expandOnPrint
+              >
+                {!isFPAOnce
+                  ? FreeBillingPlan()
+                  : null
+                }
+                {isMonthlyPlan ?
+                  <>
+                    {planNearExp ?
+                      <>
+                        <Heading element='h1'>Your Usage is about to reach the limits</Heading>
+                        {BillingPlans()}
+                      </>
+                      :
+                      <>
+                        {BillingPlans()}
+                      </>
+                    }
+                  </>
+                  :
+                  <>
+                    {BillingPlans()}
+                    {/* {AddOnPlans()} */}
+                  </>
+                }
+              </Collapsible>
+            </Layout.Section>
+          </Layout>
+        </Card.Section>
+      </Card>
+      <Card>
+        <Card.Section >
+          <Layout>
             {/* {isPlanActive ? console.log("Is Order Plan Active :: ", isOrderPlan, "New Order Limit :: ", orderRecLimit, "New Product Limit :: ", productLimit, "New Image Limit :: ", imageLimit) : null} */}
-            {serial ? (
-              <>
+            {serial
+              ? <>
                 <Layout.Section>
                   <Stack>
                     <Stack.Item fill>
@@ -910,7 +893,7 @@ const Index = () => {
                   </Stack>
                 </Layout.Section>
               </>
-            ) : null}
+              : null}
             {isPlanActive
               ? <>
                 <Layout.Section>
@@ -924,16 +907,29 @@ const Index = () => {
                     : <>
                       <Stack>
                         <Stack.Item fill>Active Plan :</Stack.Item>
-                        {isFreePlan
-                          ? <Stack.Item>Free</Stack.Item>
-                          : <>{isMonthlyPlan
-                            ? <Stack.Item>Periodic</Stack.Item>
-                            : <>{isOrderPlan
-                              ? <Stack.Item>Order Based</Stack.Item>
-                              : "None"}
-                            </>}
-                          </>}
+                        {isFreePlan || isMonthlyPlan || isOrderPlan
+                          ? <Stack.Item>{planName}</Stack.Item>
+                          : "None"
+                        }
                       </Stack>
+                      {planChangeDate != undefined
+                        ? <>
+                          <Stack>
+                            <Stack.Item fill>Plan Change Date</Stack.Item>
+                            <Stack.Item>{planChangeDate}</Stack.Item>
+                          </Stack>
+                        </>
+                        : null
+                      }
+                      {planExpiryDate != undefined
+                        ? <>
+                          <Stack>
+                            <Stack.Item fill>Plan Expiry Date</Stack.Item>
+                            <Stack.Item>{planExpiryDate}</Stack.Item>
+                          </Stack>
+                        </>
+                        : null
+                      }
                       <Stack>
                         <Stack.Item fill>Plan Expiry in</Stack.Item>
                         <Stack.Item>{planExpiry} Days</Stack.Item>
@@ -965,6 +961,10 @@ const Index = () => {
                         </>
                         : null
                       }
+                      <Stack>
+                        <Stack.Item fill>Number of Installed Days</Stack.Item>
+                        <Stack.Item>{installedDays}</Stack.Item>
+                      </Stack>
                       {icCharged
                         ? <>
                           <Stack>
@@ -1035,7 +1035,7 @@ const Index = () => {
                     <Button
                       onClick={handleToggle}
                       ariaExpanded={open || !serial}
-                      ariaControls="basic-collapsible"
+                      ariaControls="basic-collapsible-spd"
                       outline
                       fullWidth={true}
                     >
@@ -1043,7 +1043,7 @@ const Index = () => {
                     </Button>
                     <Collapsible
                       open={open}
-                      id="basic-collapsible"
+                      id="basic-collapsible-spd"
                       transition={{
                         duration: "500ms",
                         timingFunction: "ease-in-out",
@@ -1159,70 +1159,19 @@ const Index = () => {
         </Card.Section>
       </Card>
       <Card>
-        <Card.Section>
-          <Layout>
-            <Layout.Section>
-              <Button
-                pressed={!showPlans}
-                onClick={handleShowPlans}
-                outline
-                fullWidth={true}
-                ariaExpanded={showPlans}
-                ariaControls="basic-collapsible"
-              >
-                Show Plans / Add ons
-              </Button>
-              <Collapsible
-                open={!showPlans}
-                id="basic-collapsible"
-                transition={{
-                  duration: "500ms",
-                  timingFunction: "ease-in-out",
-                }}
-                expandOnPrint
-              >
-                {!isFPAOnce
-                  ? FreeBillingPlan()
-                  : null
-                }
-                {isMonthlyPlan ?
-                  <>
-                    {planNearExp ?
-                      <>
-                        <Heading element='h1'>Your Usage is about to reach the limits</Heading>
-                        {BillingPlans()}
-                      </>
-                      :
-                      <>
-                        {BillingPlans()}
-                      </>
-                    }
-                  </>
-                  :
-                  <>
-                    {BillingPlans()}
-                    {AddOnPlans()}
-                  </>
-                }
-              </Collapsible>
-            </Layout.Section>
-          </Layout>
-        </Card.Section>
-      </Card>
-      <Card>
         <Card.Section id="features">
           <Button
             onClick={handleFeatToggle}
             outline
             fullWidth={true}
             ariaExpanded={featureOpen}
-            ariaControls="basic-collapsible"
+            ariaControls="basic-collapsible-feat"
           >
             Features
           </Button>
           <Collapsible
             open={featureOpen || !serial}
-            id="basic-collapsible"
+            id="basic-collapsible-feat"
             transition={{
               duration: "500ms",
               timingFunction: "ease-in-out",

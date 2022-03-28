@@ -4,7 +4,7 @@ const planbyid = async (id) => {
     try {
         let doc = await Plan.findOne(id);
         if (doc) {
-            console.log("Plan Details retrived from server :: ", doc);
+            // console.log("Plan Details retrived from server :: ", doc.name == "Free");
             return doc;
         }
     } catch (error) {

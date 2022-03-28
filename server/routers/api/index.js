@@ -1,3 +1,6 @@
+const { createApp } = require("@shopify/app-bridge");
+const { getSessionToken } = require("@shopify/app-bridge-utils");
+const axios = require("axios");
 const api = require("express").Router();
 const authApiRequest = require("./middleware/authApiRequest");
 const registration = require("./helpers/registration");
@@ -7,11 +10,28 @@ const plan = require("./helpers/plan");
 const planByID = require("./helpers/planbyid");
 const planchange = require("./helpers/planchange")
 const Path = require("path");
+const { resolve } = require("path");
+require("dotenv").config()
+const { GraphQLClient, gql } = require('graphql-request')
+const ONETIME_CREATE = require("./helpers/apppurchaseonetime")
+
 
 //api authentication
 // api.use(authApiRequest);
 
 //Api Routes
+api.get("/graphql.json", (req, res) => {
+  try {
+    var shop = req.query.shop
+      .replace("https://", "")
+      .replace("http://", "")
+      .split(".")[0];
+    var appplanchange = ONETIME_CREATE()
+    let data = { appplanchange }
+    res.json({ success: true, data }).status(200);
+  } catch { e => console.log(e) }
+});
+
 api.get("/1", (req, res) => {
   res.json({ hi: "from first api" });
 });
@@ -81,15 +101,16 @@ api.get("/shop", async (req, res) => {
       isMonthlyPlan: shopResult.isMonthlyPlan,
       isOrderPlan: shopResult.isOrderPlan,
       installedOn: shopResult.installedOn,
-      orderRecLimit: shopResult.orderRecLimit,
-      productLimit: shopResult.productLimit,
-      imageLimit: shopResult.imageLimit,
+      // orderRecLimit: shopResult.orderRecLimit,
+      // productLimit: shopResult.productLimit,
+      // imageLimit: shopResult.imageLimit,
       isPlanActive: shopResult.isPlanActive,
       process: shopResult.process,
       isFPAOnce: shopResult.isFPAOnce,
       icCharged: shopResult.icCharged,
       planChangeDate: shopResult.planChangeDate,
       planExpiryDate: shopResult.planExpiryDate,
+      plans: shopResult.plans
     };
     res.json({ success: true, data }).status(200);
   } catch (e) {
@@ -113,21 +134,63 @@ api.post("/process", async (req, res) => {
   }
   res.status(200).send("Process Addedd successfully");
 });
+const modifyPlanBody = async (req, res, next) => {
+  // console.log(req.body);
+  let shop = req.body.shop.replace("https://", "").replace("http://", "").split(".")[0]
+  var plan = await planByID({ "_id": req.body.planID });
+  // console.log("plan :: ", plan)
+  var shopResult = await serialDetail({ shop });
+  let d, e
+  if (shopResult.lpe == null) {
+    d = new Date()
+    d.setHours(0, 0, 0, 0)
+  } else {
+    d = new Date(shopResult.lpe)
+    d.setHours(0, 0, 0, 0)
+  }
+  if (shopResult.lpe == null) {
+    e = new Date()
+    e.setHours(0, 0, 0, 0)
 
-api.post("/planchange", async (req, res) => {
-
+  } else {
+    e = new Date(shopResult.lpe)
+    e.setHours(0, 0, 0, 0)
+  }
+  req.body.name = plan.name
+  req.body.monthlyPrice = plan.monthlyPrice
+  req.body.annualPrice = plan.annualPrice
+  req.body.orderPrice = plan.orderPrice
+  req.body.productPrice = plan.productPrice
+  req.body.imagePrice = plan.imagePrice
+  // req.body.isFreePlan = (plan.name == 'Free')
+  // req.body.isOrderPlan = (plan.name == 'Order Based Plan')
+  //  req.body.isMonthlyPlan =  (plan.name == 'Periodic Plan')
+  // req.body.numOrders = plan.numOrders
+  // req.body.numProducts = plan.numProducts
+  // req.body.numImages = plan.numImages
+  if (req.body.period == "1 Month") {
+    req.body.activateFrom = d
+    e.setMonth(e.getMonth() + 1)
+    req.body.planExpiry = e
+  }
+  if (req.body.period == "1 Year") {
+    req.body.activateFrom = d
+    e.setMonth(e.getMonth() + 12)
+    req.body.planExpiry = e
+  }
+  // console.log("Updated Request :: ", req.body);
+  next()
+}
+api.post("/planchange", modifyPlanBody, async (req, res) => {
   try {
-    let planchange = await process(
-      req.body.shop
-        .replace("https://", "")
-        .replace("http://", "")
-        .split(".")[0],
-      req.body.planchange
-    );
+    let shop = req.body.shop.replace("https://", "").replace("http://", "").split(".")[0]
+    // var plan = await planByID({ "_id": req.body.planID });
+    await planchange(shop, req.body)
+    await ONETIME_CREATE(req.headers.referer, req, shop)
+    res.status(200).send("plan added successfully");
   } catch (e) {
     console.log(e);
   }
-  res.status(200).send("Process Addedd successfully");
 });
 api.post("/regform", async (req, res) => {
   // console.log("data received while changing plan :: ", req.body);
@@ -150,8 +213,13 @@ api.post("/regform", async (req, res) => {
       req.body.imageLimit,
       req.body.icCharged,
       req.body.planChangeDate,
-      req.body.planExpiryDate
+      req.body.planExpiryDate,
+      req.body.planID
     );
+    // console.log(req.body.planID)
+    // let data = {shop}
+    // console.log(shop);
+    // res.json(shop).status(200);
     // if (registrationRes) console.log(registrationRes);
   } catch (e) {
     console.log(e);
