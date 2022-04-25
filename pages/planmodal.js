@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Button, ChoiceList, Modal, Stack, TextContainer, Heading, Popover, ActionList } from '@shopify/polaris';
 
-
 export default function PlanModal(props) {
     // console.log(props)
     const title = props.planDetail.title

@@ -53,7 +53,7 @@ const Index = () => {
   // const [yearly, setYearly] = useState(false);
   const [planChangeDate, setPlanChangeDate] = useState();
   const [planExpiryDate, setPlanExpiryDate] = useState();
-  const [planExpired, setPlanExpired] = useState(true);
+  const [planExpired, setPlanExpired] = useState(false);
 
   // process details
   const [result, setResult] = useState([]);
@@ -318,7 +318,7 @@ const Index = () => {
                   <Stack>
                     <Stack.Item fill>
                       <DisplayText size="medium">
-                        ${monthlyPrice}/30 Days
+                        ${monthlyPrice}/month
                       </DisplayText>
                     </Stack.Item>
                     <Stack.Item>

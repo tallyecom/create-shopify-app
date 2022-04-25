@@ -20,6 +20,8 @@ https://{{hostname}}/webhooks
 */
 
 const express = require("express");
+// import Shopify, { ApiVersion, AuthQuery } from '@shopify/shopify-api';
+require('dotenv').config();
 const Fs = require("fs");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require('./schema/schema')
@@ -27,7 +29,6 @@ const cors = require('cors');
 const Path = require("path");
 const nextapp = require("next");
 const server = express();
-
 
 // const bodyParser = require("body-parser");
 

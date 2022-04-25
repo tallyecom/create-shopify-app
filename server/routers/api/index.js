@@ -13,31 +13,19 @@ const Path = require("path");
 const { resolve } = require("path");
 require("dotenv").config()
 const { GraphQLClient, gql } = require('graphql-request')
-const ONETIME_CREATE = require("./helpers/apppurchaseonetime")
 
 
 //api authentication
 // api.use(authApiRequest);
 
 //Api Routes
-api.get("/graphql.json", (req, res) => {
-  try {
-    var shop = req.query.shop
-      .replace("https://", "")
-      .replace("http://", "")
-      .split(".")[0];
-    var appplanchange = ONETIME_CREATE()
-    let data = { appplanchange }
-    res.json({ success: true, data }).status(200);
-  } catch { e => console.log(e) }
-});
 
-api.get("/1", (req, res) => {
-  res.json({ hi: "from first api" });
-});
-api.get("/2", (req, res) => {
-  res.json({ hi: "from second api" });
-});
+//api.get("/1", (req, res) => {
+//  res.json({ hi: "from first api" });
+//});
+//api.get("/2", (req, res) => {
+//  res.json({ hi: "from second api" });
+//});
 
 api.get("/TCP", function (req, res, next) {
   const options = {
@@ -186,7 +174,6 @@ api.post("/planchange", modifyPlanBody, async (req, res) => {
     let shop = req.body.shop.replace("https://", "").replace("http://", "").split(".")[0]
     // var plan = await planByID({ "_id": req.body.planID });
     await planchange(shop, req.body)
-    await ONETIME_CREATE(req.headers.referer, req, shop)
     res.status(200).send("plan added successfully");
   } catch (e) {
     console.log(e);
